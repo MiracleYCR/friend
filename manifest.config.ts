@@ -35,10 +35,8 @@ export default defineManifestConfig({
       ignoreVersion: true,
     },
     splashscreen: {
-      alwaysShowBeforeRender: true,
-      waiting: true,
-      autoclose: true,
-      delay: 0,
+      autoclose: false, // 系统启动页不自动关闭
+      waiting: false, // 禁止显示等待框
     },
     /* 模块配置 */
     modules: {},

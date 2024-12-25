@@ -11,6 +11,7 @@ export function createApp() {
   app.use(routeInterceptor)
   app.use(requestInterceptor)
   app.use(prototypeInterceptor)
+
   return {
     app,
   }

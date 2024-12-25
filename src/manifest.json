@@ -11,8 +11,8 @@
     "compilerVersion": 3,
     "splashscreen": {
       "alwaysShowBeforeRender": true,
-      "waiting": true,
-      "autoclose": true,
+      "waiting": false,
+      "autoclose": false,
       "delay": 0
     },
     "modules": {},
