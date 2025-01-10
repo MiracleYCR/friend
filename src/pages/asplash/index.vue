@@ -31,8 +31,8 @@
 import {} from 'vue'
 
 const onAgree = () => {
-  uni.navigateTo({
-    url: '/pages/login/index',
+  uni.switchTab({
+    url: '/pages/connect/index',
   })
 }
 
@@ -59,6 +59,7 @@ const onDisagree = () => {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  background-color: #f1f4fc;
   padding: calc(env(safe-area-inset-top) + 20px) 20px 20px 20px;
 
   .content {
@@ -67,14 +68,15 @@ const onDisagree = () => {
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    background-color: #ffffff;
 
     padding: 20px;
     box-sizing: border-box;
     border-radius: 15px;
 
     .title {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 600;
       margin-bottom: 15px;
     }
 

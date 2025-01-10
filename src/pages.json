@@ -4,13 +4,7 @@
     "navigationBarTitleText": "unibest",
     "navigationBarBackgroundColor": "#f8f8f8",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f1f4fc",
-    "backgroundColorBottom": "#f1f4fc",
-    "app-plus": {
-      "safeAreaInsets": {
-        "bottom": "auto"
-      }
-    }
+    "backgroundColor": "#FFFFFF"
   },
   "easycom": {
     "autoscan": true,
@@ -20,42 +14,42 @@
     }
   },
   "tabBar": {
-    "color": "#666666",
-    "selectedColor": "#0085FF",
+    "color": "#9395A4",
+    "selectedColor": "#191C32",
     "backgroundColor": "#FFFFFF",
-    "borderStyle": "#EEEEEE",
-    "height": "44px",
+    "borderStyle": "#ffffff",
+    "height": "60px",
     "fontSize": "10px",
-    "iconWidth": "24px",
+    "iconWidth": "30px",
     "spacing": "3px",
     "list": [
       {
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/homeHL.png",
+        "iconPath": "static/tabbar/home1.png",
+        "selectedIconPath": "static/tabbar/home2.png",
         "pagePath": "pages/connect/index",
         "text": "缘分"
       },
       {
-        "iconPath": "static/tabbar/example.png",
-        "selectedIconPath": "static/tabbar/exampleHL.png",
+        "iconPath": "static/tabbar/guangchang1.png",
+        "selectedIconPath": "static/tabbar/guangchang2.png",
         "pagePath": "pages/square/index",
         "text": "广场"
       },
       {
-        "iconPath": "static/tabbar/example.png",
-        "selectedIconPath": "static/tabbar/exampleHL.png",
+        "iconPath": "static/tabbar/message.png",
+        "selectedIconPath": "static/tabbar/message.png",
         "pagePath": "pages/publish/index",
-        "text": "发布"
+        "text": ""
       },
       {
-        "iconPath": "static/tabbar/example.png",
-        "selectedIconPath": "static/tabbar/exampleHL.png",
+        "iconPath": "static/tabbar/xiaoxi1.png",
+        "selectedIconPath": "static/tabbar/xiaoxi2.png",
         "pagePath": "pages/message/index",
         "text": "消息"
       },
       {
-        "iconPath": "static/tabbar/example.png",
-        "selectedIconPath": "static/tabbar/exampleHL.png",
+        "iconPath": "static/tabbar/own1.png",
+        "selectedIconPath": "static/tabbar/own2.png",
         "pagePath": "pages/own/index",
         "text": "我的"
       }
@@ -84,12 +78,45 @@
     {
       "path": "pages/message/index",
       "type": "page",
-      "style": {}
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/notice/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "消息通知",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
     },
     {
       "path": "pages/own/index",
       "type": "page",
-      "style": {}
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/person/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/postDetail/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
     },
     {
       "path": "pages/publish/index",
@@ -97,9 +124,18 @@
       "style": {}
     },
     {
+      "path": "pages/search/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/square/index",
       "type": "page",
-      "style": {}
+      "style": {
+        "navigationStyle": "custom"
+      }
     }
   ],
   "subPackages": []

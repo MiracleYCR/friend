@@ -1,8 +1,7 @@
-import path from 'node:path'
-import { execSync } from 'node:child_process'
-import dayjs from 'dayjs'
-import { defineConfig, loadEnv } from 'vite'
 import Uni from '@dcloudio/vite-plugin-uni'
+import dayjs from 'dayjs'
+import path from 'node:path'
+import { defineConfig, loadEnv } from 'vite'
 // @see https://uni-helper.js.org/vite-plugin-uni-pages
 import UniPages from '@uni-helper/vite-plugin-uni-pages'
 // @see https://uni-helper.js.org/vite-plugin-uni-layouts
@@ -13,10 +12,11 @@ import UniPlatform from '@uni-helper/vite-plugin-uni-platform'
 // @see https://github.com/uni-helper/vite-plugin-uni-manifest
 import UniManifest from '@uni-helper/vite-plugin-uni-manifest'
 // @see https://unocss.dev/
+import { visualizer } from 'rollup-plugin-visualizer'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { visualizer } from 'rollup-plugin-visualizer'
 import ViteRestart from 'vite-plugin-restart'
+import { copyNativeRes } from './vite-plugins/copyNativeRes'
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
@@ -104,6 +104,8 @@ export default ({ command, mode }) => {
           gzipSize: true,
           brotliSize: true,
         }),
+      // 只有在 app 平台时才启用 copyNativeRes 插件
+      UNI_PLATFORM === 'app' && copyNativeRes(),
     ],
     define: {
       __UNI_PLATFORM__: JSON.stringify(UNI_PLATFORM),

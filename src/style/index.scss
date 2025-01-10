@@ -1,22 +1,46 @@
 // @import './iconfont.css';
 
-:root,
-page {
+.test {
+  // 可以通过 @apply 多个样式封装整体样式
+  @apply mt-4 ml-4;
+
+  padding-top: 4px;
+  color: red;
 }
 
-// .uni-tabbar {
-//   .uni-tabbar__item {
-//     &:nth-child(4) {
-//       position: relative;
-//       .uni-tabbar__bd {
-//         position: absolute;
-//         top: -50px;
-//         .uni-tabbar__icon {
-//           width: 40px !important;
-//           height: 40px !important;
-//           margin-bottom: 5px;
-//         }
-//       }
-//     }
-//   }
-// }
+:root,
+page {
+  // 修改按主题色
+  // --wot-color-theme: #37c2bc;
+
+  // 修改按钮背景色
+  // --wot-button-primary-bg-color: green;
+}
+
+.uni-tabbar {
+  .uni-tabbar-border {
+    background-color: #ffffff !important;
+  }
+
+  .uni-tabbar__item {
+    &:nth-child(4) {
+      position: relative;
+
+      &::after {
+        content: '';
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 50%;
+      }
+
+      .uni-tabbar__icon {
+        z-index: 999;
+        width: 48px !important;
+        height: 48px !important;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

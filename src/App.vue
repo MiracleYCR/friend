@@ -13,10 +13,7 @@ onHide(() => {
 </script>
 
 <style lang="scss">
-.page {
-  padding-top: env(safe-area-inset-top); /* 避免内容被状态栏遮挡 */
-}
-
+/* stylelint-disable selector-type-no-unknown */
 button::after {
   border: none;
 }

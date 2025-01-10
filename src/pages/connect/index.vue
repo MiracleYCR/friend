@@ -1,28 +1,14 @@
 <template>
-  <view class="connect">
-    <LogoNav />
-
-    <view class="search_wrapper">
-      <wd-search
-        class="search"
-        v-model="area"
-        hide-cancel
-        placeholder-left
-        placeholder="请输入关键字搜索"
-      >
-        <template #prefix>
-          <wd-popover mode="menu" :content="menu" @menuclick="changeSearchType">
-            <view class="search-type">
-              {{ searchType }}
-              <wd-icon custom-class="icon-arrow" name="fill-arrow-down"></wd-icon>
-              <view class="divider"></view>
-            </view>
-          </wd-popover>
-        </template>
-      </wd-search>
+  <view class="connect_container">
+    <view class="search">
+      <view class="city">
+        广州
+        <wd-img class="icon" src="/static/images/arrow3.png"></wd-img>
+      </view>
+      <wd-img class="icon" src="/static/images/search.png" @click="handleGotoSearch"></wd-img>
     </view>
 
-    <wd-swiper class="banner" autoplay :list="swiperList" v-model:current="curSwiper"></wd-swiper>
+    <wd-swiper :height="130" autoplay :list="swiperList" v-model:current="curSwiper"></wd-swiper>
 
     <view class="filter">
       <wd-tabs class="tab" v-model="tab">
@@ -30,8 +16,9 @@
         <wd-tab title="附近的人"></wd-tab>
         <wd-tab title="同城"></wd-tab>
       </wd-tabs>
+
       <wd-drop-menu class="menu">
-        <wd-drop-menu-item title="年龄段" ref="dropMenu">
+        <wd-drop-menu-item title="年龄段" ref="dropMenu" icon="fill-arrow-down" icon-size="24px">
           <view class="box-border p-5">
             <wd-cell title="标题文字" value="内容" />
             <wd-cell title="标题文字" label="描述信息" value="内容" />
@@ -49,7 +36,7 @@
         :show-scrollbar="false"
       >
         <view class="card" v-for="n in 10" :key="n">
-          <UserCard />
+          <UserCard @click="handleGotoProfile" />
         </view>
       </z-paging>
     </view>
@@ -57,13 +44,9 @@
 </template>
 
 <script lang="ts" setup>
-import LogoNav from '@/components/logo/index.vue'
-import UserCard from '@/components/usercard/index.vue'
-
 import { ref } from 'vue'
 
-const area = ref<string>('')
-const searchType = ref<string>('深圳')
+import UserCard from '@/components/card/user.vue'
 
 const curSwiper = ref<number>(0)
 const swiperList = ref<string[]>([
@@ -73,66 +56,86 @@ const swiperList = ref<string[]>([
 ])
 
 const tab = ref<number>(0)
+
+const handleGotoSearch = () => {
+  uni.navigateTo({
+    url: '/pages/search/index',
+  })
+}
+
+const handleGotoProfile = () => {
+  uni.navigateTo({
+    url: `/pages/profile/index?type=other`,
+  })
+}
 </script>
 
 <style lang="scss" scoped>
-.connect {
+.connect_container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: hidden;
-  background-color: #f1f4fc;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top) 0 0 0;
+  background-repeat: no-repeat;
+  background-color: #f3f5f6;
+  background-image: url('../../static/images/background2.png');
 
-  .search_wrapper {
+  .search {
     height: 50px;
     display: flex;
     align-items: center;
-    background-color: #ffffff;
+    padding: 0 15px;
+    box-sizing: border-box;
+    justify-content: space-between;
 
-    .search {
-      width: 100%;
-      display: flex;
-      align-items: center;
+    .icon {
+      width: 28px;
+      height: 28px;
+    }
 
-      .search-type {
-        font-size: 14px;
-        padding: 0 10px;
-        display: flex;
-        align-items: center;
-
-        .divider {
-          width: 1px;
-          height: 15px;
-          margin-left: 5px;
-          background-color: #cccccc;
-        }
+    .city {
+      color: #ffffff;
+      font-weight: 500;
+      .icon {
+        width: 14px;
+        height: 14px;
       }
     }
   }
 
-  .banner {
-    height: 200px;
-    margin: 10px 10px 0 10px;
-  }
-
   .filter {
     width: 100%;
-    height: 45px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px 0 0;
+    padding: 0 8px 0 0;
     box-sizing: border-box;
     background-color: #ffffff;
+    overflow: hidden;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 
     .tab {
       width: 200px;
       height: 45px !important;
+
+      :deep(.wd-tabs__nav-item.is-active) {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      :deep(.wd-tabs__line) {
+        background: linear-gradient(90deg, #fb2c58 0%, rgba(251, 44, 88, 0) 100%) !important;
+      }
     }
+
     .menu {
       height: 45px !important;
 
@@ -144,15 +147,18 @@ const tab = ref<number>(0)
 
   .userList {
     flex: 1;
-    padding: 10px 10px;
+    padding: 10px;
     box-sizing: border-box;
 
     .card {
       height: 100px;
+      overflow: hidden;
+      border-radius: 10px;
       margin-bottom: 10px;
 
       &:last-child {
         margin-bottom: 0;
+        border-bottom: none;
       }
     }
   }

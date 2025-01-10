@@ -8,8 +8,13 @@ interface NavigateToOptions {
        "/pages/connect/index" |
        "/pages/login/index" |
        "/pages/message/index" |
+       "/pages/notice/index" |
        "/pages/own/index" |
+       "/pages/person/index" |
+       "/pages/postDetail/index" |
+       "/pages/profile/index" |
        "/pages/publish/index" |
+       "/pages/search/index" |
        "/pages/square/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
