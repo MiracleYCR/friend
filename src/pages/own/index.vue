@@ -50,28 +50,28 @@
     </view>
 
     <view class="menu">
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('base')">
         <wd-img class="icon" src="/static/images/base.png"></wd-img>
         <view class="entry">
           基本资料
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('wallet')">
         <wd-img class="icon" src="/static/images/wallet.png"></wd-img>
         <view class="entry">
           我的钱包
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item">
-        <wd-img class="icon" src="/static/images/valid.png"></wd-img>
+      <view class="item" @click="handleGotoMenu('validate')">
+        <wd-img class="icon" src="/static/images/validate.png"></wd-img>
         <view class="entry">
           认证中心
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('share')">
         <wd-img class="icon" src="/static/images/share.png"></wd-img>
         <view class="entry">
           邀请好友
@@ -118,6 +118,12 @@ const handleGotoProfile = () => {
 const handleGotoFuncPage = (type: string) => {
   uni.navigateTo({
     url: `/pages/person/index?type=${type}`,
+  })
+}
+
+const handleGotoMenu = (type: string) => {
+  uni.navigateTo({
+    url: `/pages/${type}/index`,
   })
 }
 </script>

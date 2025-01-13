@@ -135,5 +135,57 @@ export default defineUniPages({
         navigationStyle: 'custom',
       },
     },
+    {
+      path: 'pages/validate/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '认证中心',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/bindphone/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '手机号码换绑',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/realcheck/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
+      path: 'pages/auditbook/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '授权书',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/wallet/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
+      path: 'pages/withdraw/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
+      path: 'pages/vip/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
   ],
 })

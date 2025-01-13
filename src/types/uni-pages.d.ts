@@ -5,6 +5,8 @@
 
 interface NavigateToOptions {
   url: "/pages/asplash/index" |
+       "/pages/auditbook/index" |
+       "/pages/bindphone/index" |
        "/pages/connect/index" |
        "/pages/login/index" |
        "/pages/message/index" |
@@ -14,8 +16,13 @@ interface NavigateToOptions {
        "/pages/postDetail/index" |
        "/pages/profile/index" |
        "/pages/publish/index" |
+       "/pages/realcheck/index" |
        "/pages/search/index" |
-       "/pages/square/index";
+       "/pages/square/index" |
+       "/pages/validate/index" |
+       "/pages/vip/index" |
+       "/pages/wallet/index" |
+       "/pages/withdraw/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 
