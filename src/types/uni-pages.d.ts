@@ -6,8 +6,12 @@
 interface NavigateToOptions {
   url: "/pages/asplash/index" |
        "/pages/auditbook/index" |
+       "/pages/autoapply/index" |
        "/pages/bindphone/index" |
+       "/pages/block/index" |
+       "/pages/companyinfo/index" |
        "/pages/connect/index" |
+       "/pages/connectus/index" |
        "/pages/login/index" |
        "/pages/message/index" |
        "/pages/notice/index" |
@@ -18,7 +22,10 @@ interface NavigateToOptions {
        "/pages/publish/index" |
        "/pages/realcheck/index" |
        "/pages/search/index" |
+       "/pages/settings/index" |
        "/pages/square/index" |
+       "/pages/suggestion/index" |
+       "/pages/systemauth/index" |
        "/pages/validate/index" |
        "/pages/vip/index" |
        "/pages/wallet/index" |

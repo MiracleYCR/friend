@@ -187,5 +187,59 @@ export default defineUniPages({
         navigationStyle: 'custom',
       },
     },
+    {
+      path: 'pages/settings/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '设置',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/block/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '黑名单',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/connectus/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '联系我们',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/autoapply/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
+      path: 'pages/systemauth/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '系统权限管理',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/companyinfo/index',
+      type: 'page',
+      style: {
+        navigationBarTitleText: '企业资质',
+        navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/suggestion/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
   ],
 })

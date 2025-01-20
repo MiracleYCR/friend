@@ -1,5 +1,5 @@
 <template>
-  <view class="usercard">
+  <view class="user2card">
     <wd-img class="avatar" src="/static/images/image.png"></wd-img>
 
     <view class="h-100% flex-1 flex items-center justify-between">
@@ -31,7 +31,7 @@
 <script lang="ts" setup></script>
 
 <style lang="scss" scoped>
-.usercard {
+.user2card {
   width: 100%;
   height: 100%;
   position: relative;
