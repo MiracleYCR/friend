@@ -79,6 +79,13 @@
       }
     },
     {
+      "path": "pages/baseInfo/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/bindphone/index",
       "type": "page",
       "style": {
@@ -118,9 +125,25 @@
       }
     },
     {
+      "path": "pages/invite/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/inviteList/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/login/index",
       "type": "page",
-      "style": {}
+      "style": {
+        "navigationStyle": "custom"
+      }
     },
     {
       "path": "pages/message/index",

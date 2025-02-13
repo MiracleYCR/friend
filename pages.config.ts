@@ -67,6 +67,13 @@ export default defineUniPages({
       },
     },
     {
+      path: 'pages/login/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
       path: 'pages/connect/index',
       type: 'page',
       style: {
@@ -107,6 +114,13 @@ export default defineUniPages({
       },
     },
     {
+      path: 'pages/baseInfo/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
       path: 'pages/search/index',
       type: 'page',
       style: {
@@ -141,6 +155,20 @@ export default defineUniPages({
       style: {
         navigationBarTitleText: '认证中心',
         navigationBarBackgroundColor: '#f3f5f6',
+      },
+    },
+    {
+      path: 'pages/invite/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
+    {
+      path: 'pages/inviteList/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
       },
     },
     {

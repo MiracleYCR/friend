@@ -176,3 +176,8 @@ export const getEnvBaseUploadUrl = () => {
 
   return baseUploadUrl
 }
+
+// 延迟函数
+export const delay = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

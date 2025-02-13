@@ -65,10 +65,15 @@ export default defineManifestConfig({
           '<uses-permission android:name="android.permission.FLASHLIGHT"/>',
           '<uses-feature android:name="android.hardware.camera"/>',
           '<uses-permission android:name="android.permission.WRITE_SETTINGS"/>',
+          '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>',
+          '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>',
         ],
       },
       /* ios打包配置 */
-      ios: {},
+      ios: {
+        LOCATION_ALWAYS: '描述定位权限用途',
+        LOCATION_WHEN_IN_USE: '描述定位权限用途',
+      },
       /* SDK配置 */
       sdkConfigs: {},
       /* 图标配置 */

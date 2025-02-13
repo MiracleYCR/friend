@@ -6,7 +6,7 @@
         {{ isOwn ? '我的主页' : 'Ta的主页' }}
       </view>
       <block v-if="isOwn">
-        <view class="edit">
+        <view class="edit" @click="handleGotoBaseInfo">
           <wd-img class="w-18px h-18px mr-1px" src="/static/images/edit.png" />
           编辑资料
         </view>
@@ -104,6 +104,10 @@ const isOwn = ref(true)
 
 const handleBack = () => {
   uni.navigateBack()
+}
+
+const handleGotoBaseInfo = () => {
+  uni.navigateTo({ url: '/pages/baseInfo/index' })
 }
 
 onLoad((params) => {

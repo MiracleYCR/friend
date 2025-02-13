@@ -7,11 +7,14 @@ interface NavigateToOptions {
   url: "/pages/asplash/index" |
        "/pages/auditbook/index" |
        "/pages/autoapply/index" |
+       "/pages/baseInfo/index" |
        "/pages/bindphone/index" |
        "/pages/block/index" |
        "/pages/companyinfo/index" |
        "/pages/connect/index" |
        "/pages/connectus/index" |
+       "/pages/invite/index" |
+       "/pages/inviteList/index" |
        "/pages/login/index" |
        "/pages/message/index" |
        "/pages/notice/index" |

@@ -9,9 +9,9 @@
       <wd-img class="avatar" src="/static/images/image.png"></wd-img>
       <view class="info">
         <view class="left">
-          <view class="name">石榴籽儿</view>
+          <view class="name">{{ userInfo.nickName }}</view>
           <view class="id">
-            <view class="number">梦缘ID:2655858</view>
+            <view class="number">梦缘ID:{{ userInfo.appId }}</view>
             <view class="copy">复制</view>
           </view>
           <view class="status">
@@ -71,7 +71,7 @@
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item" @click="handleGotoMenu('share')">
+      <view class="item" @click="handleGotoMenu('invite')">
         <wd-img class="icon" src="/static/images/share.png"></wd-img>
         <view class="entry">
           邀请好友
@@ -107,7 +107,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/store'
+
+const { userInfo }: any = useUserStore()
 
 const handleGotoProfile = () => {
   uni.navigateTo({

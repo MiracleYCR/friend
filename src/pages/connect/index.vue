@@ -44,7 +44,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { getOwnUserInfo } from '@/api/user'
 
 import UserCard from '@/components/card/user.vue'
 
@@ -68,6 +69,10 @@ const handleGotoProfile = () => {
     url: `/pages/profile/index?type=other`,
   })
 }
+
+onMounted(() => {
+  getOwnUserInfo()
+})
 </script>
 
 <style lang="scss" scoped>
