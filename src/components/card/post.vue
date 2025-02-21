@@ -7,24 +7,28 @@
         <view class="info">
           <view class="left">
             <view class="line">
-              <view class="name">下一站风景</view>
+              <view class="name">{{ postData.sysUser.nickName }}</view>
               <wd-img class="w-40px h-15px ml-5px mr-5px" src="/static/images/vip.png"></wd-img>
               <wd-img class="w-40px h-15px" src="/static/images/checked.png"></wd-img>
             </view>
-            <view class="line2">10:30</view>
+            <view class="line2">{{ postData.createTime }}</view>
           </view>
           <view class="right">
             <view class="focus">关注</view>
-            <wd-img class="w-4px h-18px" src="/static/images/more2.png"></wd-img>
+            <wd-img
+              v-if="canShare"
+              class="w-4px h-18px ml-10px"
+              src="/static/images/more2.png"
+            ></wd-img>
           </view>
         </view>
       </view>
 
       <view class="middle mt-5px">
-        <view class="title">陪伴是最长情的告白，而守护就是最沉默的陪伴。</view>
+        <view class="title">{{ postData.postText }}</view>
         <view class="content">
-          <block v-for="n in 9" :key="n">
-            <wd-img class="w-90px h-90px" src="/static/images/picture.png"></wd-img>
+          <block v-for="(image, index) in postData.postImages" :key="index">
+            <wd-img class="w-90px h-90px rounded-5px overflow-hidden" :src="image"></wd-img>
           </block>
         </view>
         <view class="location">
@@ -35,18 +39,41 @@
       <view class="bottom">
         <view class="item">
           <wd-img class="w-20px h-20px mr-3px" src="/static/images/message2.png"></wd-img>
-          10
+          {{ postData.commentCount }}
         </view>
         <view class="item">
-          <wd-img class="w-20px h-20px mr-3px" src="/static/images/heart2.png"></wd-img>
-          300
+          <wd-img
+            class="w-20px h-20px mr-3px"
+            :src="postData.hasLike ? '/static/images/heart3.png' : '/static/images/heart2.png'"
+            @click="handleLikePost"
+          ></wd-img>
+          {{ postData.likeCount }}
         </view>
       </view>
     </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { defineProps } from 'vue'
+import { likePost } from '@/api/post'
+
+const props = defineProps({
+  canShare: {
+    type: Boolean,
+    default: true,
+  },
+
+  postData: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
+const handleLikePost = () => {
+  likePost({ postId: Number(props.postData.id) })
+}
+</script>
 
 <style lang="scss" scoped>
 .statuscard {
@@ -95,7 +122,7 @@
           width: 70px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
           .focus {
             width: 50px;
             height: 22px;
@@ -114,7 +141,7 @@
 
     .middle {
       display: flex;
-      align-items: center;
+      // align-items: center;
       flex-direction: column;
 
       .title {
@@ -127,8 +154,9 @@
         gap: 5px;
         display: flex;
         flex-wrap: wrap;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        // justify-content: flex-start;
+        margin-top: 10px;
+        margin-bottom: 10px;
       }
 
       .location {

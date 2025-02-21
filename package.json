@@ -101,10 +101,13 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-4020920240930001",
     "@dcloudio/uni-mp-xhs": "3.0.0-4020920240930001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4020920240930001",
+    "@tencentcloud/chat-uikit-uniapp": "^2.4.1",
+    "@vant/area-data": "^2.0.0",
     "dayjs": "1.11.10",
     "pinia": "2.0.36",
     "pinia-plugin-persistedstate": "3.2.1",
     "qs": "6.5.3",
+    "unplugin-vue2-script-setup": "^0.11.4",
     "vue": "3.4.21",
     "wot-design-uni": "^1.4.0",
     "z-paging": "^2.8.4"

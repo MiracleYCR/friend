@@ -2,22 +2,25 @@
   <view class="square_container">
     <view class="tab_wrapper">
       <wd-tabs class="tab" v-model="tab">
-        <wd-tab title="关注"></wd-tab>
-        <wd-tab title="广场"></wd-tab>
-        <wd-tab title="同城"></wd-tab>
+        <wd-tab title="关注" name="follow"></wd-tab>
+        <wd-tab title="广场" name="square"></wd-tab>
+        <wd-tab title="同城" name="sameCity"></wd-tab>
       </wd-tabs>
     </view>
 
     <view class="body">
       <z-paging
         class="list_scroll"
+        ref="postListRef"
+        v-model="postListData"
         :fixed="false"
         :scroll-y="true"
         :scroll-view="true"
         :show-scrollbar="false"
+        @query="queryPostListData"
       >
-        <view class="card" v-for="n in 10" :key="n">
-          <StatusCard @click="handleGotoPostDetail" />
+        <view class="card" v-for="(item, index) in postListData" :key="index">
+          <PostCard :postData="item" />
         </view>
       </z-paging>
     </view>
@@ -25,16 +28,41 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import StatusCard from '@/components/card/status.vue'
+import { ref, watch } from 'vue'
 
-const tab = ref<number>(1)
+import { getSquarePostList } from '@/api/post'
+import PostCard from '@/components/card/post.vue'
 
-const handleGotoPostDetail = () => {
+// tab页
+const tab = ref<string>('square')
+
+// 帖子列表
+const postListRef = ref(null)
+const postListData = ref<any[]>([])
+
+// @click="handleGotoPostDetail(item)"
+const handleGotoPostDetail = (postData: any) => {
   uni.navigateTo({
-    url: '/pages/postDetail/index',
+    url: `/pages/postDetail/index?id=${postData.id}`,
   })
 }
+
+// 查询帖子数据
+const queryPostListData = async () => {
+  const resp: any = await getSquarePostList({
+    postType: tab.value,
+  })
+  postListData.value = resp.rows
+  postListRef.value.complete(postListData.value)
+}
+
+watch(tab, (n) => {
+  queryPostListData()
+})
+
+onMounted(() => {
+  queryPostListData()
+})
 </script>
 
 <style lang="scss" scoped>

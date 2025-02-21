@@ -59,6 +59,13 @@ export default defineUniPages({
     ],
   },
   pages: [
+    // {
+    //   path: 'pages/test/index',
+    //   type: 'page',
+    //   style: {
+    //     navigationStyle: 'custom',
+    //   },
+    // },
     {
       path: 'pages/asplash/index',
       type: 'page',

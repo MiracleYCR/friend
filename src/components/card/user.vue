@@ -1,3 +1,4 @@
+<!-- 缘分首页用户列表 -->
 <template>
   <view class="user1card">
     <wd-img class="avatar" src="/static/images/image.png"></wd-img>
@@ -5,15 +6,15 @@
     <view class="h-100% flex-1 flex items-center justify-between">
       <view class="left">
         <view class="title">
-          <view class="name">小张</view>
+          <view class="name">{{ userData.nickName }}</view>
           <wd-img class="icon" src="/static/images/vip.png"></wd-img>
           <wd-img class="icon" src="/static/images/checked.png"></wd-img>
         </view>
         <view class="line1">
-          <view>广东广州·4.5km</view>
+          <view>{{ userData.loacaltionName }} · {{ userData.distance.toFixed(2) }}km</view>
           <view class="divider"></view>
-          <wd-img class="w-12px h-12px" src="/static/images/male.png"></wd-img>
-          <view>·26岁</view>
+          <wd-img class="w-12px h-12px" :src="sexImg"></wd-img>
+          <view>·{{ userData.age }}岁</view>
         </view>
         <view class="line2">
           <view class="type">近期活跃</view>
@@ -28,7 +29,20 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  userData: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
+const sexImg = computed(() => {
+  return props.sex === 0 ? '/static/images/male.png' : '/static/images/female.png'
+})
+</script>
 
 <style lang="scss" scoped>
 .user1card {

@@ -15,7 +15,7 @@
         :show-scrollbar="false"
       >
         <view class="detail">
-          <StatusCard />
+          <PostCard :canShare="false" />
         </view>
 
         <view class="tip">
@@ -56,7 +56,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import StatusCard from '@/components/card/status.vue'
+import { onLoad } from '@dcloudio/uni-app'
+
+import { checkPost } from '@/api/post'
+import PostCard from '@/components/card/post.vue'
 
 const message = ref('')
 
@@ -65,6 +68,10 @@ const value = ref<boolean>(false)
 const handleBack = () => {
   uni.navigateBack()
 }
+
+onLoad((params) => {
+  checkPost(params.id)
+})
 </script>
 
 <style lang="scss" scoped>

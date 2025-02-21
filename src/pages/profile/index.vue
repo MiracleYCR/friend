@@ -78,7 +78,7 @@
         <view class="status">
           <view class="title">状态</view>
           <block class="card" v-for="n in 10" :key="n">
-            <StatusCard />
+            <PostCard />
           </block>
 
           <!-- <view class="empty">
@@ -98,7 +98,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import StatusCard from '@/components/card/status.vue'
+import PostCard from '@/components/card/post.vue'
 
 const isOwn = ref(true)
 

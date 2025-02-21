@@ -33,6 +33,8 @@
 </template>
 
 <script lang="ts" setup>
+import { currRoute } from '@/utils'
+
 const handleBack = () => {
   uni.navigateBack()
 }
@@ -61,6 +63,7 @@ const handleGotoInviteList = () => {
   background-image: url('../../static/images/background5.png');
 
   .header {
+    z-index: 999;
     width: 100%;
     height: 45px;
     position: relative;
@@ -78,8 +81,8 @@ const handleGotoInviteList = () => {
 
   .list {
     z-index: 20;
-    height: 40px;
-    margin-top: 10px;
+    height: 24px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -71,8 +71,8 @@ export default defineManifestConfig({
       },
       /* ios打包配置 */
       ios: {
-        LOCATION_ALWAYS: '描述定位权限用途',
-        LOCATION_WHEN_IN_USE: '描述定位权限用途',
+        LOCATION_ALWAYS: '获取用户设备定位权限',
+        LOCATION_WHEN_IN_USE: '使用时获取用户设备定位权限',
       },
       /* SDK配置 */
       sdkConfigs: {},

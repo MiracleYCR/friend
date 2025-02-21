@@ -21,7 +21,7 @@
               <wd-img class="w-24px h-24px mr-8px" src="/static/images/user.png"></wd-img>
               姓名
             </view>
-            <wd-input type="number" v-model="formData.name" placeholder="请输入姓名" />
+            <wd-input v-model="formData.name" placeholder="请输入姓名" />
           </view>
 
           <view class="formItem">
@@ -45,7 +45,9 @@
           ></wd-text>
         </view>
 
-        <wd-button class="confirmBtn" block>下一步</wd-button>
+        <wd-button class="confirmBtn" block :disabled="nextBtnEnabled" @click="handleNextStep">
+          下一步
+        </wd-button>
 
         <view class="confirm">
           <wd-checkbox v-model="formData.isCheck" shape="square"></wd-checkbox>
@@ -71,8 +73,8 @@
             <view class="desc">完成认证可以认识更多实名用户哦~</view>
           </view>
           <view class="btns">
-            <wd-button class="cancel">残冷离开</wd-button>
-            <wd-button class="confirm">继续认证</wd-button>
+            <wd-button class="cancel" @click="handleLeave">残冷离开</wd-button>
+            <wd-button class="confirm" @click="handleStay">继续认证</wd-button>
           </view>
         </view>
       </view>
@@ -82,11 +84,16 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
+import { realCheck } from '@/api/common'
 
 const formData = reactive({
   name: '',
   idcard: '',
   isCheck: false,
+})
+
+const nextBtnEnabled = computed(() => {
+  return formData.name && formData.idcard && formData.isCheck
 })
 
 const dialogVisible = ref<boolean>(false)
@@ -96,9 +103,19 @@ const handleBack = () => {
 }
 
 const handleGotoAuditBook = () => {
-  uni.navigateTo({
-    url: '/pages/auditbook/index',
-  })
+  uni.navigateTo({ url: '/pages/auditbook/index' })
+}
+
+const handleNextStep = async () => {
+  await realCheck({ name: formData.name, idcard: formData.idcard })
+}
+
+const handleLeave = () => {
+  uni.navigateBack()
+}
+
+const handleStay = () => {
+  dialogVisible.value = false
 }
 </script>
 

@@ -1,72 +1,15 @@
 <template>
   <view class="login">
-    <view v-if="showWelcome" class="weclome">
-      <view class="title">欢迎来到梦缘婚恋</view>
-      <view class="copyright">©版权（copyright）梦缘婚恋有限公司</view>
-    </view>
-
-    <view v-else class="loginForm">
-      <view class="formItem mb-16px">
-        <wd-img class="w-24px h-24px mr-8px" src="/static/images/phone2.png"></wd-img>
-        <wd-input
-          class="flex-1"
-          type="number"
-          v-model="formData.phone"
-          placeholder="请输入手机号码"
-        />
-      </view>
-
-      <view class="formItem">
-        <view class="w-100% flex items-center justify-between">
-          <wd-img class="w-24px h-24px mr-8px" src="/static/images/code.png"></wd-img>
-          <wd-input
-            class="flex-1"
-            type="number"
-            v-model="formData.code"
-            placeholder="请输入验证码"
-          ></wd-input>
-          <wd-button
-            class="codeBtn ml-10px min-w-100px"
-            type="text"
-            size="small"
-            :disabled="!smsCodeBtnEnabled"
-            @click="handleGetSmsCode"
-          >
-            <template v-if="!notCountDown">重新获取（{{ seconds }} ）</template>
-            <template v-else>获取验证码</template>
-          </wd-button>
-        </view>
-      </view>
-
-      <view class="w-100% mt-30px">
-        <wd-button
-          class="login_btn w-100%"
-          type="error"
-          size="large"
-          :disabled="!loginBtnEnabled"
-          @click="handleLoginApp"
-        >
-          登录/注册
-        </wd-button>
-      </view>
-
-      <view class="policy">
-        <wd-checkbox shape="square" v-model="formData.agree" />
-        <view class="text">
-          登录注册即表示同意
-          <wd-text text="《用户须知》" color="#000000"></wd-text>
-          <wd-text text="《隐私协议》" color="#000000"></wd-text>
-        </view>
-      </view>
-    </view>
-
-    <!-- <transition name="fade">
-      <view v-if="showWelcome" class="weclome">
+    <!-- <transition name="fade"> -->
+    <block v-if="showWelcome">
+      <view :animation="animationData" class="weclome">
         <view class="title">欢迎来到梦缘婚恋</view>
         <view class="copyright">©版权（copyright）梦缘婚恋有限公司</view>
       </view>
+    </block>
 
-      <view v-else class="loginForm">
+    <block v-else>
+      <view class="loginForm">
         <view class="formItem mb-16px">
           <wd-img class="w-24px h-24px mr-8px" src="/static/images/phone2.png"></wd-img>
           <wd-input
@@ -120,7 +63,9 @@
           </view>
         </view>
       </view>
-    </transition> -->
+    </block>
+
+    <!-- </transition> -->
   </view>
 </template>
 
@@ -148,6 +93,15 @@ const formData = reactive<{
 })
 
 const showWelcome = ref(true)
+const animationData = ref({})
+const startAnimation = () => {
+  const animation = uni.createAnimation({
+    duration: 2000,
+    timingFunction: 'ease-in-out',
+  })
+  animation.opacity(0).step()
+  animationData.value = animation.export()
+}
 
 // 验证码
 const timer = ref(null)
@@ -183,7 +137,8 @@ const handleLoginApp = async () => {
   if (formData.agree) {
     try {
       uni.getLocation({
-        type: 'gcj02',
+        // type: 'gcj02',
+        type: 'wgs84',
         success: async (res) => {
           // 获取权限
           const { token }: any = await login({
@@ -193,6 +148,7 @@ const handleLoginApp = async () => {
             latitude: res.latitude,
             longitude: res.longitude,
           })
+
           userStore.setToken(token)
 
           // 获取用户信息
@@ -215,8 +171,10 @@ const handleLoginApp = async () => {
 }
 
 onMounted(() => {
+  startAnimation()
   setTimeout(() => {
     showWelcome.value = false
+    console.log(showWelcome.value)
   }, 1500)
 })
 
@@ -249,6 +207,9 @@ onBeforeUnmount(() => {
     position: relative;
     align-items: center;
     justify-content: center;
+    transition:
+      opacity 0.5s,
+      visibility 0.5s;
 
     .title {
       font-weight: 500;
@@ -272,6 +233,9 @@ onBeforeUnmount(() => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition:
+      opacity 0.5s,
+      visibility 0.5s;
 
     .formItem {
       width: 100%;
@@ -294,11 +258,6 @@ onBeforeUnmount(() => {
         color: #fd2b58;
         border-color: #fd2b58;
       }
-
-      // .codeBtn.is-disabled {
-      //   color: #000000;
-      //   opacity: 0.3 !important;
-      // }
     }
 
     .login_btn {
@@ -313,6 +272,11 @@ onBeforeUnmount(() => {
       justify-content: center;
       font-weight: 400;
       font-size: 12px;
+
+      :deep(.wd-checkbox.is-checked .wd-checkbox__shape) {
+        color: #ffffff;
+        background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%);
+      }
     }
   }
 

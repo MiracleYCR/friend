@@ -14,10 +14,21 @@
         :show-scrollbar="false"
       >
         <view class="avatar">
-          <wd-img class="w-100px h-100px" src="/static/images/image.png"></wd-img>
-          <view class="iconBg">
+          <wd-img
+            v-if="baseData.avatar"
+            class="w-100px h-100px rounded-50px overflow-hidden"
+            :src="baseData.avatar"
+          ></wd-img>
+          <view
+            v-else
+            class="w-100px h-100px rounded-50px overflow-hidden bg-gray-200 flex items-center justify-center text-[14px] text-gray-400"
+          >
+            暂无头像
+          </view>
+
+          <view class="iconBg" @click="handleUploadAvatar">
             <view class="iconWrapper">
-              <wd-img class="w-13px h-13px" src="/static/images/camera.png"></wd-img>
+              <wd-img class="w-14px h-14px" src="/static/images/camera.png"></wd-img>
             </view>
           </view>
         </view>
@@ -37,16 +48,12 @@
               :show-scrollbar="false"
             >
               <view class="content-container">
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
-                <wd-img class="min-w-50px h-50px mr-10px" src="/static/images/picture.png"></wd-img>
+                <wd-img
+                  class="min-w-50px h-50px mr-10px rounded-5px overflow-hidden"
+                  v-for="(img, index) in originAlbumList"
+                  :key="index"
+                  :src="img.url"
+                ></wd-img>
               </view>
             </z-paging>
           </view>
@@ -305,7 +312,7 @@
             :scroll-view="true"
             :show-scrollbar="false"
           >
-            <Upload :fileList="baseData.albumList" />
+            <Upload :fileList="originAlbumList" @update-file-list="handleUpdateFileList" />
           </z-paging>
 
           <view class="btns">
@@ -320,6 +327,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { upload } from '@/api/common'
 import { useUserStore } from '@/store'
 
 import useConfig from './config'
@@ -338,9 +346,21 @@ const {
   marriageOpts,
 } = useConfig()
 
+// 个人相册
+const originAlbumList = ref([
+  {
+    url: 'https://mengyuanapp.oss-cn-shenzhen.aliyuncs.com/370a130a-740b-4c0c-872f-3cab76450878_1739439420960_29778918.jpeg',
+  },
+])
+const currentAlbumList = ref([
+  {
+    url: 'https://mengyuanapp.oss-cn-shenzhen.aliyuncs.com/370a130a-740b-4c0c-872f-3cab76450878_1739439420960_29778918.jpeg',
+  },
+])
+
 // 基础信息
 const baseData = reactive({
-  albumList: [],
+  avatar: '',
 
   desc: '',
   tags: [],
@@ -443,9 +463,39 @@ const handleBack = () => {
   uni.navigateBack()
 }
 
+// 上传头像
+const handleUploadAvatar = () => {
+  uni.chooseImage({
+    count: 1, // 最多可以选择 3 张图片
+    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图
+    sourceType: ['album', 'camera'], // 可以从相册选择或拍照
+    success: ({ tempFilePaths, tempFiles }) => {
+      uni.uploadFile({
+        url: '/prod-api/common/oss/upload',
+        filePath: tempFilePaths[0],
+        name: 'file',
+        success: (uploadRes) => {
+          console.log('上传成功：', uploadRes)
+          const responseData = JSON.parse(uploadRes.data)
+          baseData.avatar = responseData.msg
+        },
+        fail: (err) => {
+          console.error('上传失败：', err)
+        },
+      })
+    },
+    fail: (err) => {
+      console.error('选择图片失败:', err)
+    },
+  })
+}
+
 // 上传图片
 const handleUploadPicture = () => {
   dialogVisible.value = true
+}
+const handleUpdateFileList = (fileList) => {
+  currentAlbumList.value = fileList
 }
 // 取消编辑
 const handleCancelEditPictures = () => {
@@ -453,6 +503,7 @@ const handleCancelEditPictures = () => {
 }
 // 保存图片
 const handleSaveEditPictures = () => {
+  originAlbumList.value = currentAlbumList.value
   dialogVisible.value = false
 }
 

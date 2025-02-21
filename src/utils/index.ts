@@ -181,3 +181,12 @@ export const getEnvBaseUploadUrl = () => {
 export const delay = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+// 生成年龄范围
+export const generateAgeRanges = (start = 20, end = 50, step = 5) => {
+  const ranges = []
+  for (let i = start; i < end; i++) {
+    ranges.push([i, i + step])
+  }
+  return ranges
+}

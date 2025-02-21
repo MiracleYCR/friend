@@ -14,14 +14,18 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <view class="card" v-for="n in 20" :key="n">
-          <UserCard />
-        </view>
+        <block v-if="listData.length > 0">
+          <view class="card" v-for="n in listData" :key="n">
+            <UserCard />
+          </view>
+        </block>
 
-        <!-- <view class="empty">
-          <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
-          暂无数据
-        </view> -->
+        <block v-else>
+          <view class="empty">
+            <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
+            暂无数据
+          </view>
+        </block>
       </z-paging>
     </view>
   </view>
@@ -32,20 +36,36 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import UserCard from '@/components/card/user2.vue'
 
-const title = ref('')
+import { getMyFollowList, getFollowMeList, getMutualList, getVisiteMeList } from '@/api/user'
+
 const titleList = {
   1: '我的关注',
   2: '互相喜欢 ',
   3: '喜欢我的 ',
   4: '最近访客',
 }
+const fetchApi = {
+  1: getMyFollowList,
+  2: getMutualList,
+  3: getFollowMeList,
+  4: getVisiteMeList,
+}
+
+const title = ref('')
+const listData = ref([])
 
 const handleBack = () => {
   uni.navigateBack()
 }
 
+const queryData = async (type) => {
+  const { data } = await fetchApi[type]()
+  listData.value = data.rows
+}
+
 onLoad((params) => {
   title.value = titleList[params.type]
+  queryData(params.type)
 })
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <view class="connect_container">
     <view class="search">
-      <view class="city">
+      <view class="city" @click="handleOpenLocation">
         广州
         <wd-img class="icon" src="/static/images/arrow3.png"></wd-img>
       </view>
@@ -11,17 +11,39 @@
     <wd-swiper :height="130" autoplay :list="swiperList" v-model:current="curSwiper"></wd-swiper>
 
     <view class="filter">
-      <wd-tabs class="tab" v-model="tab">
-        <wd-tab title="推荐"></wd-tab>
-        <wd-tab title="附近的人"></wd-tab>
-        <wd-tab title="同城"></wd-tab>
+      <wd-tabs class="tab" v-model="searchData.indexType" @change="fetchConnectUserList">
+        <wd-tab title="推荐" name="recommend"></wd-tab>
+        <wd-tab title="附近的人" name="nearby"></wd-tab>
+        <wd-tab title="同城" name="city"></wd-tab>
       </wd-tabs>
 
       <wd-drop-menu class="menu">
-        <wd-drop-menu-item title="年龄段" ref="dropMenu" icon="fill-arrow-down" icon-size="24px">
+        <wd-drop-menu-item title="年龄段" ref="filterRef" icon="fill-arrow-down" icon-size="24px">
           <view class="box-border p-5">
-            <wd-cell title="标题文字" value="内容" />
-            <wd-cell title="标题文字" label="描述信息" value="内容" />
+            <wd-picker
+              align-right
+              label="性别："
+              placeholder="请选择性别"
+              v-model="searchData.sex"
+              :columns="[
+                { label: '全部', value: 2 },
+                { label: '男', value: 0 },
+                { label: '女', value: 1 },
+              ]"
+            />
+
+            <wd-picker
+              align-right
+              label="年龄："
+              placeholder="请选择年龄"
+              v-model="searchData.ageRange"
+              :columns="ageRangeColumns"
+            />
+          </view>
+
+          <view class="flex justify-center items-center mb-20px box-border pl-20px pr-20px">
+            <wd-button type="info" @click="handleResetFilter">重置</wd-button>
+            <wd-button @click="handleConfirmFilter">确认</wd-button>
           </view>
         </wd-drop-menu-item>
       </wd-drop-menu>
@@ -35,28 +57,90 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <view class="card" v-for="n in 10" :key="n">
-          <UserCard @click="handleGotoProfile" />
+        <view class="card" v-for="(item, index) in connectUserList" :key="index">
+          <UserCard :userData="item" @click="handleGotoProfile" />
         </view>
       </z-paging>
     </view>
+
+    <LocationComp ref="locationRef" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/store'
 import { getOwnUserInfo } from '@/api/user'
+import { getPlacesInfo } from '@/api/common'
+import { getConnectUserList } from '@/api/connect'
 
+import { generateAgeRanges } from '@/utils'
+import LocationComp from '@/components/location'
 import UserCard from '@/components/card/user.vue'
 
-const curSwiper = ref<number>(0)
-const swiperList = ref<string[]>([
-  '/static/images/banner.png',
-  '/static/images/banner.png',
-  '/static/images/banner.png',
-])
+import { useColPickerData } from '@/hooks/useColPickerData'
 
-const tab = ref<number>(0)
+// const { colPickerData, findChildrenByCode } = useColPickerData()
+// const value = ref<string[]>([])
+// const area = ref<any[]>([
+//   colPickerData.map((item) => {
+//     return {
+//       value: item.value,
+//       label: item.text,
+//     }
+//   }),
+// ])
+// const columnChange = ({ selectedItem, resolve, finish }) => {
+//   const areaData = findChildrenByCode(colPickerData, selectedItem.value)
+//   if (areaData && areaData.length) {
+//     resolve(
+//       areaData.map((item) => {
+//         return {
+//           value: item.value,
+//           label: item.text,
+//         }
+//       }),
+//     )
+//   } else {
+//     finish()
+//   }
+// }
+// function handleConfirm({ value }) {
+//   console.log(value)
+// }
+
+const { userInfo }: any = useUserStore()
+
+// 定位
+const locationRef = ref(null)
+const handleOpenLocation = () => {
+  console.log(locationRef.value)
+
+  locationRef.value.open()
+}
+
+// 轮播
+const curSwiper = ref<number>(0)
+const swiperList = ref<string[]>(['/static/images/banner.png'])
+
+// 筛选
+const filterRef = ref(null)
+const ageRangeColumns = generateAgeRanges().map((item) => {
+  return {
+    label: `${item[0]}岁 - ${item[1]}岁`,
+    value: `${item[0]}-${item[1]}`,
+  }
+})
+
+// 查询条件
+const searchData = reactive({
+  sex: 2,
+  cityCode: '',
+  ageRange: '20-50',
+  indexType: 'recommend',
+})
+
+const connectUserList = ref([])
 
 const handleGotoSearch = () => {
   uni.navigateTo({
@@ -70,8 +154,34 @@ const handleGotoProfile = () => {
   })
 }
 
+// 重置筛选
+const handleResetFilter = () => {
+  searchData.sex = 2
+  searchData.ageRange = '20-50'
+}
+// 确认筛选
+const handleConfirmFilter = () => {
+  filterRef.value.close()
+  fetchConnectUserList()
+}
+// 查询tab用户数据
+const fetchConnectUserList = async () => {
+  const ageList = searchData.ageRange.split('-')
+  searchData.cityCode = userInfo.orientationCityId
+
+  const { rows, total }: any = await getConnectUserList({
+    sex: searchData.sex === 2 ? '' : searchData.sex,
+    indexType: searchData.indexType,
+    startAge: ageList[0],
+    endAge: ageList[1],
+  })
+
+  connectUserList.value = rows
+}
+
 onMounted(() => {
-  getOwnUserInfo()
+  getPlacesInfo()
+  fetchConnectUserList()
 })
 </script>
 
@@ -142,10 +252,28 @@ onMounted(() => {
     }
 
     .menu {
-      height: 45px !important;
+      :deep(.wd-cell__left) {
+        height: 60px;
+        display: flex;
+        align-items: center;
+      }
 
-      :deep(.wd-drop-menu__list) {
-        height: 45px !important;
+      .menu_filter_1 {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        .title {
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+        :deep(.wd-radio) {
+          margin-right: 15px;
+          .wd-radio__shape {
+            margin-top: 0;
+          }
+        }
       }
     }
   }

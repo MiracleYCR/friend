@@ -89,7 +89,7 @@ export const httpPost = <T>(
 }
 
 /**
- * POST 请求
+ * PUT 请求
  * @param url 后台地址
  * @param data 请求body参数
  * @param query 请求query参数，post请求也支持query，很多微信接口都需要
@@ -108,6 +108,27 @@ export const httpPut = <T>(
   })
 }
 
+/**
+ * PUT 请求
+ * @param url 后台地址
+ * @param data 请求body参数
+ * @param query 请求query参数，post请求也支持query，很多微信接口都需要
+ * @returns
+ */
+export const httpDelete = <T>(
+  url: string,
+  data?: Record<string, any>,
+  query?: Record<string, any>,
+) => {
+  return http<T>({
+    url,
+    query,
+    data,
+    method: 'DELETE',
+  })
+}
+
 http.get = httpGet
 http.post = httpPost
 http.put = httpPut
+http.delete = httpDelete

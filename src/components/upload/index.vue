@@ -10,16 +10,27 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
 interface Props {
   fileList: any[]
 }
 
 const props = defineProps<Props>()
+const emits = defineEmits(['update-file-list'])
 
 const handleChange = ({ fileList }) => {
-  fileList.value = fileList
+  emits(
+    'update-file-list',
+    fileList.map((item) => {
+      if (item.response) {
+        const _data = JSON.parse(item.response)
+        return { url: _data.msg }
+      } else {
+        return { url: item.url }
+      }
+    }),
+  )
 }
 
 const customUpload = (file, formData, options) => {
