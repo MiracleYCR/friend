@@ -14,7 +14,17 @@ page {
   // --wot-color-theme: #37c2bc;
 
   // 修改按钮背景色
-  // --wot-button-primary-bg-color: green;
+  --wot-button-primary-bg-color: #fd2b58;
+
+  --wot-checkbox-checked-color: #fd2b58;
+}
+
+.zp-l-text-rpx {
+  font-size: 14px !important;
+}
+
+.zp-r-right-text {
+  font-size: 14px !important;
 }
 
 .uni-tabbar {

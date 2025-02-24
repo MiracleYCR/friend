@@ -16,10 +16,13 @@ export const getOwnUserInfo = () => {
 }
 
 // 获取其他用户信息
+export const getOtherUserInfo = (userId) => {
+  return http.get(`/prod-api/app/user/${userId}`)
+}
 
 // 修改用户信息
-export const setOwnUserInfo = () => {
-  return http.put('/prod-api/app/user/edit')
+export const setOwnUserInfo = (data) => {
+  return http.put('/prod-api/app/user/edit', data)
 }
 
 // 我的关注
@@ -40,6 +43,11 @@ export const getMutualList = () => {
 // 最近访客
 export const getVisiteMeList = () => {
   return http.get('/prod-api/app/follow/list/visit-me')
+}
+
+// 关注
+export const confirmFollow = (userId) => {
+  return http.post(`/prod-api/app/follow/user/${userId}`)
 }
 
 // 取消关注

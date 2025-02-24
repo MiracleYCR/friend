@@ -6,17 +6,25 @@
     </view>
 
     <view class="own">
-      <wd-img class="avatar" src="/static/images/image.png"></wd-img>
+      <wd-img class="avatar" :src="userStore.userInfo.avatar"></wd-img>
       <view class="info">
         <view class="left">
-          <view class="name">{{ userInfo.nickName }}</view>
+          <view class="name">{{ userStore.userInfo.nickName }}</view>
           <view class="id">
-            <view class="number">梦缘ID:{{ userInfo.appId }}</view>
-            <view class="copy">复制</view>
+            <view class="number">梦缘ID：{{ userStore.userInfo.appId }}</view>
+            <view class="copy" @click="handleCopyAppId">复制</view>
           </view>
           <view class="status">
-            <wd-img class="icon" src="/static/images/vip.png"></wd-img>
-            <wd-img class="icon" src="/static/images/checked.png"></wd-img>
+            <wd-img
+              v-if="userStore.userInfo.vipOpean === '1'"
+              class="icon"
+              src="/static/images/vip.png"
+            ></wd-img>
+            <wd-img
+              v-if="userStore.userInfo.hasRealName === '1'"
+              class="icon"
+              src="/static/images/checked.png"
+            ></wd-img>
           </view>
         </view>
         <view class="right" @click="handleGotoProfile">
@@ -28,19 +36,19 @@
 
     <view class="func">
       <view class="item" @click="handleGotoFuncPage('1')">
-        <view class="num">56</view>
+        <view class="num">{{ userStore.userInfo.followCount || 0 }}</view>
         <view class="text">我关注的</view>
       </view>
       <view class="item" @click="handleGotoFuncPage('2')">
-        <view class="num">20</view>
+        <view class="num">{{ userStore.userInfo.bothFollow || 0 }}</view>
         <view class="text">互相喜欢</view>
       </view>
       <view class="item" @click="handleGotoFuncPage('3')">
-        <view class="num">8</view>
+        <view class="num">{{ userStore.userInfo.fansCount || 0 }}</view>
         <view class="text">喜欢我的</view>
       </view>
       <view class="item" @click="handleGotoFuncPage('4')">
-        <view class="num">2024</view>
+        <view class="num">{{ userStore.userInfo.visit || 0 }}</view>
         <view class="text">最近访客</view>
       </view>
     </view>
@@ -110,7 +118,20 @@
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/store'
 
-const { userInfo }: any = useUserStore()
+const userStore: any = useUserStore()
+
+// 复制账号
+const handleCopyAppId = () => {
+  uni.setClipboardData({
+    data: userStore.userInfo.appId,
+    success: () => {
+      uni.showToast({ icon: 'none', title: '复制成功' })
+    },
+    fail: () => {
+      uni.showToast({ icon: 'none', title: '复制失败' })
+    },
+  })
+}
 
 const handleGotoProfile = () => {
   uni.navigateTo({
@@ -167,7 +188,9 @@ const handleGotoMenu = (type: string) => {
     .avatar {
       width: 72px;
       height: 72px;
+      overflow: hidden;
       margin-right: 10px;
+      border-radius: 50%;
     }
 
     .info {

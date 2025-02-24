@@ -52,13 +52,21 @@
     <view class="userList">
       <z-paging
         class="list_scroll"
+        v-model="connectUserList"
+        ref="userListRef"
         :fixed="false"
         :scroll-y="true"
         :scroll-view="true"
         :show-scrollbar="false"
+        refresher-complete-text="刷新完成"
+        refresher-default-text="下拉刷新"
+        refresher-pulling-text="释放刷新"
+        refresher-refreshing-text="加载中..."
+        loading-more-no-more-text="没有更多数据啦~"
+        @query="fetchConnectUserList"
       >
         <view class="card" v-for="(item, index) in connectUserList" :key="index">
-          <UserCard :userData="item" @click="handleGotoProfile" />
+          <UserCard :userData="item" @click="handleGotoProfile(item)" />
         </view>
       </z-paging>
     </view>
@@ -75,47 +83,15 @@ import { getPlacesInfo } from '@/api/common'
 import { getConnectUserList } from '@/api/connect'
 
 import { generateAgeRanges } from '@/utils'
-import LocationComp from '@/components/location'
 import UserCard from '@/components/card/user.vue'
+import LocationComp from '@/components/location/index.vue'
 
-import { useColPickerData } from '@/hooks/useColPickerData'
-
-// const { colPickerData, findChildrenByCode } = useColPickerData()
-// const value = ref<string[]>([])
-// const area = ref<any[]>([
-//   colPickerData.map((item) => {
-//     return {
-//       value: item.value,
-//       label: item.text,
-//     }
-//   }),
-// ])
-// const columnChange = ({ selectedItem, resolve, finish }) => {
-//   const areaData = findChildrenByCode(colPickerData, selectedItem.value)
-//   if (areaData && areaData.length) {
-//     resolve(
-//       areaData.map((item) => {
-//         return {
-//           value: item.value,
-//           label: item.text,
-//         }
-//       }),
-//     )
-//   } else {
-//     finish()
-//   }
-// }
-// function handleConfirm({ value }) {
-//   console.log(value)
-// }
-
-const { userInfo }: any = useUserStore()
+const userStore: any = useUserStore()
 
 // 定位
 const locationRef = ref(null)
 const handleOpenLocation = () => {
   console.log(locationRef.value)
-
   locationRef.value.open()
 }
 
@@ -140,6 +116,7 @@ const searchData = reactive({
   indexType: 'recommend',
 })
 
+const userListRef = ref(null)
 const connectUserList = ref([])
 
 const handleGotoSearch = () => {
@@ -148,9 +125,9 @@ const handleGotoSearch = () => {
   })
 }
 
-const handleGotoProfile = () => {
+const handleGotoProfile = (userData: any) => {
   uni.navigateTo({
-    url: `/pages/profile/index?type=other`,
+    url: `/pages/profile/index?type=other&id=${userData.userId}`,
   })
 }
 
@@ -167,7 +144,7 @@ const handleConfirmFilter = () => {
 // 查询tab用户数据
 const fetchConnectUserList = async () => {
   const ageList = searchData.ageRange.split('-')
-  searchData.cityCode = userInfo.orientationCityId
+  searchData.cityCode = userStore.userInfo.orientationCityId
 
   const { rows, total }: any = await getConnectUserList({
     sex: searchData.sex === 2 ? '' : searchData.sex,
@@ -177,6 +154,7 @@ const fetchConnectUserList = async () => {
   })
 
   connectUserList.value = rows
+  userListRef.value.complete(connectUserList.value)
 }
 
 onMounted(() => {

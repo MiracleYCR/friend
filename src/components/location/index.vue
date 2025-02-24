@@ -3,6 +3,7 @@
     <view class="location_container">
       <view class="mb-10px">
         <view class="title">重新定位</view>
+        <wd-icon name="location" size="20px" color="#fd2b58"></wd-icon>
       </view>
 
       <view class="mb-10px">
@@ -49,8 +50,6 @@ import { defineProps, defineExpose, PropType, onMounted } from 'vue'
 import { getAllCity } from '@/api/common'
 import { useColPickerData } from '@/hooks/useColPickerData'
 import { PopupType } from 'wot-design-uni/components/wd-popup/types'
-
-const { colPickerData, findChildrenByCode } = useColPickerData()
 
 const props = defineProps({
   position: {

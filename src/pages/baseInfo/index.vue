@@ -63,12 +63,11 @@
           <wd-form ref="form" :model="baseData">
             <wd-input
               required
-              clearable
               align-right
               label="一句话简介"
               label-width="100px"
-              prop="value1"
-              v-model="baseData.value1"
+              prop="userDesc"
+              v-model="baseData.userDesc"
               placeholder="请填写一句话简介"
             />
           </wd-form>
@@ -80,26 +79,23 @@
           <wd-form ref="form" :model="baseData">
             <wd-input
               required
-              clearable
               align-right
               label="昵称"
               label-width="100px"
-              prop="value1"
-              v-model="baseData.value1"
+              prop="nickName"
+              v-model="baseData.nickName"
               placeholder="请输入昵称"
             />
             <wd-picker
-              clearable
               align-right
               label="性别"
               label-width="100px"
               placeholder="请选择性别"
-              v-model="baseData.value2"
+              v-model="baseData.sex"
               :columns="sexOpts"
             />
             <wd-datetime-picker
               required
-              clearable
               align-right
               type="date"
               label="生日"
@@ -107,103 +103,91 @@
               placeholder="请选择生日"
               :minDate="timePickerStamp[0]"
               :maxDate="timePickerStamp[1]"
-              v-model="baseData.value3"
+              v-model="baseData.birthday"
             />
             <wd-picker
-              clearable
               align-right
               label="身高"
               label-width="100px"
               placeholder="请选择身高"
-              v-model="baseData.value4"
+              v-model="baseData.height"
               :columns="heightOpts"
             />
-            <wd-picker
-              clearable
+            <wd-col-picker
               align-right
               label="所在地"
-              label-width="100px"
+              label-width="80px"
               placeholder="请选择所在地"
-              v-model="baseData.value5"
-              :columns="districtColumns"
-              :column-change="onChangeDistrict"
-              :display-format="displayFormat"
-            />
-            <wd-picker
+              v-model="baseData.orientation"
+              :columns="orientationOpts"
+              :column-change="columnChange"
+            ></wd-col-picker>
+            <wd-col-picker
               required
-              clearable
               align-right
               label="家乡"
-              label-width="100px"
+              label-width="50px"
               placeholder="请选择家乡"
-              v-model="baseData.value6"
-              :columns="districtColumns"
-              :column-change="onChangeDistrict"
-              :display-format="displayFormat"
-            />
+              v-model="baseData.home"
+              :columns="homeOpts"
+              :column-change="columnChange"
+            ></wd-col-picker>
             <wd-picker
-              clearable
               align-right
               label="学历"
               label-width="100px"
               placeholder="请选择学历"
-              v-model="baseData.value7"
+              v-model="baseData.qualifications"
               :columns="educationOpts"
             />
             <wd-input
-              clearable
               align-right
               label="学校"
               label-width="100px"
-              prop="value8"
-              v-model="baseData.value8"
+              prop="graduateSchool"
+              v-model="baseData.graduateSchool"
               placeholder="您的毕业院校是？"
             />
             <wd-input
               required
-              clearable
               align-right
               label="职业"
               label-width="100px"
-              prop="value9"
-              v-model="baseData.value9"
+              prop="occupation"
+              v-model="baseData.occupation"
               placeholder="您从事什么工作？"
             />
             <wd-input
-              clearable
               align-right
               label="公司"
               label-width="100px"
-              prop="value10"
-              v-model="baseData.value10"
+              prop="companyName"
+              v-model="baseData.companyName"
               placeholder="请填写就职公司"
             />
-            <wd-input
+            <wd-picker
               required
-              clearable
               align-right
               label="月收入"
               label-width="100px"
-              prop="value11"
-              v-model="baseData.value11"
-              placeholder="请填写月收入"
+              placeholder="请选择月收入"
+              v-model="baseData.monthlySalary"
+              :columns="incomeOpts"
             />
             <wd-picker
-              clearable
               align-right
               label="婚姻状况"
               label-width="100px"
               placeholder="请选择您的婚姻状况"
-              v-model="baseData.value12"
+              v-model="baseData.maritalStatus"
               :columns="marriageOpts"
             />
             <wd-picker
-              clearable
               align-right
               label="有无房产"
               label-width="100px"
               placeholder="是否购房"
-              v-model="baseData.value12"
+              v-model="baseData.haveHouse"
               :columns="assetsOpts"
             />
           </wd-form>
@@ -213,12 +197,11 @@
           <wd-form ref="form" :model="baseData">
             <wd-input
               required
-              clearable
               align-right
               label="交友心声"
               label-width="100px"
-              prop="value1"
-              v-model="baseData.value1"
+              prop="datingVoices"
+              v-model="baseData.datingVoices"
               placeholder="请填写交友心声"
             />
           </wd-form>
@@ -228,7 +211,6 @@
           <wd-form ref="form" :model="baseData">
             <wd-select-picker
               required
-              clearable
               align-right
               label="个性标签"
               label-width="100px"
@@ -247,57 +229,51 @@
 
         <view class="range">
           <view class="title">交友范围</view>
-          <wd-form ref="form" :model="friendData">
-            <wd-picker
-              clearable
+          <wd-form ref="form" :model="baseData">
+            <wd-col-picker
               align-right
               label="所在地"
-              label-width="100px"
+              label-width="80px"
               placeholder="不限"
-              v-model="friendData.value1"
-              :columns="districtColumns"
-              :column-change="onChangeDistrict"
-              :display-format="displayFormat"
-            />
-            <wd-input
-              clearable
+              v-model="baseData.value1"
+              :columns="friendAreaOpts"
+              :column-change="columnChange"
+            ></wd-col-picker>
+            <wd-picker
               align-right
               label="年龄"
               label-width="100px"
-              prop="value1"
-              v-model="baseData.value2"
               placeholder="不限"
+              v-model="baseData.value2"
+              :columns="ageOpts"
             />
             <wd-picker
-              clearable
               align-right
               label="身高"
               label-width="100px"
               placeholder="不限"
-              v-model="friendData.value3"
+              v-model="baseData.value3"
               :columns="heightOpts"
             />
             <wd-picker
-              clearable
               align-right
               label="最低学历"
               label-width="100px"
               placeholder="不限"
-              v-model="friendData.value4"
+              v-model="baseData.value4"
               :columns="educationOpts"
             />
             <wd-input
-              clearable
               align-right
               label="最低月收入"
               label-width="100px"
-              v-model="friendData.value5"
+              v-model="baseData.value5"
               placeholder="不限"
             />
           </wd-form>
         </view>
 
-        <wd-button class="saveBtn" block>保存</wd-button>
+        <wd-button class="saveBtn" block @click="handleSaveBaseInfo">保存</wd-button>
       </z-paging>
     </view>
 
@@ -326,142 +302,85 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { upload } from '@/api/common'
+import { ref, reactive } from 'vue'
+import dayjs from 'dayjs'
 import { useUserStore } from '@/store'
+import { onShow } from '@dcloudio/uni-app'
+import { useColPickerData } from '@/hooks/useColPickerData'
+
+import { upload } from '@/api/common'
+import { getOwnUserInfo, setOwnUserInfo } from '@/api/user'
 
 import useConfig from './config'
 import Upload from '@/components/upload/index.vue'
 
-const { userInfo }: any = useUserStore()
+const userStore = useUserStore()
+const { colPickerData, findChildrenByCode } = useColPickerData()
 
 const {
   sexOpts,
-  timePickerStamp,
+  ageOpts,
+  tagOpts,
   heightOpts,
-  educationOpts,
   assetsOpts,
   incomeOpts,
-  tagOpts,
   marriageOpts,
+  educationOpts,
+  timePickerStamp,
 } = useConfig()
 
 // 个人相册
-const originAlbumList = ref([
-  {
-    url: 'https://mengyuanapp.oss-cn-shenzhen.aliyuncs.com/370a130a-740b-4c0c-872f-3cab76450878_1739439420960_29778918.jpeg',
-  },
-])
-const currentAlbumList = ref([
-  {
-    url: 'https://mengyuanapp.oss-cn-shenzhen.aliyuncs.com/370a130a-740b-4c0c-872f-3cab76450878_1739439420960_29778918.jpeg',
-  },
-])
+const originAlbumList = ref([])
+const currentAlbumList = ref([])
 
 // 基础信息
-const baseData = reactive({
+const baseData: any = reactive({
+  userId: '',
   avatar: '',
+  userDesc: '',
+  nickName: '',
+  sex: '',
+  birthday: '',
+  height: '',
+  orientation: [],
+  home: [],
+  qualifications: '',
+  graduateSchool: '',
+  occupation: '',
+  maritalStatus: '',
+  haveHouse: '',
+  datingVoices: '',
+  monthlySalary: '',
 
-  desc: '',
   tags: [],
-
-  value1: '',
-  value2: '',
-  value3: '',
-  value4: '170 cm',
-  value5: [],
-  value6: ['110000', '110100', '110102'],
-  value7: 4,
-  value8: '',
-  value9: '',
-  value10: '',
-  value11: '',
-  value12: '',
-})
-
-// 交友范围
-const friendData = reactive({
-  value1: '',
-  value2: '',
-  value3: '',
-  value4: '',
-  value5: '',
+  value1: [],
 })
 
 // 地区
-const district = {
-  '0': [
-    { label: '北京', value: '110000' },
-    { label: '广东省', value: '440000' },
-  ],
-  '110000': [{ label: '北京', value: '110100' }],
-  '440000': [
-    { label: '广州市', value: '440100' },
-    { label: '韶关市', value: '440200' },
-    { label: '深圳市', value: '440300' },
-    { label: '珠海市', value: '440400' },
-    { label: '汕头市', value: '440500' },
-  ],
-  '110100': [
-    { label: '东城区', value: '110101' },
-    { label: '西城区', value: '110102' },
-    { label: '朝阳区', value: '110105' },
-    { label: '丰台区', value: '110106' },
-    { label: '石景山区', value: '110107' },
-  ],
-  '440100': [
-    { label: '荔湾区', value: '440103' },
-    { label: '越秀区', value: '440104' },
-    { label: '海珠区', value: '440105' },
-  ],
-  '440200': [{ label: '武江区', value: '440203' }],
-  '440300': [
-    { label: '罗湖区', value: '440303' },
-    { label: '福田区', value: '440304' },
-  ],
-  '440400': [
-    { label: '香洲区', value: '440402' },
-    { label: '斗门区', value: '440403' },
-    { label: '金湾区', value: '440404' },
-  ],
-  '440500': [
-    { label: '龙湖区', value: '440507' },
-    { label: '金平区', value: '440511' },
-  ],
+const homeOpts = ref<any[]>([])
+const friendAreaOpts = ref<any[]>([])
+const orientationOpts = ref<any[]>([])
+const columnChange = ({ selectedItem, resolve, finish }) => {
+  const areaData = findChildrenByCode(colPickerData, selectedItem.value)
+
+  if (areaData && areaData.length) {
+    resolve(
+      areaData.map((item) => {
+        return {
+          value: item.value,
+          label: item.text,
+        }
+      }),
+    )
+  } else {
+    finish()
+  }
 }
-const districtColumns = ref([
-  district[0],
-  district[district[0][0].value],
-  district[district[district[0][0].value][0].value],
-])
 
 // 个性标签提示文本
 const personTagHint = ref('')
 
 const dialogVisible = ref(false)
-
-// 地区相关
-const displayFormat = (items) => {
-  return items
-    .map((item) => {
-      return item.label
-    })
-    .join('-')
-}
-const onChangeDistrict = (pickerView, value, columnIndex, resolve) => {
-  const item = value[columnIndex]
-  if (columnIndex === 0) {
-    pickerView.setColumnData(1, district[item.value])
-    pickerView.setColumnData(2, district[district[item.value][0].value])
-  } else if (columnIndex === 1) {
-    pickerView.setColumnData(2, district[item.value])
-  }
-  resolve()
-}
-
-const handleBack = () => {
-  uni.navigateBack()
-}
 
 // 上传头像
 const handleUploadAvatar = () => {
@@ -504,18 +423,139 @@ const handleCancelEditPictures = () => {
 // 保存图片
 const handleSaveEditPictures = () => {
   originAlbumList.value = currentAlbumList.value
+  console.log(originAlbumList.value.map((item) => item.url))
+
   dialogVisible.value = false
 }
 
 // 修改个性标签
 const handleChangePersonalTags = ({ value }) => {
-  console.log(value)
   baseData.tags = value
+  console.log(value)
 }
 //
 const handleConfirmPersonalTags = () => {
   personTagHint.value = ''
 }
+
+// 返回
+const handleBack = () => {
+  uni.navigateBack()
+}
+
+// 获取用户信息
+const handleGetUserData = async () => {
+  const resp: any = await getOwnUserInfo()
+
+  Object.entries(resp.data).forEach(([k, v]: any) => {
+    switch (k) {
+      case 'birthday':
+        baseData.birthday = dayjs(v).valueOf()
+        break
+      case 'clientUserImages':
+        baseData.clientUserImages = v && v.length > 0 ? v : []
+        originAlbumList.value = v && v.length > 0 ? v.map((item) => ({ url: item })) : []
+        break
+      default:
+        baseData[k] = v || null
+        break
+    }
+  })
+
+  baseData.orientation = [
+    `${resp.data.orientationProvinceId}`,
+    `${resp.data.orientationCityId}`,
+    `${resp.data.orientationDistrictId}`,
+  ]
+
+  baseData.home = [
+    `${resp.data.homeProvinceId}`,
+    `${resp.data.homeCityId}`,
+    `${resp.data.homeDistrictId}`,
+  ]
+
+  orientationOpts.value = [
+    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    findChildrenByCode(colPickerData, `${resp.data.orientationProvinceId}`)!.map((item) => ({
+      value: item.value,
+      label: item.text,
+    })),
+    findChildrenByCode(colPickerData, `${resp.data.orientationCityId}`)!.map((item) => ({
+      value: item.value,
+      label: item.text,
+    })),
+  ]
+
+  homeOpts.value = [
+    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    findChildrenByCode(colPickerData, `${resp.data.homeProvinceId}`)!.map((item) => ({
+      value: item.value,
+      label: item.text,
+    })),
+    findChildrenByCode(colPickerData, `${resp.data.homeCityId}`)!.map((item) => ({
+      value: item.value,
+      label: item.text,
+    })),
+  ]
+
+  userStore.setUserInfo(resp.data)
+  console.log(baseData)
+}
+
+// 修改用户信息
+const handleSaveBaseInfo = async () => {
+  try {
+    const formatData: any = {}
+
+    Object.entries(baseData).forEach(([k, v]: any) => {
+      switch (k) {
+        case 'birthday':
+          formatData[k] = dayjs(v).format('YYYY-MM-DD')
+          break
+        case 'orientation':
+        case 'orientationCityId':
+        case 'orientationDistrictId':
+        case 'orientationProvinceId':
+          formatData.orientationCityId = baseData.orientation[1]
+          formatData.orientationDistrictId = baseData.orientation[2]
+          formatData.orientationProvinceId = baseData.orientation[0]
+          break
+        case 'home':
+        case 'homeCityId':
+        case 'homeDistrictId':
+        case 'homeProvinceId':
+          formatData.homeCityId = baseData.home[1]
+          formatData.homeDistrictId = baseData.home[2]
+          formatData.homeProvinceId = baseData.home[0]
+          break
+        case 'clientUserImages':
+          formatData.clientUserImages = originAlbumList.value.map((item) => item.url)
+          break
+        case 'monthlySalary':
+          formatData.monthlySalary = baseData.monthlySalary ? baseData.monthlySalary.split('-') : []
+          break
+        default:
+          formatData[k] = v
+          break
+      }
+    })
+
+    console.log(formatData)
+
+    await setOwnUserInfo(formatData)
+    await handleGetUserData()
+
+    uni.showToast({
+      title: '保存成功！',
+      icon: 'none',
+      duration: 2000,
+    })
+  } catch (err) {}
+}
+
+onShow(() => {
+  handleGetUserData()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -739,6 +779,14 @@ const handleConfirmPersonalTags = () => {
       }
 
       :deep(.wd-picker__cell) {
+        padding: 10px 0;
+      }
+
+      :deep(.wd-col-picker__label) {
+        padding-left: 12px;
+      }
+
+      :deep(.wd-col-picker__cell) {
         padding: 10px 0;
       }
 

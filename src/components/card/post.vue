@@ -7,7 +7,7 @@
         <view class="info">
           <view class="left">
             <view class="line">
-              <view class="name">{{ postData.sysUser.nickName }}</view>
+              <view class="name">{{ postData.nickName }}</view>
               <wd-img class="w-40px h-15px ml-5px mr-5px" src="/static/images/vip.png"></wd-img>
               <wd-img class="w-40px h-15px" src="/static/images/checked.png"></wd-img>
             </view>

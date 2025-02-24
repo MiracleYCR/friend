@@ -1,36 +1,41 @@
 export default () => {
   // 时间戳
-  const timePickerStamp = [new Date('1900-01-01').getTime(), new Date('2100-12-31').getTime()]
+  const timePickerStamp = [new Date('1900-01-01').getTime(), new Date().getTime()]
 
   // 身高
-  const heightOpts = [Array.from({ length: 151 }, (_, i) => `${i + 100} cm`)]
+  const heightOpts = Array.from({ length: 101 }, (_, i) => `${i + 140}`).map((item) => {
+    return {
+      value: item,
+      label: `${item} cm`,
+    }
+  })
 
   // 学历
   const educationOpts = [
-    { label: '大专以下', value: 0 },
-    { label: '大专', value: 1 },
-    { label: '本科', value: 2 },
-    { label: '硕士及以上', value: 3 },
+    { label: '大专以下', value: '大专以下' },
+    { label: '大专', value: '大专' },
+    { label: '本科', value: '本科' },
+    { label: '硕士及以上', value: '硕士及以上' },
   ]
 
   // 房产
   const assetsOpts = [
-    { label: '不选', value: 0 },
-    { label: '已购房', value: 0 },
-    { label: '与父母同住', value: 1 },
-    { label: '无房产', value: 2 },
+    { label: '不选', value: '' },
+    { label: '已购房', value: '已购房' },
+    { label: '与父母同住', value: '与父母同住' },
+    { label: '无房产', value: '无房产' },
   ]
 
   // 收入
   const incomeOpts = [
-    { label: '不选', value: 0 },
-    { label: '4千以下', value: 0 },
-    { label: '4千-6千', value: 1 },
-    { label: '6千-1万', value: 2 },
-    { label: '1万-2万', value: 3 },
-    { label: '2万-5万', value: 4 },
-    { label: '5万-10万', value: 5 },
-    { label: '10万以上', value: 6 },
+    { label: '不选', value: '' },
+    { label: '4千以下', value: '0-4000' },
+    { label: '4千-6千', value: '4000-6000' },
+    { label: '6千-1万', value: '6000-10000' },
+    { label: '1万-2万', value: '10000-20000' },
+    { label: '2万-5万', value: '20000-50000' },
+    { label: '5万-10万', value: '50000-100000' },
+    { label: '10万以上', value: '100000-' },
   ]
 
   const sexOpts = [
@@ -39,10 +44,20 @@ export default () => {
   ]
 
   const marriageOpts = [
-    { label: '不选', value: 0 },
-    { label: '未婚', value: 0 },
-    { label: '离异', value: 1 },
-    { label: '丧偶', value: 2 },
+    { label: '不选', value: '' },
+    { label: '未婚', value: '未婚' },
+    { label: '离异', value: '离异' },
+    { label: '丧偶', value: '丧偶' },
+  ]
+
+  const ageOpts = [
+    { label: '不选', value: '' },
+    { label: '20岁-30岁', value: '20-30' },
+    { label: '25岁-35岁', value: '25-35' },
+    { label: '30岁-40岁', value: '30-40' },
+    { label: '35岁-45岁', value: '35-45' },
+    { label: '40岁-50岁', value: '40-50' },
+    { label: '45岁-55岁', value: '45-55' },
   ]
 
   const tagOpts = [
@@ -107,6 +122,7 @@ export default () => {
   }))
 
   return {
+    ageOpts,
     sexOpts,
     timePickerStamp,
     heightOpts,

@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-const initState = {}
-
 export const useUserStore = defineStore(
   'user',
   () => {
@@ -13,14 +11,15 @@ export const useUserStore = defineStore(
     }
 
     // 用户信息
-    const userInfo = ref({ ...initState })
+    const userInfo = ref({})
     const setUserInfo = (val) => {
       userInfo.value = val
+      console.log(userInfo.value)
     }
 
     const logout = () => {
       token.value = ''
-      userInfo.value = { ...initState }
+      userInfo.value = {}
     }
 
     const isLogined = computed(() => !!token.value)
