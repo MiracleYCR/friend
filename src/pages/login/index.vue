@@ -54,6 +54,15 @@
           </wd-button>
         </view>
 
+        <view class="specialLogin">
+          <view class="text">其他登录方式</view>
+          <wd-img
+            class="w-40px h-40px"
+            src="/static/images/wechat.png"
+            @click="handleLoginAppByWechat"
+          ></wd-img>
+        </view>
+
         <view class="policy">
           <wd-checkbox shape="square" v-model="formData.agree" />
           <view class="text">
@@ -70,15 +79,17 @@
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from '@/store'
 import { reactive, onMounted, computed, onBeforeUnmount } from 'vue'
 
-import { delay } from '@/utils'
+import { getDataMap } from '@/api/common'
 import { getOwnUserInfo } from '@/api/user'
 import { getSmsCode, login } from '@/api/login'
 
+import { useUserStore, useCommonStore } from '@/store'
+
 // 用户 pinia
 const userStore = useUserStore()
+const commonStore = useCommonStore()
 
 const formData = reactive<{
   phone: string
@@ -107,7 +118,6 @@ const startAnimation = () => {
 const timer = ref(null)
 const seconds = ref(60)
 const notCountDown = ref(true)
-const currentUuid = ref('')
 const smsCodeBtnEnabled = computed(() => {
   return /^1[3-9]\d{9}$/.test(formData.phone) && notCountDown.value
 })
@@ -152,8 +162,12 @@ const handleLoginApp = async () => {
           userStore.setToken(token)
 
           // 获取用户信息
-          const { data }: any = await getOwnUserInfo()
-          userStore.setUserInfo(data)
+          const userInfoResp: any = await getOwnUserInfo()
+          userStore.setUserInfo(userInfoResp.data)
+
+          // 获取枚举
+          const dataMapResp: any = await getDataMap()
+          commonStore.setDataMap(dataMapResp.data)
 
           uni.switchTab({ url: '/pages/connect/index' })
         },
@@ -170,11 +184,30 @@ const handleLoginApp = async () => {
   }
 }
 
+const handleLoginAppByWechat = async () => {
+  // uni.getProvider({
+  //   service: 'oauth',
+  //   success: function (res) {
+  //     if (res.provider.includes('weixin')) {
+  //       uni.login({
+  //         provider: 'weixin',
+  //         success: (res) => {
+  //           console.log('微信登录成功，code:', res.code)
+  //           // 发送 code 到后端换取 access_token
+  //         },
+  //         fail: (err) => {
+  //           console.error('微信登录失败', err)
+  //         },
+  //       })
+  //     }
+  //   },
+  // })
+}
+
 onMounted(() => {
   startAnimation()
   setTimeout(() => {
     showWelcome.value = false
-    console.log(showWelcome.value)
   }, 1500)
 })
 
@@ -262,6 +295,21 @@ onBeforeUnmount(() => {
 
     .login_btn {
       background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%);
+    }
+
+    .specialLogin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      bottom: 50px;
+
+      .text {
+        font-weight: 400;
+        font-size: 12px;
+        color: #9395a4;
+        margin-bottom: 15px;
+      }
     }
 
     .policy {

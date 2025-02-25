@@ -18,6 +18,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { submitAdvice } from '@/api/common'
 
 const content = ref('')
 
@@ -25,8 +26,17 @@ const handleBack = () => {
   uni.navigateBack()
 }
 
-const handleSumbitSuggesgtion = () => {
-  console.log('handleSumbitSuggesgtion')
+const handleSumbitSuggesgtion = async () => {
+  await submitAdvice({ remark: content.value })
+
+  uni.showToast({
+    title: '提交成功！',
+    icon: 'none',
+    duration: 2000,
+    success: () => {
+      uni.navigateBack()
+    },
+  })
 }
 </script>
 

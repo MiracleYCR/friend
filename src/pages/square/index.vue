@@ -40,7 +40,6 @@ const tab = ref<string>('square')
 const postListRef = ref(null)
 const postListData = ref<any[]>([])
 
-// @click="handleGotoPostDetail(item)"
 const handleGotoPostDetail = (postData: any) => {
   uni.navigateTo({
     url: `/pages/postDetail/index?id=${postData.id}`,

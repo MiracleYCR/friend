@@ -211,19 +211,19 @@
           <wd-form ref="form" :model="baseData">
             <wd-select-picker
               required
+              ellipsis
               align-right
               label="个性标签"
               label-width="100px"
               placeholder="请选择个性标签"
-              v-model="personTagHint"
+              v-model="baseData.clientUserTags"
               :columns="tagOpts"
               @change="handleChangePersonalTags"
-              @confirm="handleConfirmPersonalTags"
             ></wd-select-picker>
           </wd-form>
 
           <view class="tagList">
-            <view class="tag" v-for="(tag, index) in baseData.tags" :key="index">{{ tag }}</view>
+            <view class="tag" v-for="(tag, index) in personalTagList" :key="index">{{ tag }}</view>
           </view>
         </view>
 
@@ -235,7 +235,7 @@
               label="所在地"
               label-width="80px"
               placeholder="不限"
-              v-model="baseData.value1"
+              v-model="baseData.friendArea"
               :columns="friendAreaOpts"
               :column-change="columnChange"
             ></wd-col-picker>
@@ -244,7 +244,7 @@
               label="年龄"
               label-width="100px"
               placeholder="不限"
-              v-model="baseData.value2"
+              v-model="baseData.friAge"
               :columns="ageOpts"
             />
             <wd-picker
@@ -252,7 +252,7 @@
               label="身高"
               label-width="100px"
               placeholder="不限"
-              v-model="baseData.value3"
+              v-model="baseData.friHeight"
               :columns="heightOpts"
             />
             <wd-picker
@@ -260,14 +260,15 @@
               label="最低学历"
               label-width="100px"
               placeholder="不限"
-              v-model="baseData.value4"
+              v-model="baseData.friQualifications"
               :columns="educationOpts"
             />
             <wd-input
+              type="number"
               align-right
               label="最低月收入"
               label-width="100px"
-              v-model="baseData.value5"
+              v-model="baseData.friMinSalary"
               placeholder="不限"
             />
           </wd-form>
@@ -302,9 +303,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
 import dayjs from 'dayjs'
+import { ref, reactive } from 'vue'
 import { useUserStore } from '@/store'
+import {} from '@/store/common'
 import { onShow } from '@dcloudio/uni-app'
 import { useColPickerData } from '@/hooks/useColPickerData'
 
@@ -314,13 +316,16 @@ import { getOwnUserInfo, setOwnUserInfo } from '@/api/user'
 import useConfig from './config'
 import Upload from '@/components/upload/index.vue'
 
+// pinia
 const userStore = useUserStore()
+
 const { colPickerData, findChildrenByCode } = useColPickerData()
 
 const {
   sexOpts,
   ageOpts,
   tagOpts,
+  tagDataMap,
   heightOpts,
   assetsOpts,
   incomeOpts,
@@ -352,8 +357,9 @@ const baseData: any = reactive({
   datingVoices: '',
   monthlySalary: '',
 
-  tags: [],
-  value1: [],
+  clientUserTags: [],
+  friendArea: [],
+  friAge: '',
 })
 
 // 地区
@@ -378,7 +384,7 @@ const columnChange = ({ selectedItem, resolve, finish }) => {
 }
 
 // 个性标签提示文本
-const personTagHint = ref('')
+const personalTagList = ref([])
 
 const dialogVisible = ref(false)
 
@@ -424,18 +430,13 @@ const handleCancelEditPictures = () => {
 const handleSaveEditPictures = () => {
   originAlbumList.value = currentAlbumList.value
   console.log(originAlbumList.value.map((item) => item.url))
-
   dialogVisible.value = false
 }
 
 // 修改个性标签
-const handleChangePersonalTags = ({ value }) => {
-  baseData.tags = value
-  console.log(value)
-}
-//
-const handleConfirmPersonalTags = () => {
-  personTagHint.value = ''
+const handleChangePersonalTags = ({ value, selectedItem }) => {
+  baseData.clientUserTags = value
+  personalTagList.value = value.map((item) => tagDataMap[item])
 }
 
 // 返回
@@ -456,6 +457,9 @@ const handleGetUserData = async () => {
         baseData.clientUserImages = v && v.length > 0 ? v : []
         originAlbumList.value = v && v.length > 0 ? v.map((item) => ({ url: item })) : []
         break
+      case 'friAge':
+        baseData[k] = v || ''
+        break
       default:
         baseData[k] = v || null
         break
@@ -474,29 +478,73 @@ const handleGetUserData = async () => {
     `${resp.data.homeDistrictId}`,
   ]
 
+  baseData.friendArea = [
+    `${resp.data.friProvinceId}`,
+    `${resp.data.friCityId}`,
+    `${resp.data.friDistrictId}`,
+  ]
+
   orientationOpts.value = [
     colPickerData.map((item) => ({ value: item.value, label: item.text })),
-    findChildrenByCode(colPickerData, `${resp.data.orientationProvinceId}`)!.map((item) => ({
-      value: item.value,
-      label: item.text,
-    })),
-    findChildrenByCode(colPickerData, `${resp.data.orientationCityId}`)!.map((item) => ({
-      value: item.value,
-      label: item.text,
-    })),
+    ...(resp.data.orientationProvinceId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.orientationProvinceId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
+    ...(resp.data.orientationCityId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.orientationCityId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
   ]
 
   homeOpts.value = [
     colPickerData.map((item) => ({ value: item.value, label: item.text })),
-    findChildrenByCode(colPickerData, `${resp.data.homeProvinceId}`)!.map((item) => ({
-      value: item.value,
-      label: item.text,
-    })),
-    findChildrenByCode(colPickerData, `${resp.data.homeCityId}`)!.map((item) => ({
-      value: item.value,
-      label: item.text,
-    })),
+    ...(resp.data.homeProvinceId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.homeProvinceId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
+    ...(resp.data.homeCityId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.homeCityId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
   ]
+
+  friendAreaOpts.value = [
+    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    ...(resp.data.friProvinceId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.friProvinceId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
+    ...(resp.data.friCityId
+      ? [
+          findChildrenByCode(colPickerData, `${resp.data.friCityId}`)!.map((item) => ({
+            value: item.value,
+            label: item.text,
+          })),
+        ]
+      : []),
+  ]
+
+  personalTagList.value = resp.data.clientUserTags.map((item) => tagDataMap[item])
 
   userStore.setUserInfo(resp.data)
   console.log(baseData)
@@ -504,53 +552,64 @@ const handleGetUserData = async () => {
 
 // 修改用户信息
 const handleSaveBaseInfo = async () => {
-  try {
-    const formatData: any = {}
+  const formatData: any = {}
 
-    Object.entries(baseData).forEach(([k, v]: any) => {
-      switch (k) {
-        case 'birthday':
-          formatData[k] = dayjs(v).format('YYYY-MM-DD')
-          break
-        case 'orientation':
-        case 'orientationCityId':
-        case 'orientationDistrictId':
-        case 'orientationProvinceId':
-          formatData.orientationCityId = baseData.orientation[1]
-          formatData.orientationDistrictId = baseData.orientation[2]
-          formatData.orientationProvinceId = baseData.orientation[0]
-          break
-        case 'home':
-        case 'homeCityId':
-        case 'homeDistrictId':
-        case 'homeProvinceId':
-          formatData.homeCityId = baseData.home[1]
-          formatData.homeDistrictId = baseData.home[2]
-          formatData.homeProvinceId = baseData.home[0]
-          break
-        case 'clientUserImages':
-          formatData.clientUserImages = originAlbumList.value.map((item) => item.url)
-          break
-        case 'monthlySalary':
-          formatData.monthlySalary = baseData.monthlySalary ? baseData.monthlySalary.split('-') : []
-          break
-        default:
-          formatData[k] = v
-          break
-      }
-    })
+  Object.entries(baseData).forEach(([k, v]: any) => {
+    switch (k) {
+      case 'birthday':
+        formatData[k] = dayjs(v).format('YYYY-MM-DD')
+        break
+      case 'orientation':
+      case 'orientationCityId':
+      case 'orientationDistrictId':
+      case 'orientationProvinceId':
+        formatData.orientationCityId = baseData.orientation[1]
+        formatData.orientationDistrictId = baseData.orientation[2]
+        formatData.orientationProvinceId = baseData.orientation[0]
+        break
+      case 'home':
+      case 'homeCityId':
+      case 'homeDistrictId':
+      case 'homeProvinceId':
+        formatData.homeCityId = baseData.home[1]
+        formatData.homeDistrictId = baseData.home[2]
+        formatData.homeProvinceId = baseData.home[0]
+        break
+      case 'friendArea':
+      case 'friCityId':
+      case 'friDistrictId':
+      case 'friProvinceId':
+        formatData.friCityId = baseData.friendArea[1]
+        formatData.friDistrictId = baseData.friendArea[2]
+        formatData.friProvinceId = baseData.friendArea[0]
+        break
+      case 'clientUserImages':
+        formatData.clientUserImages = originAlbumList.value.map((item) => item.url)
+        break
+      case 'maxSalary':
+      case 'minSalary':
+      case 'monthlySalary':
+        formatData.minSalary = baseData.monthlySalary.split('-')[0]
+        formatData.maxSalary = baseData.monthlySalary.split('-')[1]
+        formatData.monthlySalary = baseData.monthlySalary
+        break
+      case 'friAge':
+        formatData.friAge = baseData.friAge
+        break
+      default:
+        formatData[k] = v
+        break
+    }
+  })
 
-    console.log(formatData)
+  await setOwnUserInfo(formatData)
+  await handleGetUserData()
 
-    await setOwnUserInfo(formatData)
-    await handleGetUserData()
-
-    uni.showToast({
-      title: '保存成功！',
-      icon: 'none',
-      duration: 2000,
-    })
-  } catch (err) {}
+  uni.showToast({
+    title: '保存成功！',
+    icon: 'none',
+    duration: 2000,
+  })
 }
 
 onShow(() => {

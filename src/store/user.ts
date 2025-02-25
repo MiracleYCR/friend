@@ -21,7 +21,6 @@ export const useUserStore = defineStore(
       token.value = ''
       userInfo.value = {}
     }
-
     const isLogined = computed(() => !!token.value)
 
     return {
@@ -32,7 +31,6 @@ export const useUserStore = defineStore(
       setUserInfo,
 
       logout,
-
       isLogined,
     }
   },

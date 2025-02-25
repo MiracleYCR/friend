@@ -48,7 +48,7 @@
         <view class="text">喜欢我的</view>
       </view>
       <view class="item" @click="handleGotoFuncPage('4')">
-        <view class="num">{{ userStore.userInfo.visit || 0 }}</view>
+        <view class="num">{{ userStore.userInfo.visitCount || 0 }}</view>
         <view class="text">最近访客</view>
       </view>
     </view>
@@ -89,21 +89,21 @@
     </view>
 
     <view class="menu2">
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('companyinfo')">
         <wd-img class="icon" src="/static/images/folder.png"></wd-img>
         <view class="entry">
           企业资质
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('invite')">
         <wd-img class="icon" src="/static/images/thumbUp.png"></wd-img>
         <view class="entry">
           去评分
           <wd-img class="icon2" src="/static/images/arrow2.png"></wd-img>
         </view>
       </view>
-      <view class="item">
+      <view class="item" @click="handleGotoMenu('suggestion')">
         <wd-img class="icon" src="/static/images/email.png"></wd-img>
         <view class="entry">
           建议反馈
