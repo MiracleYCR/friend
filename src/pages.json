@@ -246,6 +246,20 @@
       }
     },
     {
+      "path": "pages/views/login",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "pages/views/profile",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
       "path": "pages/vip/index",
       "type": "page",
       "style": {
@@ -264,6 +278,48 @@
       "type": "page",
       "style": {
         "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIConversation/index",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIChat/index",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIContact/index",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIChat/video-play",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIChat/web-view",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUIGroup/index",
+      "style": {
+        "navigationBarTitleText": "腾讯云 IM"
+      }
+    },
+    {
+      "path": "TUIKit/components/TUISearch/index",
+      "style": {
+        "navigationBarTitleText": "聊天记录"
       }
     }
   ],

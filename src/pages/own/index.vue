@@ -2,7 +2,7 @@
   <view class="own_container">
     <view class="setting">
       <wd-img class="icon" src="/static/images/message.png"></wd-img>
-      <wd-img class="icon" src="/static/images/settings.png"></wd-img>
+      <wd-img class="icon" src="/static/images/settings.png" @click="handleTest"></wd-img>
     </view>
 
     <view class="own">
@@ -148,6 +148,12 @@ const handleGotoFuncPage = (type: string) => {
 const handleGotoMenu = (type: string) => {
   uni.navigateTo({
     url: `/pages/${type}/index`,
+  })
+}
+
+const handleTest = () => {
+  uni.navigateTo({
+    url: '/pages/views/login',
   })
 }
 </script>

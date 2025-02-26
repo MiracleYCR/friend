@@ -84,7 +84,7 @@
                 {{ tag }}
               </view>
             </block>
-            <view class="noTags">暂无标签...</view>
+            <view v-else class="noTags">暂无标签...</view>
           </view>
           <view class="pictures">
             <wd-img

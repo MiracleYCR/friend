@@ -59,13 +59,6 @@ export default defineUniPages({
     ],
   },
   pages: [
-    // {
-    //   path: 'pages/test/index',
-    //   type: 'page',
-    //   style: {
-    //     navigationStyle: 'custom',
-    //   },
-    // },
     {
       path: 'pages/asplash/index',
       type: 'page',
@@ -274,6 +267,61 @@ export default defineUniPages({
       type: 'page',
       style: {
         navigationStyle: 'custom',
+      },
+    },
+
+    {
+      path: 'pages/views/login',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'pages/views/profile',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIConversation/index',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIChat/index',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIContact/index',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIChat/video-play',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIChat/web-view',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUIGroup/index',
+      style: {
+        navigationBarTitleText: '腾讯云 IM',
+      },
+    },
+    {
+      path: 'TUIKit/components/TUISearch/index',
+      style: {
+        navigationBarTitleText: '聊天记录',
       },
     },
   ],

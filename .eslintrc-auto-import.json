@@ -84,6 +84,7 @@
     "triggerRef": true,
     "unref": true,
     "useAttrs": true,
+    "useColPickerData": true,
     "useCssModule": true,
     "useCssVars": true,
     "useId": true,
@@ -95,7 +96,6 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true,
-    "useColPickerData": true
+    "watchSyncEffect": true
   }
 }

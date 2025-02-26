@@ -7,8 +7,16 @@
       <view class="left">
         <view class="title">
           <view class="name">{{ userData.nickName }}</view>
-          <wd-img class="icon" src="/static/images/vip.png"></wd-img>
-          <wd-img class="icon" src="/static/images/checked.png"></wd-img>
+          <wd-img
+            v-if="userData.vipOpean === '1'"
+            class="icon"
+            src="/static/images/vip.png"
+          ></wd-img>
+          <wd-img
+            v-if="userData.hasRealName === '1'"
+            class="icon"
+            src="/static/images/checked.png"
+          ></wd-img>
         </view>
         <view class="line1">
           <view>{{ userData.loacaltionName }} · {{ userData.distance.toFixed(2) }}km</view>
@@ -32,7 +40,7 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue'
 
-const props = defineProps({
+const props: any = defineProps({
   userData: {
     type: Object,
     default: () => ({}),

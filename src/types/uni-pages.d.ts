@@ -30,9 +30,18 @@ interface NavigateToOptions {
        "/pages/suggestion/index" |
        "/pages/systemauth/index" |
        "/pages/validate/index" |
+       "/pages/views/login" |
+       "/pages/views/profile" |
        "/pages/vip/index" |
        "/pages/wallet/index" |
-       "/pages/withdraw/index";
+       "/pages/withdraw/index" |
+       "/TUIKit/components/TUIConversation/index" |
+       "/TUIKit/components/TUIChat/index" |
+       "/TUIKit/components/TUIContact/index" |
+       "/TUIKit/components/TUIChat/video-play" |
+       "/TUIKit/components/TUIChat/web-view" |
+       "/TUIKit/components/TUIGroup/index" |
+       "/TUIKit/components/TUISearch/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 
