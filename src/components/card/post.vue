@@ -1,20 +1,20 @@
 <template>
   <view class="statuscard">
-    <wd-img class="w-56px h-56px mr-8px" src="/static/images/image.png"></wd-img>
+    <wd-img class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden" :src="profileData.avatar" />
 
     <view class="body">
       <view class="top">
         <view class="info">
           <view class="left">
             <view class="line">
-              <view class="name">{{ postData.nickName }}</view>
+              <view class="name">{{ profileData.nickName }}</view>
               <wd-img
-                v-if="postData.vipOpean === '1'"
+                v-if="profileData.vipOpean === '1'"
                 class="w-40px h-15px ml-5px mr-5px"
                 src="/static/images/vip.png"
               ></wd-img>
               <wd-img
-                v-if="postData.hasRealName === '1'"
+                v-if="profileData.hasRealName === '1'"
                 class="w-40px h-15px"
                 src="/static/images/checked.png"
               ></wd-img>
@@ -39,9 +39,9 @@
             <wd-img class="w-90px h-90px rounded-5px overflow-hidden" :src="image"></wd-img>
           </block>
         </view>
-        <view class="location">
+        <view class="location" v-if="postData.location">
           <wd-img class="w-22px h-22px" src="/static/images/location.png"></wd-img>
-          广州市·广州塔
+          {{ postData.location }}
         </view>
       </view>
       <view class="bottom">
@@ -70,6 +70,11 @@ const props = defineProps({
   canShare: {
     type: Boolean,
     default: true,
+  },
+
+  profileData: {
+    type: Object,
+    default: () => ({}),
   },
 
   postData: {

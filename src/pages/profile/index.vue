@@ -102,14 +102,19 @@
 
         <view class="status">
           <view class="title">状态</view>
-          <block class="card" v-for="n in 10" :key="n">
-            <PostCard />
+          <block v-if="profileData.posts && profileData.posts.length > 0" class="card">
+            <PostCard
+              v-for="(item, index) in profileData.posts"
+              :key="index"
+              :postData="item"
+              :profileData="profileData"
+            />
           </block>
 
-          <!-- <view class="empty">
-              <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
-              Ta还未发表过动态
-            </view> -->
+          <view v-else class="empty">
+            <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
+            Ta还未发表过动态
+          </view>
         </view>
       </z-paging>
     </view>

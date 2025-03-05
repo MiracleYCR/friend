@@ -550,7 +550,6 @@ const handleGetUserData = async () => {
   personalTagList.value = userInfoData.clientUserTags.map((item) => tagDataMap[item])
 
   userStore.setUserInfo(userInfoData)
-  console.log(baseData)
 }
 
 // 修改用户信息
