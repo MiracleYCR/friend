@@ -1,304 +1,299 @@
 <template>
-  <view class="own_container">
-    <view class="setting">
-      <wd-img class="icon" src="/src/static/images/message.png"></wd-img>
-      <wd-img class="icon" src="/src/static/images/settings.png"></wd-img>
+  <view class="publish">
+    <view class="header">
+      <wd-icon class="back" name="close" size="16px" @click="handleBack"></wd-icon>
+      <view class="title">发帖</view>
+      <wd-button class="btnColor w-60px" size="small" @click="handleSubmitPost">发布</wd-button>
     </view>
 
-    <view class="own">
-      <wd-img class="avatar" src="/src/static/images/image.png"></wd-img>
-      <view class="info">
-        <view class="left">
-          <view class="name">石榴籽儿</view>
-          <view class="id">
-            <view class="number">梦缘ID:2655858</view>
-            <view class="copy">复制</view>
-          </view>
-          <view class="status">
-            <wd-img class="icon" src="/src/static/images/vip.png"></wd-img>
-            <wd-img class="icon" src="/src/static/images/checked.png"></wd-img>
-          </view>
-        </view>
-        <view class="right">
-          查看
-          <wd-img class="icon" src="/src/static/images/arrow.png"></wd-img>
-        </view>
-      </view>
-    </view>
+    <view class="body">
+      <z-paging :fixed="false" :scroll-y="true" :scroll-view="true" :show-scrollbar="false">
+        <wd-textarea
+          show-word-limit
+          :maxlength="120"
+          placeholder="请输入内容"
+          v-model="postData.postText"
+        ></wd-textarea>
 
-    <view class="func">
-      <view class="item">
-        <view class="num">56</view>
-        <view class="text">我关注的</view>
-      </view>
-      <view class="item">
-        <view class="num">20</view>
-        <view class="text">互相喜欢</view>
-      </view>
-      <view class="item">
-        <view class="num">8</view>
-        <view class="text">喜欢我的</view>
-      </view>
-      <view class="item">
-        <view class="num">2024</view>
-        <view class="text">最近访客</view>
-      </view>
-    </view>
+        <view :class="['mediaList', showEvoke ? 'showEvoke' : 'hideEvoke']">
+          <Upload
+            :limit="9"
+            :fileList="postData.postImages"
+            @before-upload-file="handleBeforeUploadFile"
+            @update-file-list="handleUpdatePostImages"
+          />
+        </view>
 
-    <view class="ad">
-      <wd-img class="icon" src="/src/static/images/ad.png"></wd-img>
-    </view>
-
-    <view class="menu">
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/baseInfo.png"></wd-img>
-        <view class="entry">
-          基本资料
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
+        <view class="location">
+          <wd-button
+            :loading="locationLoading"
+            size="small"
+            type="text"
+            icon="location"
+            @click="handleCheckLocation"
+          >
+            {{ postData.location || '获取当前定位' }}
+          </wd-button>
         </view>
-      </view>
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/wallet.png"></wd-img>
-        <view class="entry">
-          我的钱包
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/valid.png"></wd-img>
-        <view class="entry">
-          认证中心
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/share.png"></wd-img>
-        <view class="entry">
-          邀请好友
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
-    </view>
-
-    <view class="menu2">
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/folder.png"></wd-img>
-        <view class="entry">
-          企业资质
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/thumbUp.png"></wd-img>
-        <view class="entry">
-          去评分
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
-      <view class="item">
-        <wd-img class="icon" src="/src/static/images/email.png"></wd-img>
-        <view class="entry">
-          建议反馈
-          <wd-img class="icon2" src="/src/static/images/arrow2.png"></wd-img>
-        </view>
-      </view>
+      </z-paging>
     </view>
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { onShow } from '@dcloudio/uni-app'
+
+import { addPost } from '@/api/post/index'
+import { getLocationInfo } from '@/api/common/index'
+
+import Upload from '@/components/upload/index.vue'
+
+const showEvoke = ref(true)
+
+const postData = reactive({
+  postText: '',
+  postImages: [],
+  latitude: 0,
+  longitude: 0,
+  location: '',
+})
+
+// 获取定位
+const locationText = ref('')
+const locationLoading = ref(false)
+const handleCheckLocation = () => {
+  locationLoading.value = true
+  uni.getLocation({
+    type: 'wgs84',
+    success: async (res) => {
+      const { data }: any = await getLocationInfo({
+        latitude: res.latitude,
+        longitude: res.longitude,
+      })
+
+      postData.location = data
+      postData.latitude = res.latitude
+      postData.longitude = res.longitude
+
+      locationLoading.value = false
+    },
+    fail: (err) => {
+      console.error('获取位置信息失败', err)
+    },
+  })
+}
+
+const handleReset = () => {
+  postData.postText = ''
+  postData.postImages = []
+}
+
+const handleBack = () => {
+  handleReset()
+  uni.showTabBar({ animation: false })
+  uni.switchTab({ url: '/pages/connect/index' })
+}
+
+// 上传文件
+const handleBeforeUploadFile = (fileList) => {
+  showEvoke.value = fileList.length < 9
+}
+const handleUpdatePostImages = (fileList) => {
+  postData.postImages = fileList
+}
+
+const handleSubmitPost = async () => {
+  await addPost({
+    location: postData.location,
+    latitude: postData.latitude,
+    longitude: postData.longitude,
+    postText: postData.postText,
+    postImages: postData.postImages.map((item) => item.url),
+  })
+
+  uni.showToast({
+    title: '发布成功！',
+    icon: 'none',
+  })
+
+  handleBack()
+}
+
+onShow(() => {
+  uni.hideTabBar({ animation: false })
+})
+</script>
 
 <style lang="scss" scoped>
-.own_container {
+.publish {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  padding: env(safe-area-inset-top) 15px 0 15px;
-  background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
-  .setting {
-    display: flex;
-    margin: 12px 0;
-    align-items: center;
+  .header {
+    width: 100%;
+    height: 45px;
+    position: relative;
     box-sizing: border-box;
-    justify-content: flex-end;
-    .icon {
-      width: 24px;
-      height: 24px;
-      margin-left: 10px;
-    }
-  }
-
-  .own {
-    height: 72px;
     display: flex;
-    align-items: center;
-
-    .avatar {
-      width: 72px;
-      height: 72px;
-      margin-right: 10px;
-    }
-
-    .info {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .left {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .name {
-          font-size: 20px;
-          font-weight: 500;
-          margin-bottom: 2px;
-        }
-
-        .id {
-          display: flex;
-          align-items: center;
-          font-size: 12px;
-          font-weight: 400;
-          color: #686a7a;
-          margin-bottom: 5px;
-
-          .copy {
-            width: 33px;
-            height: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 7px;
-            border-radius: 7px;
-            color: #9395a4;
-            font-size: 10px;
-            border: 1px solid #9395a4;
-          }
-        }
-
-        .status {
-          display: flex;
-          align-items: center;
-
-          .icon {
-            width: 42px;
-            height: 15px;
-            margin-right: 5px;
-          }
-        }
-      }
-
-      .right {
-        display: flex;
-        align-items: center;
-        font-size: 12px;
-        font-weight: 400;
-        color: #9395a4;
-
-        .icon {
-          width: 16px;
-          height: 16px;
-        }
-      }
-    }
-  }
-
-  .func {
-    height: 75px;
-    display: flex;
-    margin-top: 25px;
-    border-radius: 10px;
-    align-items: center;
-    background-color: #ffffff;
-    justify-content: space-between;
-
-    .item {
-      width: 25%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-
-      .num {
-        font-size: 16px;
-        font-weight: 500;
-        color: #000000;
-      }
-
-      .text {
-        margin-top: 5px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #9395a4;
-      }
-    }
-  }
-
-  .ad {
-    display: flex;
-    margin-top: 15px;
     align-items: center;
     justify-content: center;
 
-    .icon {
-      width: 100%;
-      height: 75px;
+    .back {
+      position: absolute;
+      left: 0;
+    }
+
+    .btnColor {
+      position: absolute;
+      right: 0;
+      height: 25px;
+      font-size: 15px;
+      background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%) !important;
     }
   }
 
-  .menu,
-  .menu2 {
-    height: 178px;
-    margin-top: 15px;
-    border-radius: 10px;
-    background-color: #ffffff;
+  .body {
+    flex: 1;
+    width: 100%;
+    margin-top: 10px;
+    padding-bottom: 10px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 15px;
     box-sizing: border-box;
 
-    .item {
-      width: 100%;
-      height: 25px;
-      font-size: 15px;
+    :deep(.zp-paging-container-content) {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      flex-direction: column;
+    }
 
-      .icon {
-        width: 22px;
-        height: 22px;
-        margin-right: 10px;
+    .mediaList {
+      width: 100%;
+
+      .upload {
+        width: 100%;
+
+        :deep(.wd-upload) {
+          margin: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: flex-start;
+
+          .wd-upload__preview {
+            width: 110px;
+            height: 110px;
+            margin: 0;
+          }
+
+          .wd-upload__evoke {
+            display: none;
+            width: 110px;
+            height: 110px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .wd-icon {
+              width: 50px;
+              height: 50px;
+              font-size: 50px;
+            }
+          }
+        }
       }
 
-      .entry {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .icon2 {
-          width: 22px;
-          height: 22px;
+      &.hideEvoke {
+        :deep(.wd-upload__evoke) {
+          display: none !important;
         }
       }
     }
+
+    // .mediaList {
+    //   width: 100%;
+    //   display: flex;
+    //   flex-wrap: wrap;
+    //   gap: 10px;
+    //   align-items: center;
+    //   justify-content: flex-start;
+
+    //   .mediaItem {
+    //     width: 110px;
+    //     height: 110px;
+    //     overflow: hidden;
+    //     border-radius: 5px;
+    //   }
+
+    //   .upload {
+    //     width: 110px;
+    //     height: 110px;
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: center;
+
+    //     :deep(.wd-upload) {
+    //       width: 110px;
+    //       height: 110px;
+    //       margin: 0;
+
+    //       .wd-upload__preview {
+    //         // display: none;
+    //       }
+
+    //     }
+    //   }
+    // }
+
+    .location {
+      width: 100%;
+      height: 30px;
+      display: flex;
+      margin-top: 15px;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 
-  .menu2 {
-    height: 136px;
+  :deep(.wd-textarea) {
+    width: 100%;
+    height: 200px;
+    background: transparent !important;
+
+    .wd-textarea__placeholder {
+      color: #ffffff;
+    }
+
+    .wd-textarea__suffix {
+      background: transparent !important;
+    }
+
+    .wd-textarea__value {
+      background: transparent !important;
+    }
+
+    .wd-textarea__count {
+      color: #c0c4cc;
+      background: transparent !important;
+
+      .wd-textarea__count-current {
+        color: #c0c4cc;
+      }
+    }
   }
 }
 </style>

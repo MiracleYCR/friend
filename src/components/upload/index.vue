@@ -1,9 +1,12 @@
 <template>
   <view class="upload">
     <wd-upload
-      multiple
+      image-mode="aspectFill"
+      :multiple="true"
+      :limit="limit"
       :file-list="fileList"
       :upload-method="customUpload"
+      :before-upload="handleBeforeUpload"
       @change="handleChange"
     ></wd-upload>
   </view>
@@ -12,56 +15,70 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from 'vue'
 
-interface Props {
-  fileList: any[]
-}
+const props = defineProps({
+  fileList: {
+    type: Array<any>,
+    default: () => [],
+  },
 
-const props = defineProps<Props>()
-const emits = defineEmits(['update-file-list'])
+  limit: {
+    type: Number,
+  },
+})
 
-const handleChange = ({ fileList }) => {
-  emits(
-    'update-file-list',
-    fileList.map((item) => {
-      if (item.response) {
-        const _data = JSON.parse(item.response)
-        return { url: _data.msg }
-      } else {
-        return { url: item.url }
-      }
-    }),
-  )
+const emits = defineEmits(['before-upload-file', 'update-file-list'])
+
+const handleBeforeUpload = ({ files, resolve }) => {
+  emits('before-upload-file', files)
+  resolve(true)
 }
 
 const customUpload = (file, formData, options) => {
-  console.log(file, formData, options)
+  try {
+    const uploadTask = uni.uploadFile({
+      url: '/prod-api/common/oss/upload',
+      header: options.header,
+      name: options.name,
+      fileName: options.name,
+      fileType: options.fileType,
+      formData,
+      timeout: 20000,
+      filePath: file.url,
+      success(res) {
+        console.log(res)
 
-  const uploadTask = uni.uploadFile({
-    url: '/prod-api/common/oss/upload',
-    header: options.header,
-    name: options.name,
-    fileName: options.name,
-    fileType: options.fileType,
-    formData,
-    filePath: file.url,
-    success(res) {
-      if (res.statusCode === options.statusCode) {
-        // 设置上传成功
-        options.onSuccess(res, file, formData)
-      } else {
+        if (res.statusCode === options.statusCode) {
+          // 设置上传成功
+          options.onSuccess(res, file, formData)
+        } else {
+          // 设置上传失败
+          options.onError({ ...res, errMsg: res.errMsg || '' }, file, formData)
+        }
+      },
+      fail(err) {
         // 设置上传失败
-        options.onError({ ...res, errMsg: res.errMsg || '' }, file, formData)
-      }
-    },
-    fail(err) {
-      // 设置上传失败
-      options.onError(err, file, formData)
-    },
-  })
-  // 设置当前文件加载的百分比
-  uploadTask.onProgressUpdate((res) => {
-    options.onProgress(res, file)
-  })
+        options.onError(err, file, formData)
+      },
+    })
+    // 设置当前文件加载的百分比
+    uploadTask.onProgressUpdate((res) => {
+      options.onProgress(res, file)
+    })
+  } catch (err) {}
+}
+
+const handleChange = ({ fileList }) => {
+  const completed = fileList.every((file) => file.status === 'success')
+
+  if (completed) {
+    emits(
+      'update-file-list',
+      fileList.map((item) => {
+        const _data = JSON.parse(item.response)
+        return { url: _data.msg }
+      }),
+    )
+  }
 }
 </script>
 

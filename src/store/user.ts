@@ -14,7 +14,9 @@ export const useUserStore = defineStore(
     const userInfo = ref({})
     const setUserInfo = (val) => {
       userInfo.value = val
-      console.log(userInfo.value)
+    }
+    const getUserInfo = () => {
+      return userInfo.value
     }
 
     const logout = () => {
@@ -29,6 +31,7 @@ export const useUserStore = defineStore(
 
       userInfo,
       setUserInfo,
+      getUserInfo,
 
       logout,
       isLogined,

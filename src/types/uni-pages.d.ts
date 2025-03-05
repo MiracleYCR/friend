@@ -5,12 +5,10 @@
 
 interface NavigateToOptions {
   url: "/pages/asplash/index" |
-       "/pages/auditbook/index" |
        "/pages/autoapply/index" |
        "/pages/baseInfo/index" |
        "/pages/bindphone/index" |
        "/pages/block/index" |
-       "/pages/companyinfo/index" |
        "/pages/connect/index" |
        "/pages/connectus/index" |
        "/pages/invite/index" |
@@ -20,6 +18,7 @@ interface NavigateToOptions {
        "/pages/notice/index" |
        "/pages/own/index" |
        "/pages/person/index" |
+       "/pages/policy/index" |
        "/pages/postDetail/index" |
        "/pages/profile/index" |
        "/pages/publish/index" |

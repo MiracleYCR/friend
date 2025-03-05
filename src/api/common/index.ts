@@ -20,6 +20,11 @@ export const getAllCity = () => {
   return http.get('/prod-api/system/code/list/city')
 }
 
+// 获取定位地址
+export const getLocationInfo = (data) => {
+  return http.get('/prod-api/common/address', data)
+}
+
 // 实名认证
 export const realCheck = ({ name, idcard }) => {
   return http.get('/prod-api/common/real-name/verification', { name, idcard })

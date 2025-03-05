@@ -57,7 +57,7 @@
               text="《实名认证授权书》"
               decoration="underline"
               color="#fd2b58"
-              @click="handleGotoAuditBook"
+              @click="handleGotoPolicy('AUTHORIZATION_LETTER')"
             />
           </view>
         </view>
@@ -102,8 +102,10 @@ const handleBack = () => {
   dialogVisible.value = true
 }
 
-const handleGotoAuditBook = () => {
-  uni.navigateTo({ url: '/pages/auditbook/index' })
+const handleGotoPolicy = (code: string) => {
+  uni.navigateTo({
+    url: `/pages/policy/index?code=${code}`,
+  })
 }
 
 const handleNextStep = async () => {

@@ -3,17 +3,16 @@
     <view class="location_container">
       <view class="mb-10px">
         <view class="title">重新定位</view>
-        <wd-icon name="location" size="20px" color="#fd2b58"></wd-icon>
+
+        <view class="flex items-center">
+          <wd-icon name="location" size="20px" color="#fd2b58"></wd-icon>
+          <view class="text-[12px] text-[#999999]">当前定位：</view>
+        </view>
       </view>
 
       <view class="mb-10px">
         <view class="title">热门城市</view>
         <view class="hotCity">
-          <view class="cityTag">深圳</view>
-          <view class="cityTag">广州</view>
-          <view class="cityTag">上海</view>
-          <view class="cityTag">重庆</view>
-          <view class="cityTag">北京</view>
           <view class="cityTag">深圳</view>
           <view class="cityTag">广州</view>
           <view class="cityTag">上海</view>
@@ -45,10 +44,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineExpose, PropType, onMounted } from 'vue'
+import { defineProps, defineExpose, PropType } from 'vue'
 
 import { getAllCity } from '@/api/common'
-import { useColPickerData } from '@/hooks/useColPickerData'
 import { PopupType } from 'wot-design-uni/components/wd-popup/types'
 
 const props = defineProps({

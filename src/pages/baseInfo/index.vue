@@ -317,7 +317,7 @@ import useConfig from './config'
 import Upload from '@/components/upload/index.vue'
 
 // pinia
-const userStore = useUserStore()
+const userStore: any = useUserStore()
 
 const { colPickerData, findChildrenByCode } = useColPickerData()
 
@@ -446,9 +446,10 @@ const handleBack = () => {
 
 // 获取用户信息
 const handleGetUserData = async () => {
-  const resp: any = await getOwnUserInfo()
+  // const resp: any = await getOwnUserInfo()
+  const userInfoData = userStore.getUserInfo()
 
-  Object.entries(resp.data).forEach(([k, v]: any) => {
+  Object.entries(userInfoData).forEach(([k, v]: any) => {
     switch (k) {
       case 'birthday':
         baseData.birthday = dayjs(v).valueOf()
@@ -467,36 +468,38 @@ const handleGetUserData = async () => {
   })
 
   baseData.orientation = [
-    `${resp.data.orientationProvinceId}`,
-    `${resp.data.orientationCityId}`,
-    `${resp.data.orientationDistrictId}`,
+    `${userInfoData.orientationProvinceId}`,
+    `${userInfoData.orientationCityId}`,
+    `${userInfoData.orientationDistrictId}`,
   ]
 
   baseData.home = [
-    `${resp.data.homeProvinceId}`,
-    `${resp.data.homeCityId}`,
-    `${resp.data.homeDistrictId}`,
+    `${userInfoData.homeProvinceId}`,
+    `${userInfoData.homeCityId}`,
+    `${userInfoData.homeDistrictId}`,
   ]
 
   baseData.friendArea = [
-    `${resp.data.friProvinceId}`,
-    `${resp.data.friCityId}`,
-    `${resp.data.friDistrictId}`,
+    `${userInfoData.friProvinceId}`,
+    `${userInfoData.friCityId}`,
+    `${userInfoData.friDistrictId}`,
   ]
 
   orientationOpts.value = [
     colPickerData.map((item) => ({ value: item.value, label: item.text })),
-    ...(resp.data.orientationProvinceId
+    ...(userInfoData.orientationProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.orientationProvinceId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
-          })),
+          findChildrenByCode(colPickerData, `${userInfoData.orientationProvinceId}`)!.map(
+            (item) => ({
+              value: item.value,
+              label: item.text,
+            }),
+          ),
         ]
       : []),
-    ...(resp.data.orientationCityId
+    ...(userInfoData.orientationCityId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.orientationCityId}`)!.map((item) => ({
+          findChildrenByCode(colPickerData, `${userInfoData.orientationCityId}`)!.map((item) => ({
             value: item.value,
             label: item.text,
           })),
@@ -506,17 +509,17 @@ const handleGetUserData = async () => {
 
   homeOpts.value = [
     colPickerData.map((item) => ({ value: item.value, label: item.text })),
-    ...(resp.data.homeProvinceId
+    ...(userInfoData.homeProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.homeProvinceId}`)!.map((item) => ({
+          findChildrenByCode(colPickerData, `${userInfoData.homeProvinceId}`)!.map((item) => ({
             value: item.value,
             label: item.text,
           })),
         ]
       : []),
-    ...(resp.data.homeCityId
+    ...(userInfoData.homeCityId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.homeCityId}`)!.map((item) => ({
+          findChildrenByCode(colPickerData, `${userInfoData.homeCityId}`)!.map((item) => ({
             value: item.value,
             label: item.text,
           })),
@@ -526,17 +529,17 @@ const handleGetUserData = async () => {
 
   friendAreaOpts.value = [
     colPickerData.map((item) => ({ value: item.value, label: item.text })),
-    ...(resp.data.friProvinceId
+    ...(userInfoData.friProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.friProvinceId}`)!.map((item) => ({
+          findChildrenByCode(colPickerData, `${userInfoData.friProvinceId}`)!.map((item) => ({
             value: item.value,
             label: item.text,
           })),
         ]
       : []),
-    ...(resp.data.friCityId
+    ...(userInfoData.friCityId
       ? [
-          findChildrenByCode(colPickerData, `${resp.data.friCityId}`)!.map((item) => ({
+          findChildrenByCode(colPickerData, `${userInfoData.friCityId}`)!.map((item) => ({
             value: item.value,
             label: item.text,
           })),
@@ -544,9 +547,9 @@ const handleGetUserData = async () => {
       : []),
   ]
 
-  personalTagList.value = resp.data.clientUserTags.map((item) => tagDataMap[item])
+  personalTagList.value = userInfoData.clientUserTags.map((item) => tagDataMap[item])
 
-  userStore.setUserInfo(resp.data)
+  userStore.setUserInfo(userInfoData)
   console.log(baseData)
 }
 
@@ -610,6 +613,8 @@ const handleSaveBaseInfo = async () => {
     icon: 'none',
     duration: 2000,
   })
+
+  uni.switchTab({ url: '/pages/own/index' })
 }
 
 onShow(() => {

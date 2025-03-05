@@ -8,17 +8,41 @@
         <view class="line">欢迎您使用梦缘婚恋的服务!</view>
 
         在您使用梦缘婚恋APP前，请您认真阅读并充分理解
-        <wd-text text="《会员协议》" color="#000000"></wd-text>
+        <wd-text
+          text="《会员协议》"
+          color="#000000"
+          @click="handleGotoPolicy('MEMBERSHIP_AGREEMENT')"
+        ></wd-text>
         、
-        <wd-text text="《隐私政策》" color="#000000"></wd-text>
+        <wd-text
+          text="《隐私政策》"
+          color="#000000"
+          @click="handleGotoPolicy('PRIVACY_POLICY')"
+        ></wd-text>
         、
-        <wd-text text="《权限获取清单》" color="#000000"></wd-text>
+        <wd-text
+          text="《权限获取清单》"
+          color="#000000"
+          @click="handleGotoPolicy('PERMISSION_LIST')"
+        ></wd-text>
         、
-        <wd-text text="《三方SDK清单》" color="#000000"></wd-text>
+        <wd-text
+          text="《三方SDK清单》"
+          color="#000000"
+          @click="handleGotoPolicy('THIRD_PARTY_SDK_LIST')"
+        ></wd-text>
         、
-        <wd-text text="《信息共享清单》" color="#000000"></wd-text>
+        <wd-text
+          text="《信息共享清单》"
+          color="#000000"
+          @click="handleGotoPolicy('INFORMATION_SHARING_LIST')"
+        ></wd-text>
         和
-        <wd-text text="《注册承诺函》" color="#000000"></wd-text>
+        <wd-text
+          text="《注册承诺函》"
+          color="#000000"
+          @click="handleGotoPolicy('REGISTRATION_COMMITMENT')"
+        ></wd-text>
         ，点击“同意”即表示您已阅读并同意全部条款；如您点击“不同意”，将可能导致您无法继续使用梦缘婚恋的产品或服务。
 
         <view class="line">梦缘婚恋非常重视您的个人信息保护。特向您说明如下：</view>
@@ -61,6 +85,12 @@ const onDisagree = () => {
   } else {
     plus.runtime.quit()
   }
+}
+
+const handleGotoPolicy = (code: string) => {
+  uni.navigateTo({
+    url: `/pages/policy/index?code=${code}`,
+  })
 }
 </script>
 

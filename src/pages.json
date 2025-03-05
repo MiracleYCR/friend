@@ -64,14 +64,6 @@
       }
     },
     {
-      "path": "pages/auditbook/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "授权书",
-        "navigationBarBackgroundColor": "#f3f5f6"
-      }
-    },
-    {
       "path": "pages/autoapply/index",
       "type": "page",
       "style": {
@@ -98,14 +90,6 @@
       "type": "page",
       "style": {
         "navigationBarTitleText": "黑名单",
-        "navigationBarBackgroundColor": "#f3f5f6"
-      }
-    },
-    {
-      "path": "pages/companyinfo/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "企业资质",
         "navigationBarBackgroundColor": "#f3f5f6"
       }
     },
@@ -175,6 +159,13 @@
       }
     },
     {
+      "path": "pages/policy/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/postDetail/index",
       "type": "page",
       "style": {
@@ -191,7 +182,9 @@
     {
       "path": "pages/publish/index",
       "type": "page",
-      "style": {}
+      "style": {
+        "navigationStyle": "custom"
+      }
     },
     {
       "path": "pages/realcheck/index",

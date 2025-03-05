@@ -90,7 +90,9 @@ export default defineUniPages({
     {
       path: 'pages/publish/index',
       type: 'page',
-      style: {},
+      style: {
+        navigationStyle: 'custom',
+      },
     },
     {
       path: 'pages/message/index',
@@ -187,14 +189,6 @@ export default defineUniPages({
       },
     },
     {
-      path: 'pages/auditbook/index',
-      type: 'page',
-      style: {
-        navigationBarTitleText: '授权书',
-        navigationBarBackgroundColor: '#f3f5f6',
-      },
-    },
-    {
       path: 'pages/wallet/index',
       type: 'page',
       style: {
@@ -255,15 +249,14 @@ export default defineUniPages({
       },
     },
     {
-      path: 'pages/companyinfo/index',
+      path: 'pages/suggestion/index',
       type: 'page',
       style: {
-        navigationBarTitleText: '企业资质',
-        navigationBarBackgroundColor: '#f3f5f6',
+        navigationStyle: 'custom',
       },
     },
     {
-      path: 'pages/suggestion/index',
+      path: 'pages/policy/index',
       type: 'page',
       style: {
         navigationStyle: 'custom',

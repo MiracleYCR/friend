@@ -81,7 +81,7 @@
           <view class="tags">
             <block v-if="profileData.clientUserTags.length > 0">
               <view class="tag" v-for="(tag, index) in profileData.clientUserTags" :key="index">
-                {{ tag }}
+                {{ tagDataMap[tag] }}
               </view>
             </block>
             <view v-else class="noTags">暂无标签...</view>
@@ -124,11 +124,12 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 
-import { useUserStore } from '@/store'
+import { useUserStore, useCommonStore } from '@/store'
 import { getOtherUserInfo, confirmFollow, cancelFollow } from '@/api/user'
 import PostCard from '@/components/card/post.vue'
 
-const userStore = useUserStore()
+const userStore: any = useUserStore()
+const commonStore: any = useCommonStore()
 
 // 页面入参
 const pageParams = reactive({
@@ -137,7 +138,10 @@ const pageParams = reactive({
 })
 
 const loading = ref<boolean>(false)
+
 const profileData = ref<any>({})
+
+const tagDataMap = ref<any>({})
 
 const handleBack = () => {
   uni.navigateBack()
@@ -178,6 +182,13 @@ onShow(async () => {
       await fetchOtherUserInfo()
     }
 
+    // 配置标签
+    const tags = {}
+    commonStore.dataMap.tags.forEach((item) => {
+      tags[item.code] = item.info
+    })
+    tagDataMap.value = tags
+
     loading.value = false
   } catch (err) {
     loading.value = false
@@ -196,7 +207,6 @@ onShow(async () => {
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  // background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: env(safe-area-inset-top) 15px 0 15px;

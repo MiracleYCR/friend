@@ -1,4 +1,4 @@
-import LibGenerateTestUserSig from '../sdk/lib-generate-test-usersig-es.min.js'
+import LibGenerateTestUserSig from '../sdk1/lib-generate-test-usersig-es.min.js'
 /**
  * Signature expiration time, which should not be too short
  * Time unit: second

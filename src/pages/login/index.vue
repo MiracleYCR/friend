@@ -1,6 +1,5 @@
 <template>
   <view class="login">
-    <!-- <transition name="fade"> -->
     <block v-if="showWelcome">
       <view :animation="animationData" class="weclome">
         <view class="title">欢迎来到梦缘婚恋</view>
@@ -73,8 +72,6 @@
         </view>
       </view>
     </block>
-
-    <!-- </transition> -->
   </view>
 </template>
 
@@ -146,6 +143,11 @@ const loginBtnEnabled = computed(() => {
 const handleLoginApp = async () => {
   if (formData.agree) {
     try {
+      uni.showLoading({
+        title: '用户登录中...',
+        mask: true,
+      })
+
       uni.getLocation({
         // type: 'gcj02',
         type: 'wgs84',
@@ -168,6 +170,8 @@ const handleLoginApp = async () => {
           // 获取枚举
           const dataMapResp: any = await getDataMap()
           commonStore.setDataMap(dataMapResp.data)
+
+          uni.hideLoading()
 
           uni.switchTab({ url: '/pages/connect/index' })
         },

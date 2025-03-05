@@ -89,7 +89,7 @@
     </view>
 
     <view class="menu2">
-      <view class="item" @click="handleGotoMenu('companyinfo')">
+      <view class="item" @click="handleGotoPolicy('COM_QUALIFY')">
         <wd-img class="icon" src="/static/images/folder.png"></wd-img>
         <view class="entry">
           企业资质
@@ -116,6 +116,9 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+import { getOwnUserInfo } from '@/api/user'
+
 import { useUserStore } from '@/store'
 
 const userStore: any = useUserStore()
@@ -151,11 +154,23 @@ const handleGotoMenu = (type: string) => {
   })
 }
 
+const handleGotoPolicy = (code: string) => {
+  uni.navigateTo({
+    url: `/pages/policy/index?code=${code}`,
+  })
+}
+
 const handleTest = () => {
   uni.navigateTo({
     url: '/pages/views/login',
   })
 }
+
+onShow(async () => {
+  // 获取更新app用户信息
+  const resp: any = await getOwnUserInfo()
+  userStore.setUserInfo(resp.data)
+})
 </script>
 
 <style lang="scss" scoped>

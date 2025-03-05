@@ -2,13 +2,21 @@
   <view class="connect_container">
     <view class="search">
       <view class="city" @click="handleOpenLocation">
-        广州
+        {{ userStore.userInfo.locationName }}
         <wd-img class="icon" src="/static/images/arrow3.png"></wd-img>
       </view>
       <wd-img class="icon" src="/static/images/search.png" @click="handleGotoSearch"></wd-img>
     </view>
 
-    <wd-swiper :height="130" autoplay :list="swiperList" v-model:current="curSwiper"></wd-swiper>
+    <wd-swiper
+      autoplay
+      value-key="imgUrl"
+      :height="130"
+      :list="swiperList"
+      :indicator="{ type: 'dots-bar' }"
+      v-model:current="curSwiper"
+      @click="handleClickSwiper"
+    ></wd-swiper>
 
     <view class="filter">
       <wd-tabs class="tab" v-model="searchData.indexType" @change="fetchConnectUserList">
@@ -41,7 +49,7 @@
             />
           </view>
 
-          <view class="flex justify-center items-center mb-20px box-border pl-20px pr-20px">
+          <view class="flex justify-evenly items-center mb-20px box-border pl-20px pr-20px">
             <wd-button type="info" @click="handleResetFilter">重置</wd-button>
             <wd-button @click="handleConfirmFilter">确认</wd-button>
           </view>
@@ -79,8 +87,7 @@
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/store'
 import { getOwnUserInfo } from '@/api/user'
-import { getPlacesInfo } from '@/api/common'
-import { getConnectUserList } from '@/api/connect'
+import { getBannerList, getConnectUserList } from '@/api/connect'
 
 import { generateAgeRanges } from '@/utils'
 import UserCard from '@/components/card/user.vue'
@@ -97,7 +104,10 @@ const handleOpenLocation = () => {
 
 // 轮播
 const curSwiper = ref<number>(0)
-const swiperList = ref<string[]>(['/static/images/banner.png'])
+const swiperList = ref<string[]>([])
+const handleClickSwiper = (item) => {
+  console.log(item.linkUrl)
+}
 
 // 筛选
 const filterRef = ref(null)
@@ -131,6 +141,15 @@ const handleGotoProfile = (userData: any) => {
   })
 }
 
+// 轮播图
+const fetchBannerList = async () => {
+  const { data }: any = await getBannerList()
+  swiperList.value = data.map((item) => ({
+    imgUrl: item.bannerImageUrl,
+    linkUrl: item.linkUrl,
+  }))
+}
+
 // 重置筛选
 const handleResetFilter = () => {
   searchData.sex = 2
@@ -158,8 +177,7 @@ const fetchConnectUserList = async () => {
 }
 
 onMounted(() => {
-  getPlacesInfo()
-  fetchConnectUserList()
+  fetchBannerList()
 })
 </script>
 
