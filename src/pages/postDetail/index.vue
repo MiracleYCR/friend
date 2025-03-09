@@ -15,62 +15,140 @@
         :show-scrollbar="false"
       >
         <view class="detail">
-          <PostCard :canShare="false" />
+          <PostCard :canShare="false" :postData="postData" :userData="userData" />
         </view>
 
-        <view class="tip">
+        <view class="tip" v-show="showTips">
           <view>长按评论可以举报/删除哦</view>
-          <wd-icon name="close" size="12px"></wd-icon>
+          <wd-icon name="close" size="12px" @click="handleCloseTips"></wd-icon>
         </view>
 
-        <view class="comment">
+        <view v-if="postData.postComments && postData.postComments.length > 0" class="comment">
           <view class="title">全部评论（10）</view>
           <view class="list">
-            <wd-collapse
-              viewmore
-              v-model="value"
-              :line-num="3"
-              use-more-slot
-              custom-more-slot-class="more-slot"
-            >
-              <view class="first">
-                <wd-img class="w-10 h-10" src="/static/images/image.png"></wd-img>
+            <view class="listItem" v-for="(comment, index) in postData.postComments" :key="index">
+              <view class="firstLevel">
+                <view class="left">
+                  <wd-img class="w-[50px] h-[50px]" src="/static/images/image.png"></wd-img>
+                </view>
+                <view class="right">
+                  <view class="name">用户NickName</view>
+                  <view class="commentContent" @longpress="handleOperateComment">
+                    {{ comment.commentContent }}
+                  </view>
+                  <view class="status">
+                    <view class="time">2024年12月19日 · 广东</view>
+                    <view class="reply" @click="handleReplayTargetComment(comment)">
+                      {{ isReply && replyId === comment.parentId ? '取消回复' : '回复' }}
+                    </view>
+                  </view>
+                </view>
               </view>
-              <view class="second">
-                <wd-img class="w-10 h-10" src="/static/images/image.png"></wd-img>
-              </view>
-              <template #more>
-                <view class="expand">展开</view>
-              </template>
-            </wd-collapse>
+            </view>
           </view>
         </view>
+
+        <view v-else class="noComment">暂时没有评论，快来给他/她评论吧~</view>
       </z-paging>
     </view>
     <view class="bottom">
-      <wd-input v-model="message" prefix-icon="dong" />
-      <wd-button size="small">发 送</wd-button>
+      <wd-input
+        v-model="commentContent"
+        prefix-icon="edit"
+        :placeholder="replyId ? `回复：${replyId}~` : '主动评论，才能相识~'"
+      />
+      <wd-button
+        style="width: 60px; background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%)"
+        size="small"
+        @click="handleSubmitComment"
+      >
+        发送
+      </wd-button>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref, onMounted } from 'vue'
+import { useUserStore, useCommonStore } from '@/store'
 
-import { checkPost } from '@/api/post'
+import { checkPost, commendPost } from '@/api/post'
 import PostCard from '@/components/card/post.vue'
 
-const message = ref('')
+const userStore: any = useUserStore()
 
-const value = ref<boolean>(false)
+// 帖子详情
+const postData = ref<any>({})
+const userData = ref<any>({})
 
+// 是否展示tip
+const showTips = ref(true)
+const handleCloseTips = () => {
+  showTips.value = false
+}
+
+// 评论内容
+const commentContent = ref<string>('')
+
+// 返回上一级
 const handleBack = () => {
   uni.navigateBack()
 }
 
-onLoad((params) => {
-  checkPost(params.id)
+// 回复评论
+const replyId = ref('')
+const isReply = ref(false)
+const handleReplayTargetComment = async (commentData: any) => {
+  if (isReply.value) {
+    isReply.value = false
+    replyId.value = ''
+  } else {
+    isReply.value = true
+    replyId.value = commentData.parentId || '12313'
+  }
+}
+
+// 提交评论
+const handleSubmitComment = async () => {
+  await commendPost({
+    postId: postData.value.id,
+    commentContent: commentContent.value,
+  })
+
+  await queryPostDetailData()
+
+  replyId.value = ''
+  isReply.value = false
+  commentContent.value = ''
+
+  uni.showToast({ title: '评论成功！', icon: 'none' })
+}
+
+// 处理评论
+const handleOperateComment = () => {
+  uni.showToast({
+    title: '长按事件触发',
+    icon: 'none',
+  })
+}
+
+const queryPostDetailData = async () => {
+  // 当前页面参数
+  const pages = getCurrentPages()
+  const { options }: any = pages[pages.length - 1]
+
+  const { data }: any = await checkPost(options.id)
+
+  // 帖子数据
+  postData.value = data
+  // 用户数据
+  userData.value = data.sysUser
+  // 是否展示提示
+  showTips.value = data.postComments && data.postComments.length > 0
+}
+
+onMounted(() => {
+  queryPostDetailData()
 })
 </script>
 
@@ -133,7 +211,9 @@ onLoad((params) => {
       }
 
       .detail {
+        width: 100%;
         padding: 0 15px;
+        margin-bottom: 15px;
         box-sizing: border-box;
       }
 
@@ -154,12 +234,13 @@ onLoad((params) => {
 
       .comment {
         width: 100%;
-        margin-top: 15px;
         padding: 0 15px;
+        margin-top: 15px;
         box-sizing: border-box;
 
         .title {
           font-size: 17px;
+          margin-bottom: 15px;
           font-weight: 700;
           display: flex;
           justify-content: flex-start;
@@ -168,6 +249,49 @@ onLoad((params) => {
         .list {
           display: flex;
           flex-direction: column;
+
+          .listItem {
+            margin-bottom: 20px;
+            .firstLevel {
+              width: 100%;
+              display: flex;
+              .left {
+                display: flex;
+                align-items: flex-start;
+                margin-right: 5px;
+              }
+              .right {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+
+                .name {
+                  font-weight: 500;
+                  font-size: 13px;
+                  color: #686a7a;
+                  margin-bottom: 5px;
+                }
+                .commentContent {
+                  font-weight: 400;
+                  font-size: 14px;
+                  color: #212121;
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin-bottom: 5px;
+                  word-break: break-all;
+                }
+                .status {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  font-weight: 400;
+                  font-size: 12px;
+                  color: #9395a4;
+                }
+              }
+            }
+          }
 
           :deep(.wd-collapse__more) {
             width: 100%;
@@ -189,6 +313,17 @@ onLoad((params) => {
           }
         }
       }
+
+      .noComment {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(147, 149, 164, 1);
+      }
     }
   }
 
@@ -196,7 +331,7 @@ onLoad((params) => {
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;
     box-sizing: border-box;
 
     :deep(.wd-input) {

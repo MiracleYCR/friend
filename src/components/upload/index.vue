@@ -1,9 +1,20 @@
 <template>
-  <view class="upload">
+  <view :class="['upload', showEvoke ? 'showEvoke' : 'hideEvoke']">
     <wd-upload
+      v-if="type === 'picture'"
       image-mode="aspectFill"
       :multiple="true"
       :limit="limit"
+      :file-list="fileList"
+      :upload-method="customUpload"
+      :before-upload="handleBeforeUpload"
+      @change="handleChange"
+    ></wd-upload>
+
+    <wd-upload
+      v-if="type === 'video'"
+      accept="video"
+      :limit="1"
       :file-list="fileList"
       :upload-method="customUpload"
       :before-upload="handleBeforeUpload"
@@ -16,17 +27,24 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
-  fileList: {
-    type: Array<any>,
-    default: () => [],
+  type: {
+    type: String,
+    default: 'picture',
   },
 
   limit: {
     type: Number,
   },
+
+  fileList: {
+    type: Array<any>,
+    default: () => [],
+  },
 })
 
 const emits = defineEmits(['before-upload-file', 'update-file-list'])
+
+const showEvoke = ref(true)
 
 const handleBeforeUpload = ({ files, resolve }) => {
   emits('before-upload-file', files)
@@ -45,8 +63,6 @@ const customUpload = (file, formData, options) => {
       timeout: 20000,
       filePath: file.url,
       success(res) {
-        console.log(res)
-
         if (res.statusCode === options.statusCode) {
           // 设置上传成功
           options.onSuccess(res, file, formData)
@@ -70,12 +86,19 @@ const customUpload = (file, formData, options) => {
 const handleChange = ({ fileList }) => {
   const completed = fileList.every((file) => file.status === 'success')
 
+  // 显隐上传按钮
+  showEvoke.value = props.limit ? fileList.length < props.limit : true
+
   if (completed) {
     emits(
       'update-file-list',
       fileList.map((item) => {
-        const _data = JSON.parse(item.response)
-        return { url: _data.msg }
+        if (item.response) {
+          const _data = JSON.parse(item.response)
+          return { url: _data.msg }
+        } else {
+          return { url: item.url }
+        }
       }),
     )
   }
@@ -102,6 +125,12 @@ const handleChange = ({ fileList }) => {
       .wd-upload__picture {
         border-radius: 5px;
       }
+    }
+  }
+
+  &.hideEvoke {
+    :deep(.wd-upload__evoke) {
+      display: none !important;
     }
   }
 }

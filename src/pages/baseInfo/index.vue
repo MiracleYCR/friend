@@ -274,7 +274,9 @@
           </wd-form>
         </view>
 
-        <wd-button class="saveBtn" block @click="handleSaveBaseInfo">保存</wd-button>
+        <wd-button v-show="canEdit" class="saveBtn" block @click="handleSaveBaseInfo">
+          保存
+        </wd-button>
       </z-paging>
     </view>
 
@@ -310,7 +312,7 @@ import {} from '@/store/common'
 import { onShow } from '@dcloudio/uni-app'
 import { useColPickerData } from '@/hooks/useColPickerData'
 
-import { upload } from '@/api/common'
+import { upload, getPlacesInfo } from '@/api/common'
 import { getOwnUserInfo, setOwnUserInfo } from '@/api/user'
 
 import useConfig from './config'
@@ -318,7 +320,6 @@ import Upload from '@/components/upload/index.vue'
 
 // pinia
 const userStore: any = useUserStore()
-
 const { colPickerData, findChildrenByCode } = useColPickerData()
 
 const {
@@ -333,6 +334,9 @@ const {
   educationOpts,
   timePickerStamp,
 } = useConfig()
+
+// 是否可编辑
+const canEdit = ref(false)
 
 // 个人相册
 const originAlbumList = ref([])
@@ -615,6 +619,10 @@ const handleSaveBaseInfo = async () => {
 
   uni.switchTab({ url: '/pages/own/index' })
 }
+
+onLoad((params) => {
+  canEdit.value = params.type === 'edit'
+})
 
 onShow(() => {
   handleGetUserData()

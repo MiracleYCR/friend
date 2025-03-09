@@ -6,37 +6,49 @@
       <wd-button class="btnColor w-60px" size="small" @click="handleSubmitPost">发布</wd-button>
     </view>
 
-    <view class="body">
-      <z-paging :fixed="false" :scroll-y="true" :scroll-view="true" :show-scrollbar="false">
-        <wd-textarea
-          show-word-limit
-          :maxlength="120"
-          placeholder="请输入内容"
-          v-model="postData.postText"
-        ></wd-textarea>
+    <block v-if="selectType">
+      <view class="body">
+        <z-paging :fixed="false" :scroll-y="true" :scroll-view="true" :show-scrollbar="false">
+          <wd-textarea
+            show-word-limit
+            :maxlength="120"
+            placeholder="每天发动态，对象找的快~"
+            v-model="postData.postText"
+          ></wd-textarea>
 
-        <view :class="['mediaList', showEvoke ? 'showEvoke' : 'hideEvoke']">
-          <Upload
-            :limit="9"
-            :fileList="postData.postImages"
-            @before-upload-file="handleBeforeUploadFile"
-            @update-file-list="handleUpdatePostImages"
-          />
-        </view>
+          <view :class="['media', selectType]">
+            <Upload
+              :type="selectType"
+              :limit="selectType === 'picture' ? 9 : 1"
+              :fileList="postData.postMedia"
+              @update-file-list="handleUpdatePostImages"
+            />
+          </view>
 
-        <view class="location">
-          <wd-button
-            :loading="locationLoading"
-            size="small"
-            type="text"
-            icon="location"
-            @click="handleCheckLocation"
-          >
-            {{ postData.location || '获取当前定位' }}
-          </wd-button>
-        </view>
-      </z-paging>
-    </view>
+          <view class="location">
+            <wd-button
+              size="small"
+              icon="location"
+              :loading="locationLoading"
+              :class="[postData.location ? 'active' : 'inactive']"
+              @click="handleCheckLocation"
+            >
+              {{ postData.location || '你在哪里' }}
+            </wd-button>
+          </view>
+        </z-paging>
+      </view>
+    </block>
+
+    <wd-action-sheet
+      v-else
+      v-model="publishActionShow"
+      cancel-text="取消发布"
+      :actions="publishActionPanels"
+      :close-on-click-modal="false"
+      @select="handleSelectAction"
+      @cancel="handleCancelAction"
+    />
   </view>
 </template>
 
@@ -48,18 +60,23 @@ import { getLocationInfo } from '@/api/common/index'
 
 import Upload from '@/components/upload/index.vue'
 
-const showEvoke = ref(true)
+// 发帖类型
+const selectType = ref('')
+const publishActionShow = ref(false)
+const publishActionPanels = ref([
+  { name: '发布图片', index: 'picture' },
+  { name: '发布视频', index: 'video' },
+])
 
 const postData = reactive({
   postText: '',
-  postImages: [],
+  postMedia: [],
   latitude: 0,
   longitude: 0,
   location: '',
 })
 
 // 获取定位
-const locationText = ref('')
 const locationLoading = ref(false)
 const handleCheckLocation = () => {
   locationLoading.value = true
@@ -85,7 +102,10 @@ const handleCheckLocation = () => {
 
 const handleReset = () => {
   postData.postText = ''
-  postData.postImages = []
+  postData.postMedia = []
+
+  selectType.value = ''
+  publishActionShow.value = false
 }
 
 const handleBack = () => {
@@ -94,32 +114,40 @@ const handleBack = () => {
   uni.switchTab({ url: '/pages/connect/index' })
 }
 
-// 上传文件
-const handleBeforeUploadFile = (fileList) => {
-  showEvoke.value = fileList.length < 9
-}
 const handleUpdatePostImages = (fileList) => {
-  postData.postImages = fileList
+  postData.postMedia = fileList
 }
 
+// 发布
 const handleSubmitPost = async () => {
   await addPost({
     location: postData.location,
     latitude: postData.latitude,
     longitude: postData.longitude,
     postText: postData.postText,
-    postImages: postData.postImages.map((item) => item.url),
+    ...(selectType.value === 'picture'
+      ? { postImages: postData.postMedia.map((item) => item.url) }
+      : { postVideos: postData.postMedia.map((item) => item.url) }),
   })
 
-  uni.showToast({
-    title: '发布成功！',
-    icon: 'none',
-  })
-
+  uni.showToast({ title: '发布成功！', icon: 'none' })
   handleBack()
 }
 
+// 关闭选择框
+const handleCancelAction = () => {
+  publishActionShow.value = false
+  handleBack()
+}
+
+// 选择发布类型
+const handleSelectAction = ({ item, index }) => {
+  console.log(item)
+  selectType.value = item.index
+}
+
 onShow(() => {
+  publishActionShow.value = true
   uni.hideTabBar({ animation: false })
 })
 </script>
@@ -181,91 +209,106 @@ onShow(() => {
       flex-direction: column;
     }
 
-    .mediaList {
+    .media {
       width: 100%;
 
-      .upload {
-        width: 100%;
-
-        :deep(.wd-upload) {
-          margin: 0;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          justify-content: flex-start;
-
-          .wd-upload__preview {
-            width: 110px;
-            height: 110px;
-            margin: 0;
-          }
-
-          .wd-upload__evoke {
-            display: none;
-            width: 110px;
-            height: 110px;
+      &.picture {
+        .upload {
+          width: 100%;
+          :deep(.wd-upload) {
             margin: 0;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            .wd-icon {
-              width: 50px;
-              height: 50px;
-              font-size: 50px;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+
+            .wd-upload__preview {
+              width: 110px;
+              height: 110px;
+              margin: 0;
+            }
+
+            .wd-upload__evoke {
+              display: none;
+              width: 110px;
+              height: 110px;
+              margin: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              .wd-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 50px;
+              }
             }
           }
         }
       }
 
-      &.hideEvoke {
-        :deep(.wd-upload__evoke) {
-          display: none !important;
+      &.video {
+        .upload {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          :deep(.wd-upload) {
+            width: 100% !important;
+            height: 180px !important;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            .wd-upload__evoke {
+              width: 180px !important;
+              height: 180px !important;
+              margin-right: 0;
+              border-radius: 5px;
+
+              .wd-icon {
+                width: 80px !important;
+                height: 80px !important;
+                font-size: 80px !important;
+              }
+            }
+
+            .wd-upload__preview {
+              width: 180px;
+              height: 180px;
+
+              .wd-upload__picture {
+                border-radius: 5px;
+              }
+            }
+          }
         }
       }
+
+      // &.hideEvoke {
+      //   :deep(.wd-upload__evoke) {
+      //     display: none !important;
+      //   }
+      // }
     }
-
-    // .mediaList {
-    //   width: 100%;
-    //   display: flex;
-    //   flex-wrap: wrap;
-    //   gap: 10px;
-    //   align-items: center;
-    //   justify-content: flex-start;
-
-    //   .mediaItem {
-    //     width: 110px;
-    //     height: 110px;
-    //     overflow: hidden;
-    //     border-radius: 5px;
-    //   }
-
-    //   .upload {
-    //     width: 110px;
-    //     height: 110px;
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: center;
-
-    //     :deep(.wd-upload) {
-    //       width: 110px;
-    //       height: 110px;
-    //       margin: 0;
-
-    //       .wd-upload__preview {
-    //         // display: none;
-    //       }
-
-    //     }
-    //   }
-    // }
 
     .location {
       width: 100%;
       height: 30px;
       display: flex;
-      margin-top: 15px;
+      margin-top: 20px;
       align-items: center;
       justify-content: flex-start;
+
+      .active {
+        color: rgba(253, 43, 88, 1);
+        background: rgba(253, 43, 88, 0.1);
+      }
+
+      .inactive {
+        background: #ffffff;
+        color: rgba(147, 149, 164, 1);
+        border: 1px solid rgba(147, 149, 164, 1);
+      }
     }
   }
 
@@ -275,7 +318,7 @@ onShow(() => {
     background: transparent !important;
 
     .wd-textarea__placeholder {
-      color: #ffffff;
+      color: rgba(147, 149, 164, 1);
     }
 
     .wd-textarea__suffix {

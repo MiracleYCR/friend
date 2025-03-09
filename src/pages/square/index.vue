@@ -19,8 +19,8 @@
         :show-scrollbar="false"
         @query="queryPostListData"
       >
-        <view class="card" v-for="(item, index) in postListData" :key="index">
-          <PostCard :postData="item" />
+        <view class="card" v-for="(postData, index) in postListData" :key="index">
+          <PostCard :postData="postData" :userData="postData.sysUser" />
         </view>
       </z-paging>
     </view>
@@ -40,12 +40,6 @@ const tab = ref<string>('square')
 const postListRef = ref(null)
 const postListData = ref<any[]>([])
 
-const handleGotoPostDetail = (postData: any) => {
-  uni.navigateTo({
-    url: `/pages/postDetail/index?id=${postData.id}`,
-  })
-}
-
 // 查询帖子数据
 const queryPostListData = async () => {
   const resp: any = await getSquarePostList({
@@ -56,10 +50,6 @@ const queryPostListData = async () => {
 }
 
 watch(tab, (n) => {
-  queryPostListData()
-})
-
-onMounted(() => {
   queryPostListData()
 })
 </script>

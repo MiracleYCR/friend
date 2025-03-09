@@ -96,6 +96,8 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "async": true,
+    "usePickAreaData": true
   }
 }

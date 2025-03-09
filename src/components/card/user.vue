@@ -19,7 +19,7 @@
           ></wd-img>
         </view>
         <view class="line1">
-          <view>{{ userData.loacaltionName }} · {{ userData.distance.toFixed(2) }}km</view>
+          <view>{{ userData.locationName }} · {{ userData.distance.toFixed(2) }}km</view>
           <view class="divider"></view>
           <wd-img class="w-12px h-12px" :src="sexImg"></wd-img>
           <view>·{{ userData.age }}岁</view>
@@ -48,7 +48,7 @@ const props: any = defineProps({
 })
 
 const sexImg = computed(() => {
-  return props.sex === 0 ? '/static/images/male.png' : '/static/images/female.png'
+  return props.userData.sex === 0 ? '/static/images/female.png' : '/static/images/male.png'
 })
 </script>
 

@@ -8,7 +8,7 @@
     <view class="money">
       <view class="left">
         <view class="title">余额（元）</view>
-        <view class="amt">5858.68</view>
+        <view class="amt">0.00</view>
       </view>
       <view class="right">
         <wd-button class="btnColor" size="small">提现</wd-button>

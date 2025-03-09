@@ -7,7 +7,7 @@
       </view>
       <block v-if="pageParams.isOwn">
         <view class="edit" @click="handleGotoBaseInfo">
-          <wd-img class="w-18px h-18px mr-1px" src="/static/images/edit.png" />
+          <wd-icon class="mr-2px" name="edit" size="13px" color="#ffffff"></wd-icon>
           编辑资料
         </view>
       </block>
@@ -27,37 +27,35 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <wd-img class="avatar" :src="profileData.avatar"></wd-img>
+        <wd-img class="avatar" :src="userData.avatar"></wd-img>
 
-        <view class="name">{{ profileData.nickName }}</view>
+        <view class="name">{{ userData.nickName }}</view>
 
         <view class="info">
           <view class="tags">
             <wd-img
-              v-if="profileData.vipOpean === '1'"
+              v-if="userData.vipOpean === '1'"
               class="icon1"
               src="/static/images/vip.png"
             ></wd-img>
             <wd-img
-              v-if="profileData.hasRealName === '1'"
+              v-if="userData.hasRealName === '1'"
               class="icon2"
               src="/static/images/checked.png"
             ></wd-img>
-            <view :class="['base', profileData.sex === '1' ? 'male' : 'female']">
+            <view :class="['base', userData.sex === '1' ? 'male' : 'female']">
               <wd-img
                 class="icon"
                 :src="
-                  profileData.sex === '1'
-                    ? '/static/images/male2.png'
-                    : '/static/images/female2.png'
+                  userData.sex === '1' ? '/static/images/male2.png' : '/static/images/female2.png'
                 "
               ></wd-img>
-              {{ profileData.age }}岁
+              {{ userData.age }}岁
             </view>
           </view>
           <view class="sys">
-            <view class="ip">IP属地：{{ profileData.locationName }}</view>
-            <view class="id">梦缘ID：{{ profileData.appId }}</view>
+            <view class="ip">IP属地：{{ userData.locationName }}</view>
+            <view class="id">梦缘ID：{{ userData.appId }}</view>
           </view>
 
           <block v-if="!pageParams.isOwn">
@@ -66,21 +64,21 @@
                 'w-102px',
                 'h-32px',
                 'mt-10px',
-                profileData.hasFollow ? 'btnColor2' : 'btnColor',
+                userData.hasFollow ? 'btnColor2' : 'btnColor',
               ]"
               @click="handleChangeFollow"
             >
-              {{ profileData.hasFollow ? '取消关注' : '关注' }}
+              {{ userData.hasFollow ? '取消关注' : '关注' }}
             </wd-button>
           </block>
 
-          <view class="desc mt-10px">{{ profileData.userDesc }}</view>
+          <view class="desc mt-10px">{{ userData.userDesc }}</view>
         </view>
 
         <view class="show">
           <view class="tags">
-            <block v-if="profileData.clientUserTags.length > 0">
-              <view class="tag" v-for="(tag, index) in profileData.clientUserTags" :key="index">
+            <block v-if="userData.clientUserTags.length > 0">
+              <view class="tag" v-for="(tag, index) in userData.clientUserTags" :key="index">
                 {{ tagDataMap[tag] }}
               </view>
             </block>
@@ -88,26 +86,26 @@
           </view>
           <view class="pictures">
             <wd-img
-              v-for="(pic, index) in profileData.clientUserImages.slice(0, 5)"
+              v-for="(pic, index) in userData.clientUserImages.slice(0, 5)"
               class="w-64px h-64px rounded-[5px] overflow-hidden"
               :class="[index === 4 ? '' : 'mr-10px']"
               :key="index"
               :src="pic"
             ></wd-img>
             <view class="mask">
-              <view class="num">+{{ profileData.clientUserImages.length }}</view>
+              <view class="num">+{{ userData.clientUserImages.length }}</view>
             </view>
           </view>
         </view>
 
         <view class="status">
           <view class="title">状态</view>
-          <block v-if="profileData.posts && profileData.posts.length > 0" class="card">
+          <block v-if="userData.posts && userData.posts.length > 0" class="card">
             <PostCard
-              v-for="(item, index) in profileData.posts"
+              v-for="(item, index) in userData.posts"
               :key="index"
               :postData="item"
-              :profileData="profileData"
+              :userData="userData"
             />
           </block>
 
@@ -144,7 +142,7 @@ const pageParams = reactive({
 
 const loading = ref<boolean>(false)
 
-const profileData = ref<any>({})
+const userData = ref<any>({})
 
 const tagDataMap = ref<any>({})
 
@@ -153,15 +151,15 @@ const handleBack = () => {
 }
 
 const handleGotoBaseInfo = () => {
-  uni.navigateTo({ url: '/pages/baseInfo/index' })
+  uni.navigateTo({ url: `/pages/baseInfo/index?type=edit` })
 }
 
 // 切换用户关注
 const handleChangeFollow = async () => {
-  if (profileData.value.hasFollow) {
-    await cancelFollow(profileData.value.userId)
+  if (userData.value.hasFollow) {
+    await cancelFollow(userData.value.userId)
   } else {
-    await confirmFollow(profileData.value.userId)
+    await confirmFollow(userData.value.userId)
   }
   await fetchOtherUserInfo()
 }
@@ -169,7 +167,7 @@ const handleChangeFollow = async () => {
 // 获取Ta的用户信息
 const fetchOtherUserInfo = async () => {
   const resp = await getOtherUserInfo(pageParams.id)
-  profileData.value = resp.data
+  userData.value = resp.data
 }
 
 onLoad((params) => {
@@ -182,7 +180,7 @@ onShow(async () => {
     loading.value = true
 
     if (pageParams.isOwn) {
-      profileData.value = userStore.userInfo
+      userData.value = userStore.userInfo
     } else {
       await fetchOtherUserInfo()
     }
@@ -258,7 +256,8 @@ onShow(async () => {
       height: 25px;
       position: absolute;
       right: 0;
-      background-color: #ffffff;
+      color: #ffffff;
+      background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%) !important;
       border-radius: 13px;
       display: flex;
       align-items: center;

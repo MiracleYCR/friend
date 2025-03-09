@@ -1,8 +1,8 @@
 <template>
   <view class="own_container">
     <view class="setting">
-      <wd-img class="icon" src="/static/images/message.png"></wd-img>
-      <wd-img class="icon" src="/static/images/settings.png" @click="handleTest"></wd-img>
+      <wd-img class="icon" src="/static/images/message.png" @click="handleTest"></wd-img>
+      <wd-img class="icon" src="/static/images/settings.png" @click="handleGotoSettings"></wd-img>
     </view>
 
     <view class="own">
@@ -58,7 +58,7 @@
     </view>
 
     <view class="menu">
-      <view class="item" @click="handleGotoMenu('base')">
+      <view class="item" @click="handleGotoBaseInfo">
         <wd-img class="icon" src="/static/images/base.png"></wd-img>
         <view class="entry">
           基本资料
@@ -154,6 +154,12 @@ const handleGotoMenu = (type: string) => {
   })
 }
 
+const handleGotoBaseInfo = () => {
+  uni.navigateTo({
+    url: `/pages/baseInfo/index?type=check`,
+  })
+}
+
 const handleGotoPolicy = (code: string) => {
   uni.navigateTo({
     url: `/pages/policy/index?code=${code}`,
@@ -163,6 +169,12 @@ const handleGotoPolicy = (code: string) => {
 const handleTest = () => {
   uni.navigateTo({
     url: '/pages/views/login',
+  })
+}
+
+const handleGotoSettings = () => {
+  uni.navigateTo({
+    url: '/pages/settings/index',
   })
 }
 

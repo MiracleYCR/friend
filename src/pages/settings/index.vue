@@ -17,7 +17,7 @@
             安全指南
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('USER_CONDUCT')">
             用户行为规范
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
@@ -28,27 +28,27 @@
         </view>
 
         <view class="optWrapper middle">
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('INFORMATION_FOR_USERS')">
             用户须知
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('PRIVACY_POLICY')">
             隐私政策
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('PERMISSION_LIST')">
             权限获取清单
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('THIRD_PARTY_SDK_LIST')">
             三方SDK清单
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('INFORMATION_SHARING_LIST')">
             信息共享清单
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('REGISTRATION_COMMITMENT')">
             注册承诺函
             <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
           </view>
@@ -72,7 +72,7 @@
           </view>
         </view>
 
-        <wd-button class="logoutBtn" block>退出登录</wd-button>
+        <wd-button class="logoutBtn" block @click="handleLogout">退出登录</wd-button>
       </z-paging>
     </view>
   </view>
@@ -80,6 +80,20 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useUserStore } from '@/store'
+
+const userStore: any = useUserStore()
+
+const handleGotoPolicy = (type: string) => {
+  uni.navigateTo({
+    url: `/pages/policy/index?code=${type}`,
+  })
+}
+
+const handleLogout = () => {
+  userStore.logout()
+  uni.reLaunch({ url: '/pages/asplash/index' })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -20,6 +20,11 @@ export const getAllCity = () => {
   return http.get('/prod-api/system/code/list/city')
 }
 
+// 获取热门城市
+export const getHotCity = () => {
+  return http.get('/prod-api/system/code/hot/city')
+}
+
 // 获取定位地址
 export const getLocationInfo = (data) => {
   return http.get('/prod-api/common/address', data)

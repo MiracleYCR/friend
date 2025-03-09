@@ -2,7 +2,7 @@
   <view class="connect_container">
     <view class="search">
       <view class="city" @click="handleOpenLocation">
-        {{ userStore.userInfo.locationName }}
+        {{ currentLocation.name }}
         <wd-img class="icon" src="/static/images/arrow3.png"></wd-img>
       </view>
       <wd-img class="icon" src="/static/images/search.png" @click="handleGotoSearch"></wd-img>
@@ -19,7 +19,7 @@
     ></wd-swiper>
 
     <view class="filter">
-      <wd-tabs class="tab" v-model="searchData.indexType" @change="fetchConnectUserList">
+      <wd-tabs class="tab" v-model="searchData.indexType">
         <wd-tab title="推荐" name="recommend"></wd-tab>
         <wd-tab title="附近的人" name="nearby"></wd-tab>
         <wd-tab title="同城" name="city"></wd-tab>
@@ -79,14 +79,13 @@
       </z-paging>
     </view>
 
-    <LocationComp ref="locationRef" />
+    <LocationComp ref="locationRef" @updateLoactionCity="handleUpdateLocationCity" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useUserStore } from '@/store'
-import { getOwnUserInfo } from '@/api/user'
 import { getBannerList, getConnectUserList } from '@/api/connect'
 
 import { generateAgeRanges } from '@/utils'
@@ -95,11 +94,24 @@ import LocationComp from '@/components/location/index.vue'
 
 const userStore: any = useUserStore()
 
+// 当前选中的城市
+const currentLocation: any = ref({
+  name: userStore.userInfo.locationName,
+  code: '000000',
+})
+
 // 定位
 const locationRef = ref(null)
 const handleOpenLocation = () => {
-  console.log(locationRef.value)
   locationRef.value.open()
+}
+const handleUpdateLocationCity = (city) => {
+  currentLocation.value = {
+    name: city.name,
+    code: city.code,
+  }
+
+  searchData.indexType === 'city' && fetchConnectUserList()
 }
 
 // 轮播
@@ -165,16 +177,34 @@ const fetchConnectUserList = async () => {
   const ageList = searchData.ageRange.split('-')
   searchData.cityCode = userStore.userInfo.orientationCityId
 
-  const { rows, total }: any = await getConnectUserList({
-    sex: searchData.sex === 2 ? '' : searchData.sex,
-    indexType: searchData.indexType,
-    startAge: ageList[0],
-    endAge: ageList[1],
-  })
+  const { rows, total }: any = await getConnectUserList(
+    searchData.indexType === 'city' && currentLocation.value.code !== '000000'
+      ? {
+          sex: searchData.sex === 2 ? '' : searchData.sex,
+          indexType: searchData.indexType,
+          startAge: ageList[0],
+          endAge: ageList[1],
+          cityCode: currentLocation.value.code,
+        }
+      : {
+          sex: searchData.sex === 2 ? '' : searchData.sex,
+          indexType: searchData.indexType,
+          startAge: ageList[0],
+          endAge: ageList[1],
+        },
+  )
 
   connectUserList.value = rows
   userListRef.value.complete(connectUserList.value)
 }
+
+watch(
+  () => searchData.indexType,
+  (n) => {
+    fetchConnectUserList()
+  },
+  { immediate: false },
+)
 
 onMounted(() => {
   fetchBannerList()
@@ -218,6 +248,10 @@ onMounted(() => {
         height: 14px;
       }
     }
+  }
+
+  :deep(.wd-swiper__track) {
+    border-radius: 0;
   }
 
   .filter {

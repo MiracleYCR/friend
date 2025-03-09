@@ -1,20 +1,20 @@
 <template>
   <view class="statuscard">
-    <wd-img class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden" :src="profileData.avatar" />
+    <wd-img class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden" :src="userData.avatar" />
 
     <view class="body">
       <view class="top">
         <view class="info">
           <view class="left">
             <view class="line">
-              <view class="name">{{ profileData.nickName }}</view>
+              <view class="name">{{ userData.nickName }}</view>
               <wd-img
-                v-if="profileData.vipOpean === '1'"
+                v-if="userData.vipOpean === '1'"
                 class="w-40px h-15px ml-5px mr-5px"
                 src="/static/images/vip.png"
               ></wd-img>
               <wd-img
-                v-if="profileData.hasRealName === '1'"
+                v-if="userData.hasRealName === '1'"
                 class="w-40px h-15px"
                 src="/static/images/checked.png"
               ></wd-img>
@@ -35,8 +35,21 @@
       <view class="middle mt-5px">
         <view class="title">{{ postData.postText }}</view>
         <view class="content">
-          <block v-for="(image, index) in postData.postImages" :key="index">
-            <wd-img class="w-90px h-90px rounded-5px overflow-hidden" :src="image"></wd-img>
+          <block v-if="postData.postImages && postData.postImages.length > 0">
+            <wd-img
+              v-for="(image, index) in postData.postImages"
+              :key="index"
+              class="w-90px h-90px rounded-5px overflow-hidden"
+              :src="image"
+            ></wd-img>
+          </block>
+
+          <block v-if="postData.postVideos && postData.postVideos.length > 0">
+            <video
+              controls
+              style="width: 100%; height: 220px"
+              :src="postData.postVideos[0]"
+            ></video>
           </block>
         </view>
         <view class="location" v-if="postData.location">
@@ -45,13 +58,13 @@
         </view>
       </view>
       <view class="bottom">
-        <view class="item">
-          <wd-img class="w-20px h-20px mr-3px" src="/static/images/message2.png"></wd-img>
+        <view class="item" @click="handleGotoPostDetail">
+          <wd-img class="w-19px h-19px mr-5px" src="/static/images/message2.png"></wd-img>
           {{ postData.commentCount }}
         </view>
         <view class="item">
           <wd-img
-            class="w-20px h-20px mr-3px"
+            class="w-19px h-19px mr-5px"
             :src="postData.hasLike ? '/static/images/heart3.png' : '/static/images/heart2.png'"
             @click="handleLikePost"
           ></wd-img>
@@ -72,7 +85,7 @@ const props = defineProps({
     default: true,
   },
 
-  profileData: {
+  userData: {
     type: Object,
     default: () => ({}),
   },
@@ -84,7 +97,13 @@ const props = defineProps({
 })
 
 const handleLikePost = () => {
-  likePost({ postId: Number(props.postData.id) })
+  likePost({ postId: props.postData.id })
+}
+
+const handleGotoPostDetail = () => {
+  uni.navigateTo({
+    url: `/pages/postDetail/index?id=${props.postData.id}`,
+  })
 }
 </script>
 
@@ -194,7 +213,7 @@ const handleLikePost = () => {
         font-weight: 400;
         color: #9395a4;
         display: flex;
-        margin-right: 10px;
+        margin-right: 15px;
         align-items: center;
 
         &:last-child {
