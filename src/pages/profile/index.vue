@@ -54,7 +54,9 @@
             </view>
           </view>
           <view class="sys">
-            <view class="ip">IP属地：{{ userData.locationName }}</view>
+            <view class="ip">
+              IP属地：{{ userData.locationProvince }}{{ userData.locationCity }}
+            </view>
             <view class="id">梦缘ID：{{ userData.appId }}</view>
           </view>
 
