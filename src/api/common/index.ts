@@ -20,6 +20,11 @@ export const getAllCity = () => {
   return http.get('/prod-api/system/code/list/city')
 }
 
+// 获取城市树状结构
+export const getCityTree = () => {
+  return http.get('/prod-api/system/code/list/tree')
+}
+
 // 获取热门城市
 export const getHotCity = () => {
   return http.get('/prod-api/system/code/hot/city')

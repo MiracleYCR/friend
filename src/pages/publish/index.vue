@@ -88,9 +88,9 @@ const handleCheckLocation = () => {
         longitude: res.longitude,
       })
 
-      postData.location = data
       postData.latitude = res.latitude
       postData.longitude = res.longitude
+      postData.location = data.locationName
 
       locationLoading.value = false
     },

@@ -15,7 +15,12 @@
         :show-scrollbar="false"
       >
         <view class="detail">
-          <PostCard :canShare="false" :postData="postData" :userData="userData" />
+          <PostCard
+            :canShare="false"
+            :canNavigate="false"
+            :postData="postData"
+            :userData="userData"
+          />
         </view>
 
         <view class="tip" v-show="showTips">
@@ -26,25 +31,15 @@
         <view v-if="postData.postComments && postData.postComments.length > 0" class="comment">
           <view class="title">全部评论（10）</view>
           <view class="list">
-            <view class="listItem" v-for="(comment, index) in postData.postComments" :key="index">
-              <view class="firstLevel">
-                <view class="left">
-                  <wd-img class="w-[50px] h-[50px]" src="/static/images/image.png"></wd-img>
-                </view>
-                <view class="right">
-                  <view class="name">用户NickName</view>
-                  <view class="commentContent" @longpress="handleOperateComment">
-                    {{ comment.commentContent }}
-                  </view>
-                  <view class="status">
-                    <view class="time">2024年12月19日 · 广东</view>
-                    <view class="reply" @click="handleReplayTargetComment(comment)">
-                      {{ isReply && replyId === comment.parentId ? '取消回复' : '回复' }}
-                    </view>
-                  </view>
-                </view>
-              </view>
-            </view>
+            <CommentComp
+              v-for="(comment, index) in postData.postComments"
+              :key="index"
+              :isReply="isReply"
+              :replyId="replyId"
+              :commentData="comment"
+              @on-operate-comment="handleOperateComment"
+              @on-reply-target-comment="handleReplayTargetComment(comment)"
+            />
           </view>
         </view>
 
@@ -55,7 +50,8 @@
       <wd-input
         v-model="commentContent"
         prefix-icon="edit"
-        :placeholder="replyId ? `回复：${replyId}~` : '主动评论，才能相识~'"
+        :focus="replayFocus"
+        :placeholder="replyId ? `回复：${replyUserName}` : '主动评论，才能相识~'"
       />
       <wd-button
         style="width: 60px; background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%)"
@@ -70,10 +66,11 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { checkPost, commendPost } from '@/api/post'
 import { useUserStore, useCommonStore } from '@/store'
 
-import { checkPost, commendPost } from '@/api/post'
 import PostCard from '@/components/card/post.vue'
+import CommentComp from '@/components/comment/index.vue'
 
 const userStore: any = useUserStore()
 
@@ -96,31 +93,46 @@ const handleBack = () => {
 }
 
 // 回复评论
-const replyId = ref('')
+const replyId = ref(0)
 const isReply = ref(false)
+const replyUserName = ref('')
+const replayFocus = ref(false)
 const handleReplayTargetComment = async (commentData: any) => {
   if (isReply.value) {
-    isReply.value = false
-    replyId.value = ''
+    resetCommentStatus()
   } else {
     isReply.value = true
-    replyId.value = commentData.parentId || '12313'
+    replyId.value = commentData.parentId
+    replyUserName.value = commentData.sysUser.nickName
+    replayFocus.value = true
   }
+}
+const resetCommentStatus = () => {
+  replyId.value = 0
+  isReply.value = false
+  replyUserName.value = ''
+  commentContent.value = ''
+  replayFocus.value = false
 }
 
 // 提交评论
 const handleSubmitComment = async () => {
-  await commendPost({
-    postId: postData.value.id,
-    commentContent: commentContent.value,
-  })
+  await commendPost(
+    replyId.value
+      ? {
+          parentId: replyId.value,
+          postId: postData.value.id,
+          commentContent: commentContent.value,
+        }
+      : {
+          postId: postData.value.id,
+          commentContent: commentContent.value,
+        },
+  )
 
   await queryPostDetailData()
 
-  replyId.value = ''
-  isReply.value = false
-  commentContent.value = ''
-
+  resetCommentStatus()
   uni.showToast({ title: '评论成功！', icon: 'none' })
 }
 
@@ -143,8 +155,6 @@ const queryPostDetailData = async () => {
   postData.value = data
   // 用户数据
   userData.value = data.sysUser
-  // 是否展示提示
-  showTips.value = data.postComments && data.postComments.length > 0
 }
 
 onMounted(() => {
@@ -287,29 +297,17 @@ onMounted(() => {
                   justify-content: space-between;
                   font-weight: 400;
                   font-size: 12px;
-                  color: #9395a4;
+
+                  .cancelReply {
+                    color: #ff4d73;
+                  }
+
+                  .reply {
+                    color: #9395a4;
+                  }
                 }
               }
             }
-          }
-
-          :deep(.wd-collapse__more) {
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-          }
-
-          .first {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-          }
-
-          .second {
-            margin-left: 40px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
           }
         }
       }

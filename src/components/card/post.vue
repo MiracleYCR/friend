@@ -85,6 +85,11 @@ const props = defineProps({
     default: true,
   },
 
+  canNavigate: {
+    type: Boolean,
+    default: true,
+  },
+
   userData: {
     type: Object,
     default: () => ({}),
@@ -101,9 +106,10 @@ const handleLikePost = () => {
 }
 
 const handleGotoPostDetail = () => {
-  uni.navigateTo({
-    url: `/pages/postDetail/index?id=${props.postData.id}`,
-  })
+  props.canNavigate &&
+    uni.navigateTo({
+      url: `/pages/postDetail/index?id=${props.postData.id}`,
+    })
 }
 </script>
 

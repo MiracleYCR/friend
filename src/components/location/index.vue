@@ -9,10 +9,10 @@
             size="small"
             icon="location"
             :loading="locationLoading"
-            :class="[userStore.userInfo.locationName ? 'active' : 'inactive']"
+            :class="[userStore.userInfo.locationCity ? 'active' : 'inactive']"
             @click="handleCheckLocation"
           >
-            {{ userStore.userInfo.locationName || '重新定位' }}
+            {{ userStore.userInfo.locationCity || '重新定位' }}
           </wd-button>
         </view>
       </view>
@@ -56,8 +56,10 @@
 
 <script lang="ts" setup>
 import { useUserStore } from '@/store'
-import { defineProps, defineExpose, PropType, defineEmits } from 'vue'
 import { PopupType } from 'wot-design-uni/components/wd-popup/types'
+import { defineProps, defineExpose, PropType, defineEmits } from 'vue'
+
+import { setOwnUserInfo, getOwnUserInfo } from '@/api/user'
 import { getLocationInfo, getAllCity, getHotCity } from '@/api/common/index'
 
 const userStore: any = useUserStore()
@@ -118,15 +120,28 @@ const handleCheckLocation = async () => {
   uni.getLocation({
     type: 'wgs84',
     success: async (res) => {
-      const { data }: any = await getLocationInfo({
+      const locationData: any = await getLocationInfo({
         latitude: res.latitude,
         longitude: res.longitude,
       })
 
-      console.log(data)
-      userStore.userInfo.locationName = data
+      await setOwnUserInfo({
+        ...userStore.userInfo,
+        orientationCityId: locationData.data.cityCode,
+        orientationDistrictId: locationData.data.districtCode,
+        orientationProvinceId: locationData.data.provinceCode,
+      })
+
+      // 获取用户信息
+      const userInfoResp: any = await getOwnUserInfo()
+      userStore.setUserInfo(userInfoResp.data)
 
       locationLoading.value = false
+
+      handleSelectCity({
+        name: locationData.data.locationCity,
+        code: locationData.data.cityCode,
+      })
     },
     fail: (err) => {
       console.error('获取位置信息失败', err)
@@ -134,9 +149,9 @@ const handleCheckLocation = async () => {
   })
 }
 
-const handleSelectCity = (city: any) => {
+const handleSelectCity = (city: any, closed: boolean = true) => {
   emits('updateLoactionCity', city)
-  close()
+  closed && close()
 }
 
 defineExpose({

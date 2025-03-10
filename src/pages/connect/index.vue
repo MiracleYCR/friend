@@ -96,8 +96,8 @@ const userStore: any = useUserStore()
 
 // 当前选中的城市
 const currentLocation: any = ref({
-  name: userStore.userInfo.locationName,
-  code: '000000',
+  name: userStore.userInfo.locationCity,
+  code: '',
 })
 
 // 定位
@@ -178,7 +178,7 @@ const fetchConnectUserList = async () => {
   searchData.cityCode = userStore.userInfo.orientationCityId
 
   const { rows, total }: any = await getConnectUserList(
-    searchData.indexType === 'city' && currentLocation.value.code !== '000000'
+    searchData.indexType === 'city' && currentLocation.value.code
       ? {
           sex: searchData.sex === 2 ? '' : searchData.sex,
           indexType: searchData.indexType,

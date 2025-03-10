@@ -13,270 +13,280 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <view class="avatar">
-          <wd-img
-            v-if="baseData.avatar"
-            class="w-100px h-100px rounded-50px overflow-hidden"
-            :src="baseData.avatar"
-          ></wd-img>
-          <view
-            v-else
-            class="w-100px h-100px rounded-50px overflow-hidden bg-gray-200 flex items-center justify-center text-[14px] text-gray-400"
-          >
-            暂无头像
-          </view>
-
-          <view class="iconBg" @click="handleUploadAvatar">
-            <view class="iconWrapper">
-              <wd-img class="w-14px h-14px" src="/static/images/camera.png"></wd-img>
-            </view>
-          </view>
-        </view>
-
-        <view class="album">
-          <view class="title">个人相册</view>
-          <view class="pictures_container">
-            <view class="add" @click="handleUploadPicture">
-              <wd-icon name="add" size="20px" color="rgba(147, 149, 164, 0.9)" />
-            </view>
-
-            <z-paging
-              class="pictures_scroll"
-              scroll-x
-              :fixed="false"
-              :scroll-view="true"
-              :show-scrollbar="false"
+        <block v-if="!loading">
+          <view class="avatar">
+            <wd-img
+              v-if="baseData.avatar"
+              class="w-100px h-100px rounded-50px overflow-hidden"
+              :src="baseData.avatar"
+            ></wd-img>
+            <view
+              v-else
+              class="w-100px h-100px rounded-50px overflow-hidden bg-gray-200 flex items-center justify-center text-[14px] text-gray-400"
             >
-              <view class="content-container">
-                <wd-img
-                  class="min-w-50px h-50px mr-10px rounded-5px overflow-hidden"
-                  v-for="(img, index) in originAlbumList"
-                  :key="index"
-                  :src="img.url"
-                ></wd-img>
+              暂无头像
+            </view>
+
+            <view class="iconBg" @click="handleUploadAvatar">
+              <view class="iconWrapper">
+                <wd-img class="w-14px h-14px" src="/static/images/camera.png"></wd-img>
               </view>
-            </z-paging>
+            </view>
           </view>
-        </view>
 
-        <view class="desc">
-          <wd-form ref="form" :model="baseData">
-            <wd-input
-              required
-              align-right
-              label="一句话简介"
-              label-width="100px"
-              prop="userDesc"
-              v-model="baseData.userDesc"
-              placeholder="请填写一句话简介"
-            />
-          </wd-form>
-        </view>
+          <view class="album">
+            <view class="title">个人相册</view>
+            <view class="pictures_container">
+              <view class="add" @click="handleUploadPicture">
+                <wd-icon name="add" size="20px" color="rgba(147, 149, 164, 0.9)" />
+              </view>
 
-        <view class="base">
-          <view class="title">基本信息</view>
-
-          <wd-form ref="form" :model="baseData">
-            <wd-input
-              required
-              align-right
-              label="昵称"
-              label-width="100px"
-              prop="nickName"
-              v-model="baseData.nickName"
-              placeholder="请输入昵称"
-            />
-            <wd-picker
-              align-right
-              label="性别"
-              label-width="100px"
-              placeholder="请选择性别"
-              v-model="baseData.sex"
-              :columns="sexOpts"
-            />
-            <wd-datetime-picker
-              required
-              align-right
-              type="date"
-              label="生日"
-              label-width="100px"
-              placeholder="请选择生日"
-              :minDate="timePickerStamp[0]"
-              :maxDate="timePickerStamp[1]"
-              v-model="baseData.birthday"
-            />
-            <wd-picker
-              align-right
-              label="身高"
-              label-width="100px"
-              placeholder="请选择身高"
-              v-model="baseData.height"
-              :columns="heightOpts"
-            />
-            <wd-col-picker
-              align-right
-              label="所在地"
-              label-width="80px"
-              placeholder="请选择所在地"
-              v-model="baseData.orientation"
-              :columns="orientationOpts"
-              :column-change="columnChange"
-            ></wd-col-picker>
-            <wd-col-picker
-              required
-              align-right
-              label="家乡"
-              label-width="50px"
-              placeholder="请选择家乡"
-              v-model="baseData.home"
-              :columns="homeOpts"
-              :column-change="columnChange"
-            ></wd-col-picker>
-            <wd-picker
-              align-right
-              label="学历"
-              label-width="100px"
-              placeholder="请选择学历"
-              v-model="baseData.qualifications"
-              :columns="educationOpts"
-            />
-            <wd-input
-              align-right
-              label="学校"
-              label-width="100px"
-              prop="graduateSchool"
-              v-model="baseData.graduateSchool"
-              placeholder="您的毕业院校是？"
-            />
-            <wd-input
-              required
-              align-right
-              label="职业"
-              label-width="100px"
-              prop="occupation"
-              v-model="baseData.occupation"
-              placeholder="您从事什么工作？"
-            />
-            <wd-input
-              align-right
-              label="公司"
-              label-width="100px"
-              prop="companyName"
-              v-model="baseData.companyName"
-              placeholder="请填写就职公司"
-            />
-            <wd-picker
-              required
-              align-right
-              label="月收入"
-              label-width="100px"
-              placeholder="请选择月收入"
-              v-model="baseData.monthlySalary"
-              :columns="incomeOpts"
-            />
-            <wd-picker
-              align-right
-              label="婚姻状况"
-              label-width="100px"
-              placeholder="请选择您的婚姻状况"
-              v-model="baseData.maritalStatus"
-              :columns="marriageOpts"
-            />
-            <wd-picker
-              align-right
-              label="有无房产"
-              label-width="100px"
-              placeholder="是否购房"
-              v-model="baseData.haveHouse"
-              :columns="assetsOpts"
-            />
-          </wd-form>
-        </view>
-
-        <view class="desc">
-          <wd-form ref="form" :model="baseData">
-            <wd-input
-              required
-              align-right
-              label="交友心声"
-              label-width="100px"
-              prop="datingVoices"
-              v-model="baseData.datingVoices"
-              placeholder="请填写交友心声"
-            />
-          </wd-form>
-        </view>
-
-        <view class="tags">
-          <wd-form ref="form" :model="baseData">
-            <wd-select-picker
-              required
-              ellipsis
-              align-right
-              label="个性标签"
-              label-width="100px"
-              placeholder="请选择个性标签"
-              v-model="baseData.clientUserTags"
-              :columns="tagOpts"
-              @change="handleChangePersonalTags"
-            ></wd-select-picker>
-          </wd-form>
-
-          <view class="tagList">
-            <view class="tag" v-for="(tag, index) in personalTagList" :key="index">{{ tag }}</view>
+              <z-paging
+                class="pictures_scroll"
+                scroll-x
+                :fixed="false"
+                :scroll-view="true"
+                :show-scrollbar="false"
+              >
+                <view class="content-container">
+                  <wd-img
+                    class="min-w-50px h-50px mr-10px rounded-5px overflow-hidden"
+                    v-for="(img, index) in originAlbumList"
+                    :key="index"
+                    :src="img.url"
+                  ></wd-img>
+                </view>
+              </z-paging>
+            </view>
           </view>
-        </view>
 
-        <view class="range">
-          <view class="title">交友范围</view>
-          <wd-form ref="form" :model="baseData">
-            <wd-col-picker
-              align-right
-              label="所在地"
-              label-width="80px"
-              placeholder="不限"
-              v-model="baseData.friendArea"
-              :columns="friendAreaOpts"
-              :column-change="columnChange"
-            ></wd-col-picker>
-            <wd-picker
-              align-right
-              label="年龄"
-              label-width="100px"
-              placeholder="不限"
-              v-model="baseData.friAge"
-              :columns="ageOpts"
-            />
-            <wd-picker
-              align-right
-              label="身高"
-              label-width="100px"
-              placeholder="不限"
-              v-model="baseData.friHeight"
-              :columns="heightOpts"
-            />
-            <wd-picker
-              align-right
-              label="最低学历"
-              label-width="100px"
-              placeholder="不限"
-              v-model="baseData.friQualifications"
-              :columns="educationOpts"
-            />
-            <wd-input
-              type="number"
-              align-right
-              label="最低月收入"
-              label-width="100px"
-              v-model="baseData.friMinSalary"
-              placeholder="不限"
-            />
-          </wd-form>
-        </view>
+          <view class="desc">
+            <wd-form ref="form" :model="baseData">
+              <wd-input
+                required
+                align-right
+                label="一句话简介"
+                label-width="100px"
+                prop="userDesc"
+                v-model="baseData.userDesc"
+                placeholder="请填写一句话简介"
+              />
+            </wd-form>
+          </view>
 
-        <wd-button v-show="canEdit" class="saveBtn" block @click="handleSaveBaseInfo">
-          保存
-        </wd-button>
+          <view class="base">
+            <view class="title">基本信息</view>
+
+            <wd-form ref="form" :model="baseData">
+              <wd-input
+                required
+                align-right
+                label="昵称"
+                label-width="100px"
+                prop="nickName"
+                v-model="baseData.nickName"
+                placeholder="请输入昵称"
+              />
+              <wd-picker
+                align-right
+                label="性别"
+                label-width="100px"
+                placeholder="请选择性别"
+                v-model="baseData.sex"
+                :columns="sexOpts"
+              />
+              <wd-datetime-picker
+                required
+                align-right
+                type="date"
+                label="生日"
+                label-width="100px"
+                placeholder="请选择生日"
+                :minDate="timePickerStamp[0]"
+                :maxDate="timePickerStamp[1]"
+                v-model="baseData.birthday"
+              />
+              <wd-picker
+                align-right
+                label="身高"
+                label-width="100px"
+                placeholder="请选择身高"
+                v-model="baseData.height"
+                :columns="heightOpts"
+              />
+              <wd-col-picker
+                align-right
+                label="所在地"
+                label-width="80px"
+                placeholder="请选择所在地"
+                value-key="code"
+                label-key="name"
+                v-model="baseData.orientation"
+                :columns="orientationOpts"
+                :column-change="columnChange"
+              ></wd-col-picker>
+              <wd-col-picker
+                required
+                align-right
+                label="家乡"
+                label-width="50px"
+                placeholder="请选择家乡"
+                value-key="code"
+                label-key="name"
+                v-model="baseData.home"
+                :columns="homeOpts"
+                :column-change="columnChange"
+              ></wd-col-picker>
+              <wd-picker
+                align-right
+                label="学历"
+                label-width="100px"
+                placeholder="请选择学历"
+                v-model="baseData.qualifications"
+                :columns="educationOpts"
+              />
+              <wd-input
+                align-right
+                label="学校"
+                label-width="100px"
+                prop="graduateSchool"
+                v-model="baseData.graduateSchool"
+                placeholder="您的毕业院校是？"
+              />
+              <wd-input
+                required
+                align-right
+                label="职业"
+                label-width="100px"
+                prop="occupation"
+                v-model="baseData.occupation"
+                placeholder="您从事什么工作？"
+              />
+              <wd-input
+                align-right
+                label="公司"
+                label-width="100px"
+                prop="companyName"
+                v-model="baseData.companyName"
+                placeholder="请填写就职公司"
+              />
+              <wd-picker
+                required
+                align-right
+                label="月收入"
+                label-width="100px"
+                placeholder="请选择月收入"
+                v-model="baseData.monthlySalary"
+                :columns="incomeOpts"
+              />
+              <wd-picker
+                align-right
+                label="婚姻状况"
+                label-width="100px"
+                placeholder="请选择您的婚姻状况"
+                v-model="baseData.maritalStatus"
+                :columns="marriageOpts"
+              />
+              <wd-picker
+                align-right
+                label="有无房产"
+                label-width="100px"
+                placeholder="是否购房"
+                v-model="baseData.haveHouse"
+                :columns="assetsOpts"
+              />
+            </wd-form>
+          </view>
+
+          <view class="desc">
+            <wd-form ref="form" :model="baseData">
+              <wd-input
+                required
+                align-right
+                label="交友心声"
+                label-width="100px"
+                prop="datingVoices"
+                v-model="baseData.datingVoices"
+                placeholder="请填写交友心声"
+              />
+            </wd-form>
+          </view>
+
+          <view class="tags">
+            <wd-form ref="form" :model="baseData">
+              <wd-select-picker
+                required
+                ellipsis
+                align-right
+                label="个性标签"
+                label-width="100px"
+                placeholder="请选择个性标签"
+                v-model="baseData.clientUserTags"
+                :columns="tagOpts"
+                @change="handleChangePersonalTags"
+              ></wd-select-picker>
+            </wd-form>
+
+            <view class="tagList">
+              <view class="tag" v-for="(tag, index) in personalTagList" :key="index">
+                {{ tag }}
+              </view>
+            </view>
+          </view>
+
+          <view class="range">
+            <view class="title">交友范围</view>
+            <wd-form ref="form" :model="baseData">
+              <wd-col-picker
+                align-right
+                label="所在地"
+                label-width="80px"
+                placeholder="不限"
+                value-key="code"
+                label-key="name"
+                v-model="baseData.friendArea"
+                :columns="friendAreaOpts"
+                :column-change="columnChange"
+              ></wd-col-picker>
+              <wd-picker
+                align-right
+                label="年龄"
+                label-width="100px"
+                placeholder="不限"
+                v-model="baseData.friAge"
+                :columns="ageOpts"
+              />
+              <wd-picker
+                align-right
+                label="身高"
+                label-width="100px"
+                placeholder="不限"
+                v-model="baseData.friHeight"
+                :columns="heightOpts"
+              />
+              <wd-picker
+                align-right
+                label="最低学历"
+                label-width="100px"
+                placeholder="不限"
+                v-model="baseData.friQualifications"
+                :columns="educationOpts"
+              />
+              <wd-input
+                type="number"
+                align-right
+                label="最低月收入"
+                label-width="100px"
+                v-model="baseData.friMinSalary"
+                placeholder="不限"
+              />
+            </wd-form>
+          </view>
+
+          <wd-button v-show="canEdit" class="saveBtn" block @click="handleSaveBaseInfo">
+            保存
+          </wd-button>
+        </block>
       </z-paging>
     </view>
 
@@ -310,17 +320,15 @@ import { ref, reactive } from 'vue'
 import { useUserStore } from '@/store'
 import {} from '@/store/common'
 import { onShow } from '@dcloudio/uni-app'
-import { useColPickerData } from '@/hooks/useColPickerData'
 
-import { upload, getPlacesInfo } from '@/api/common'
-import { getOwnUserInfo, setOwnUserInfo } from '@/api/user'
+import { getCityTree } from '@/api/common'
+import { setOwnUserInfo } from '@/api/user'
 
 import useConfig from './config'
 import Upload from '@/components/upload/index.vue'
 
 // pinia
 const userStore: any = useUserStore()
-const { colPickerData, findChildrenByCode } = useColPickerData()
 
 const {
   sexOpts,
@@ -334,6 +342,9 @@ const {
   educationOpts,
   timePickerStamp,
 } = useConfig()
+
+//
+const loading = ref(false)
 
 // 是否可编辑
 const canEdit = ref(false)
@@ -367,18 +378,41 @@ const baseData: any = reactive({
 })
 
 // 地区
+
 const homeOpts = ref<any[]>([])
 const friendAreaOpts = ref<any[]>([])
 const orientationOpts = ref<any[]>([])
+
+// 省市区所有数据
+const areaDataList = ref<any[]>([])
+// 根据代码查省市区下一级
+const findChildrenByCode = (data: any[], code?: string) => {
+  if (!code) {
+    return data
+  }
+  for (const item of data) {
+    if (item.code === code) {
+      return item.children || null
+    }
+    if (item.children) {
+      const childrenResult = findChildrenByCode(item.children, code)
+      if (childrenResult) {
+        return childrenResult
+      }
+    }
+  }
+  return null
+}
+// 联级变动
 const columnChange = ({ selectedItem, resolve, finish }) => {
-  const areaData = findChildrenByCode(colPickerData, selectedItem.value)
+  const areaData = findChildrenByCode(areaDataList.value, selectedItem.code)
 
   if (areaData && areaData.length) {
     resolve(
       areaData.map((item) => {
         return {
-          value: item.value,
-          label: item.text,
+          code: item.code,
+          name: item.name,
         }
       }),
     )
@@ -450,8 +484,14 @@ const handleBack = () => {
 
 // 获取用户信息
 const handleGetUserData = async () => {
-  // const resp: any = await getOwnUserInfo()
+  loading.value = true
+
   const userInfoData = userStore.getUserInfo()
+
+  // 获取省市区信息
+  const { data }: any = await getCityTree()
+
+  areaDataList.value = data
 
   Object.entries(userInfoData).forEach(([k, v]: any) => {
     switch (k) {
@@ -472,80 +512,80 @@ const handleGetUserData = async () => {
   })
 
   baseData.orientation = [
-    `${userInfoData.orientationProvinceId}`,
-    `${userInfoData.orientationCityId}`,
-    `${userInfoData.orientationDistrictId}`,
+    userInfoData.orientationProvinceId,
+    userInfoData.orientationCityId,
+    userInfoData.orientationDistrictId,
   ]
 
   baseData.home = [
-    `${userInfoData.homeProvinceId}`,
-    `${userInfoData.homeCityId}`,
-    `${userInfoData.homeDistrictId}`,
+    userInfoData.homeProvinceId,
+    userInfoData.homeCityId,
+    userInfoData.homeDistrictId,
   ]
 
   baseData.friendArea = [
-    `${userInfoData.friProvinceId}`,
-    `${userInfoData.friCityId}`,
-    `${userInfoData.friDistrictId}`,
+    userInfoData.friProvinceId,
+    userInfoData.friCityId,
+    userInfoData.friDistrictId,
   ]
 
   orientationOpts.value = [
-    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    areaDataList.value.map((item) => ({ code: item.code, name: item.name })),
     ...(userInfoData.orientationProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.orientationProvinceId}`)!.map(
+          findChildrenByCode(areaDataList.value, userInfoData.orientationProvinceId)!.map(
             (item) => ({
-              value: item.value,
-              label: item.text,
+              code: item.code,
+              name: item.name,
             }),
           ),
         ]
       : []),
     ...(userInfoData.orientationCityId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.orientationCityId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
+          findChildrenByCode(areaDataList.value, userInfoData.orientationCityId)!.map((item) => ({
+            code: item.code,
+            name: item.name,
           })),
         ]
       : []),
   ]
 
   homeOpts.value = [
-    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    areaDataList.value.map((item) => ({ code: item.code, name: item.name })),
     ...(userInfoData.homeProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.homeProvinceId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
+          findChildrenByCode(areaDataList.value, userInfoData.homeProvinceId)!.map((item) => ({
+            code: item.code,
+            name: item.name,
           })),
         ]
       : []),
     ...(userInfoData.homeCityId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.homeCityId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
+          findChildrenByCode(areaDataList.value, userInfoData.homeCityId)!.map((item) => ({
+            code: item.code,
+            name: item.name,
           })),
         ]
       : []),
   ]
 
   friendAreaOpts.value = [
-    colPickerData.map((item) => ({ value: item.value, label: item.text })),
+    areaDataList.value.map((item) => ({ code: item.code, name: item.name })),
     ...(userInfoData.friProvinceId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.friProvinceId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
+          findChildrenByCode(areaDataList.value, userInfoData.friProvinceId)!.map((item) => ({
+            code: item.code,
+            name: item.name,
           })),
         ]
       : []),
     ...(userInfoData.friCityId
       ? [
-          findChildrenByCode(colPickerData, `${userInfoData.friCityId}`)!.map((item) => ({
-            value: item.value,
-            label: item.text,
+          findChildrenByCode(areaDataList.value, userInfoData.friCityId)!.map((item) => ({
+            code: item.code,
+            name: item.name,
           })),
         ]
       : []),
@@ -554,6 +594,8 @@ const handleGetUserData = async () => {
   personalTagList.value = userInfoData.clientUserTags.map((item) => tagDataMap[item])
 
   userStore.setUserInfo(userInfoData)
+
+  loading.value = false
 }
 
 // 修改用户信息

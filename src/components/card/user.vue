@@ -19,7 +19,10 @@
           ></wd-img>
         </view>
         <view class="line1">
-          <view>{{ userData.locationName }} · {{ userData.distance.toFixed(2) }}km</view>
+          <view>
+            {{ userData.locationName }} ·
+            {{ userData.distance ? userData.distance.toFixed(2) : '0.00' }}km
+          </view>
           <view class="divider"></view>
           <wd-img class="w-12px h-12px" :src="sexImg"></wd-img>
           <view>·{{ userData.age }}岁</view>

@@ -28,13 +28,13 @@
         loading-more-no-more-text="没有更多数据啦~"
         @query="handleSearchUserList"
       >
-        <block v-if="searchUserList.length > 0">
+        <block v-if="!loading && searchUserList.length > 0">
           <view class="card" v-for="(user, index) in searchUserList" :key="index">
             <UserCard :userData="user" />
           </view>
         </block>
 
-        <block v-else>
+        <block v-if="!loading && searchUserList.length === 0">
           <view class="empty">
             <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
             暂无搜索到的用户
@@ -51,9 +51,10 @@ import { onShow } from '@dcloudio/uni-app'
 import { getConnectUserList } from '@/api/connect/index'
 import UserCard from '@/components/card/user2.vue'
 
-const userListRef = ref(null)
+const loading = ref(false)
 
 const keyword = ref('')
+const userListRef = ref(null)
 const searchUserList = ref([])
 
 const handleBack = () => {
@@ -61,12 +62,16 @@ const handleBack = () => {
 }
 
 const handleSearchUserList = async () => {
+  loading.value = true
+
   const { rows }: any = await getConnectUserList({
     keyWord: keyword.value,
   })
 
   searchUserList.value = rows
   userListRef.value.complete(searchUserList.value)
+
+  loading.value = false
 }
 
 onShow(() => {
