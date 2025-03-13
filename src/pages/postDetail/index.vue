@@ -75,6 +75,7 @@ import CommentComp from '@/components/comment/index.vue'
 const userStore: any = useUserStore()
 
 // 帖子详情
+const postId = ref(0)
 const postData = ref<any>({})
 const userData = ref<any>({})
 
@@ -145,11 +146,7 @@ const handleOperateComment = () => {
 }
 
 const queryPostDetailData = async () => {
-  // 当前页面参数
-  const pages = getCurrentPages()
-  const { options }: any = pages[pages.length - 1]
-
-  const { data }: any = await checkPost(options.id)
+  const { data }: any = await checkPost(postId.value)
 
   // 帖子数据
   postData.value = data
@@ -157,7 +154,10 @@ const queryPostDetailData = async () => {
   userData.value = data.sysUser
 }
 
-onMounted(() => {
+onLoad((params) => {
+  // 帖子id
+  postId.value = params.id
+
   queryPostDetailData()
 })
 </script>

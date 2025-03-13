@@ -162,7 +162,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .location_container {
-  padding: 10px;
+  padding: env(safe-area-inset-top) 10px 10px 10px;
   box-sizing: border-box;
 
   .title {
@@ -191,10 +191,10 @@ defineExpose({
   }
 
   .cityList {
-    height: 480px;
+    height: 400px;
 
     :deep(.wd-index-bar__index) {
-      padding: 2px;
+      padding: 0px;
     }
 
     :deep(.wd-index-bar__sidebar) {

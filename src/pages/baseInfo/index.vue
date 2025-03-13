@@ -685,12 +685,14 @@ onShow(() => {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 15px 0 15px;
+  padding: env(safe-area-inset-top) 0 0 0;
   background-image: url('../../static/images/background.png');
 
   .header {
     width: 100%;
     height: 45px;
+    padding: 0 15px;
+    box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -699,7 +701,7 @@ onShow(() => {
 
     .back {
       position: absolute;
-      left: 0;
+      left: 15px;
       width: 16px;
       height: 16px;
     }
@@ -751,7 +753,7 @@ onShow(() => {
     }
 
     .album {
-      width: 100%;
+      width: calc(100% - 30px);
       height: 110px;
       margin-top: 15px;
       padding: 15px 15px;
@@ -806,7 +808,7 @@ onShow(() => {
     }
 
     .desc {
-      width: 100%;
+      width: calc(100% - 30px);
       height: 50px;
       display: flex;
       align-items: center;
@@ -819,7 +821,7 @@ onShow(() => {
     }
 
     .tags {
-      width: 100%;
+      width: calc(100% - 30px);
       display: flex;
       flex-direction: column;
       margin-top: 15px;
@@ -854,7 +856,7 @@ onShow(() => {
     .desc,
     .tags {
       .wd-form {
-        width: 100%;
+        width: calc(100% - 30px);
 
         :deep(.wd-picker__cell) {
           padding: 10px 0;
@@ -872,7 +874,7 @@ onShow(() => {
 
     .base,
     .range {
-      width: 100%;
+      width: calc(100% - 30px);
       margin-top: 15px;
       border-radius: 10px;
       padding: 15px;
@@ -909,7 +911,7 @@ onShow(() => {
     }
 
     .saveBtn {
-      width: 100%;
+      width: calc(100% - 30px);
       height: 44px;
       margin-top: 20px;
       font-size: 16px;
@@ -920,14 +922,13 @@ onShow(() => {
   }
 
   .dialog_wrapper {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
 
     .block {
-      width: 80%;
-      // height: 350px;
+      width: calc(100% - 40px);
       border-radius: 10px;
       background-color: #ffffff;
       display: flex;
@@ -956,7 +957,7 @@ onShow(() => {
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-evenly;
         margin-top: 10px;
 
         .cancel {

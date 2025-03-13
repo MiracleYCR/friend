@@ -1,7 +1,7 @@
 <template>
   <view class="search">
     <view class="header">
-      <wd-img class="back" src="/src/static/images/back.png" @click="handleBack" />
+      <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <wd-search
         placeholder-left
         hide-cancel

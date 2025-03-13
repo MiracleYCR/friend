@@ -20,7 +20,7 @@ export const http = <T>(options: CustomRequestOptions) => {
             // 401错误  -> 清理用户信息，跳转到登录页
             const userStore = useUserStore()
             userStore.logout()
-            uni.navigateTo({ url: '/pages/asplash/index' })
+            uni.navigateTo({ url: '/pages/asplash/index?type=relogin' })
             reject(res)
           } else {
             // 2.1 提取核心数据 res.data
@@ -30,7 +30,7 @@ export const http = <T>(options: CustomRequestOptions) => {
           // 401错误  -> 清理用户信息，跳转到登录页
           const userStore = useUserStore()
           userStore.logout()
-          uni.navigateTo({ url: '/pages/asplash/index' })
+          uni.navigateTo({ url: '/pages/asplash/index?type=relogin' })
           reject(res)
         } else {
           // 其他错误 -> 根据后端错误信息轻提示

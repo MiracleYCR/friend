@@ -133,6 +133,7 @@ const handleGetSmsCode = async () => {
   seconds.value = 60
   startCountdown()
   const res: any = await getSmsCode(formData.phone)
+  formData.code = res.code
   formData.uuid = res.uuid
 }
 
@@ -152,6 +153,14 @@ const handleLoginApp = async () => {
         // type: 'gcj02',
         type: 'wgs84',
         success: async (res) => {
+          console.log({
+            uuid: formData.uuid,
+            code: formData.code,
+            phone: formData.phone,
+            latitude: res.latitude,
+            longitude: res.longitude,
+          })
+
           // 获取权限
           const { token }: any = await login({
             uuid: formData.uuid,

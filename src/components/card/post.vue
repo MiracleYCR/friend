@@ -45,11 +45,12 @@
           </block>
 
           <block v-if="postData.postVideos && postData.postVideos.length > 0">
-            <video
+            <DomVideoPlayer
               controls
+              objectFit="cover"
               style="width: 100%; height: 220px"
               :src="postData.postVideos[0]"
-            ></video>
+            />
           </block>
         </view>
         <view class="location" v-if="postData.location">
@@ -77,6 +78,8 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
+import DomVideoPlayer from 'uniapp-video-player'
+
 import { likePost } from '@/api/post'
 
 const props = defineProps({
@@ -97,7 +100,7 @@ const props = defineProps({
 
   postData: {
     type: Object,
-    default: () => ({}),
+    required: true,
   },
 })
 

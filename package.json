@@ -119,6 +119,7 @@
     "qs": "6.5.3",
     "tim-profanity-filter-plugin": "latest",
     "tim-upload-plugin": "latest",
+    "uniapp-video-player": "^1.1.0",
     "unplugin-vue2-script-setup": "^0.11.3",
     "vue": "3.4.21",
     "wot-design-uni": "^1.4.0",

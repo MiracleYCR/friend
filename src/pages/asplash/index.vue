@@ -66,12 +66,28 @@
 </template>
 
 <script lang="ts" setup>
-import {} from 'vue'
+import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { useUserStore } from '@/store'
+
+const userStore = useUserStore()
+
+const pageType = ref('')
 
 const onAgree = () => {
-  uni.navigateTo({
-    url: '/pages/login/index',
-  })
+  if (pageType.value === 'relogin') {
+    uni.navigateTo({
+      url: '/pages/login/index',
+    })
+  } else {
+    userStore.token
+      ? uni.switchTab({
+          url: '/pages/connect/index',
+        })
+      : uni.navigateTo({
+          url: '/pages/login/index',
+        })
+  }
 }
 
 const onDisagree = () => {
@@ -92,6 +108,10 @@ const handleGotoPolicy = (code: string) => {
     url: `/pages/policy/index?code=${code}`,
   })
 }
+
+onLoad((params) => {
+  pageType.value = params.type
+})
 </script>
 
 <style lang="scss" scoped>

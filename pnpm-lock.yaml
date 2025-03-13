@@ -107,6 +107,9 @@ dependencies:
   tim-upload-plugin:
     specifier: latest
     version: 1.4.2
+  uniapp-video-player:
+    specifier: ^1.1.0
+    version: 1.1.0(vue@3.4.21)
   unplugin-vue2-script-setup:
     specifier: ^0.11.3
     version: 0.11.4(@vue/composition-api@1.7.2)(@vue/runtime-dom@3.5.13)
@@ -17478,6 +17481,14 @@ packages:
 
   /undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+  /uniapp-video-player@1.1.0(vue@3.4.21):
+    resolution: {integrity: sha512-VuwgbRniDhfRqtxDeVfD9DfwiIM6bCQcna8LkR0hcoDsSxc1YXvrnjQZAqRKrkiKq35lElhT2lIXL3togbKO+w==}
+    peerDependencies:
+      vue: ^2.6.0 || ^3.0.0
+    dependencies:
+      vue: 3.4.21(typescript@4.9.5)
+    dev: false
 
   /unicode-canonical-property-names-ecmascript@2.0.1:
     resolution: {integrity: sha512-dA8WbNeb2a6oQzAQ55YlT5vQAWGV9WXOsi3SskE3bcCdM0P4SDd+24zS/OCacdRq5BkdsRj9q3Pg6YyQoxIGqg==}
