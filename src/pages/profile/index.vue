@@ -120,7 +120,9 @@
     </view>
 
     <view v-if="!loading && !pageParams.isOwn" class="btn">
-      <wd-button class="btnColor w-80%" size="large">Hi~ 打招呼</wd-button>
+      <wd-button class="btnColor w-80%" size="large" @click="handleChatWithUser">
+        Hi~ 打招呼
+      </wd-button>
     </view>
   </view>
 </template>
@@ -128,6 +130,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+
+import {
+  TUIUserService,
+  TUIConversationService,
+  TUIStore,
+  StoreName,
+} from '@tencentcloud/chat-uikit-engine'
 
 import { useUserStore, useCommonStore } from '@/store'
 import { getOtherUserInfo, confirmFollow, cancelFollow } from '@/api/user'
@@ -170,6 +179,15 @@ const handleChangeFollow = async () => {
 const fetchOtherUserInfo = async () => {
   const resp = await getOtherUserInfo(pageParams.id)
   userData.value = resp.data
+}
+
+// 和用户聊天
+const handleChatWithUser = async () => {
+  TUIConversationService.switchConversation(`C2C${userData.value.appId}`).then(() => {
+    uni.navigateTo({
+      url: `/TUIKit/components/TUIChat/index`,
+    })
+  })
 }
 
 onLoad((params) => {

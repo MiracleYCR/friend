@@ -20,7 +20,7 @@
         </view>
         <view class="line1">
           <view>
-            {{ userData.locationName }} ·
+            {{ userData.locationCity }} ·
             {{ userData.distance ? userData.distance.toFixed(2) : '0.00' }}km
           </view>
           <view class="divider"></view>

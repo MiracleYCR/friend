@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import registerTUIKit from '@/utils/registerTUIKit'
+import registerTUIKit from '@/utils/TUIKit'
 
 onLaunch(() => {
   // 注册腾讯聊天
