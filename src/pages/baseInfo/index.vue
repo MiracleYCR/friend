@@ -301,7 +301,7 @@
             :scroll-view="true"
             :show-scrollbar="false"
           >
-            <Upload :fileList="currentAlbumList" @update-file-list="handleUpdateFileList" />
+            <Upload :fileList="originAlbumList" @update-file-list="handleUpdateFileList" />
           </z-paging>
 
           <view class="btns">
