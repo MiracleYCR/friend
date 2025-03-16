@@ -42,7 +42,7 @@ export default defineUniPages({
         iconPath: 'static/tabbar/message.png',
         selectedIconPath: 'static/tabbar/message.png',
         pagePath: 'pages/publish/index',
-        text: '发布',
+        text: '',
       },
       {
         iconPath: 'static/tabbar/xiaoxi1.png',

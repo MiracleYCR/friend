@@ -408,7 +408,9 @@ onShow(async () => {
       width: 100%;
 
       .tags {
-        gap: 10px;
+        // gap: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;

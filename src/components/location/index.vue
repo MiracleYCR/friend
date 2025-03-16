@@ -20,35 +20,46 @@
       <view class="mb-10px">
         <view class="title">热门城市</view>
         <view class="hotCity">
-          <view
-            class="cityTag"
-            v-for="(city, index) in hotCityList"
-            :key="index"
-            @click="handleSelectCity(city)"
-          >
-            {{ city.name }}
+          <view v-if="loading" class="loadingBody">
+            <wd-loading color="#fd2b58"></wd-loading>
           </view>
+          <block v-else>
+            <view
+              class="cityTag"
+              v-for="(city, index) in hotCityList"
+              :key="index"
+              @click="handleSelectCity(city)"
+            >
+              {{ city.name }}
+            </view>
+          </block>
         </view>
       </view>
 
       <view class="mt-10px">
         <view class="title">城市选项</view>
 
-        <view class="cityList">
-          <wd-index-bar sticky>
-            <view v-for="item in cityList" :key="item.index">
-              <wd-index-anchor :index="item.index" />
-              <wd-cell
-                border
-                clickable
-                v-for="city in item.data"
-                :key="city.code"
-                :title="city.name"
-                @click="handleSelectCity(city)"
-              ></wd-cell>
-            </view>
-          </wd-index-bar>
+        <view v-if="loading" class="loadingBody">
+          <wd-loading color="#fd2b58"></wd-loading>
         </view>
+
+        <block v-else>
+          <view class="cityList">
+            <wd-index-bar sticky>
+              <view v-for="item in cityList" :key="item.index">
+                <wd-index-anchor :index="item.index" />
+                <wd-cell
+                  border
+                  clickable
+                  v-for="city in item.data"
+                  :key="city.code"
+                  :title="city.name"
+                  @click="handleSelectCity(city)"
+                ></wd-cell>
+              </view>
+            </wd-index-bar>
+          </view>
+        </block>
       </view>
     </view>
   </wd-popup>
@@ -75,7 +86,8 @@ const emits = defineEmits(['updateLoactionCity'])
 
 const visible = ref(false)
 
-// 当前定位
+// 加载
+const loading = ref(false)
 const locationLoading = ref(false)
 
 // 所有城市
@@ -91,6 +103,7 @@ const customStyle = computed(() => {
 })
 
 const open = async () => {
+  loading.value = true
   visible.value = true
 
   const resp: any = await getAllCity()
@@ -109,6 +122,8 @@ const open = async () => {
       code: item.code,
     }
   })
+
+  loading.value = false
 }
 
 const close = () => {
@@ -118,7 +133,8 @@ const close = () => {
 const handleCheckLocation = async () => {
   locationLoading.value = true
   uni.getLocation({
-    type: 'wgs84',
+    // type: 'wgs84',
+    type: 'gcj02',
     success: async (res) => {
       const locationData: any = await getLocationInfo({
         latitude: res.latitude,
@@ -165,6 +181,14 @@ defineExpose({
   padding: env(safe-area-inset-top) 10px 10px 10px;
   box-sizing: border-box;
 
+  .loadingBody {
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .title {
     height: 40px;
     line-height: 40px;
@@ -173,8 +197,8 @@ defineExpose({
   }
 
   .hotCity {
+    // gap: 10px;
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
 
     .cityTag {
@@ -186,6 +210,8 @@ defineExpose({
       box-sizing: border-box;
       font-size: 14px;
       color: #9395a4;
+      margin-right: 10px;
+      margin-bottom: 10px;
       background-color: #f2f4f8;
     }
   }

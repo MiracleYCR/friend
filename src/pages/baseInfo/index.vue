@@ -301,7 +301,7 @@
             :scroll-view="true"
             :show-scrollbar="false"
           >
-            <Upload :fileList="originAlbumList" @update-file-list="handleUpdateFileList" />
+            <Upload :fileList="currentAlbumList" @update-file-list="handleUpdateFileList" />
           </z-paging>
 
           <view class="btns">
@@ -467,7 +467,6 @@ const handleCancelEditPictures = () => {
 // 保存图片
 const handleSaveEditPictures = () => {
   originAlbumList.value = currentAlbumList.value
-  console.log(originAlbumList.value.map((item) => item.url))
   dialogVisible.value = false
 }
 
@@ -831,7 +830,7 @@ onShow(() => {
       background-color: #ffffff;
 
       .tagList {
-        gap: 10px;
+        // gap: 10px;
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
@@ -841,6 +840,8 @@ onShow(() => {
           align-items: center;
           justify-content: flex-start;
           padding: 0 8px;
+          margin-right: 10px;
+          margin-bottom: 10px;
           border-radius: 15px;
           box-sizing: border-box;
           background-color: #f2f4f8;
@@ -856,7 +857,7 @@ onShow(() => {
     .desc,
     .tags {
       .wd-form {
-        width: calc(100% - 30px);
+        width: 100%;
 
         :deep(.wd-picker__cell) {
           padding: 10px 0;

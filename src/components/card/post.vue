@@ -39,7 +39,7 @@
             <wd-img
               v-for="(image, index) in postData.postImages"
               :key="index"
-              class="w-90px h-90px rounded-5px overflow-hidden"
+              class="w-90px h-90px rounded-5px mr-5px mb-5px overflow-hidden"
               :src="image"
             ></wd-img>
           </block>
@@ -192,10 +192,9 @@ const handleGotoPostDetail = () => {
       }
 
       .content {
-        gap: 5px;
+        // gap: 5px;
         display: flex;
         flex-wrap: wrap;
-        // justify-content: flex-start;
         margin-top: 10px;
         margin-bottom: 10px;
       }

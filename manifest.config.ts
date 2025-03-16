@@ -64,6 +64,7 @@ export default defineManifestConfig({
           '<uses-permission android:name="android.permission.WAKE_LOCK"/>',
           '<uses-permission android:name="android.permission.FLASHLIGHT"/>',
           '<uses-feature android:name="android.hardware.camera"/>',
+          '<uses-permission android:name="android.permission.INTERNET"/>',
           '<uses-permission android:name="android.permission.WRITE_SETTINGS"/>',
           '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>',
           '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>',

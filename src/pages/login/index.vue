@@ -150,8 +150,8 @@ const handleLoginApp = async () => {
       })
 
       uni.getLocation({
-        // type: 'gcj02',
-        type: 'wgs84',
+        type: 'gcj02',
+        // type: 'wgs84',
         success: async (res) => {
           console.log({
             uuid: formData.uuid,

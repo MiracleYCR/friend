@@ -68,11 +68,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { useUserStore } from '@/store'
+import { useUserStore, useCommonStore } from '@/store'
 
 const userStore = useUserStore()
+const commonStore = useCommonStore()
 
 const pageType = ref('')
+
+const commonStyle = ref({
+  // paddingTop: commonStore.getDeviceStatusBarheight(),
+})
 
 const onAgree = () => {
   if (pageType.value === 'relogin') {
