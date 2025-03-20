@@ -10,8 +10,8 @@ interface loginPostData {
   uuid: string
   code: string
   phone: string
-  latitude: number
-  longitude: number
+  latitude?: number
+  longitude?: number
 }
 export const login = (postData: loginPostData) => {
   return http.post('/prod-api/app/user/login', postData)

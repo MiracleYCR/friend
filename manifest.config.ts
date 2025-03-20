@@ -68,6 +68,7 @@ export default defineManifestConfig({
           '<uses-permission android:name="android.permission.WRITE_SETTINGS"/>',
           '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>',
           '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>',
+          '<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>',
         ],
       },
       /* ios打包配置 */
