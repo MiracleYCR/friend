@@ -80,6 +80,8 @@
     </view>
 
     <LocationComp ref="locationRef" @updateLoactionCity="handleUpdateLocationCity" />
+
+    <AppTabbar />
   </view>
 </template>
 
@@ -92,9 +94,10 @@ import { generateAgeRanges } from '@/utils'
 import { setPagePadding } from '@/hooks/useSafeInset'
 
 import UserCard from '@/components/card/user.vue'
+import AppTabbar from '@/components/tabbar/index.vue'
 import LocationComp from '@/components/location/index.vue'
 
-const { pagePadding } = setPagePadding()
+const { pagePadding } = setPagePadding(0, 0, 80, 0)
 
 const userStore: any = useUserStore()
 
@@ -211,6 +214,9 @@ watch(
 )
 
 onMounted(() => {
+  // 隐藏默认tabbar
+  uni.hideTabBar({ animation: false })
+
   fetchBannerList()
 })
 </script>

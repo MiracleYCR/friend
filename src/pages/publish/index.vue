@@ -47,8 +47,10 @@
       :actions="publishActionPanels"
       :close-on-click-modal="false"
       @select="handleSelectAction"
-      @cancel="handleCancelAction"
+      @cancel="handleBack"
     />
+
+    <AppTabbar v-show="tabbarVisible" />
   </view>
 </template>
 
@@ -60,8 +62,11 @@ import { getLocationInfo } from '@/api/common/index'
 import { setPagePadding } from '@/hooks/useSafeInset'
 
 import Upload from '@/components/upload/index.vue'
+import AppTabbar from '@/components/tabbar/index.vue'
 
 const { pagePadding } = setPagePadding(0, 15, 0, 15)
+
+const tabbarVisible = ref(true)
 
 // 发帖类型
 const selectType = ref('')
@@ -109,12 +114,12 @@ const handleReset = () => {
   postData.postMedia = []
 
   selectType.value = ''
+  tabbarVisible.value = true
   publishActionShow.value = false
 }
 
 const handleBack = () => {
   handleReset()
-  uni.showTabBar({ animation: false })
   uni.switchTab({ url: '/pages/connect/index' })
 }
 
@@ -138,21 +143,18 @@ const handleSubmitPost = async () => {
   handleBack()
 }
 
-// 关闭选择框
-const handleCancelAction = () => {
-  publishActionShow.value = false
-  handleBack()
-}
-
 // 选择发布类型
 const handleSelectAction = ({ item, index }) => {
-  console.log(item)
+  tabbarVisible.value = false
   selectType.value = item.index
 }
 
+onMounted(() => {
+  uni.hideTabBar({ animation: false })
+})
+
 onShow(() => {
   publishActionShow.value = true
-  uni.hideTabBar({ animation: false })
 })
 </script>
 

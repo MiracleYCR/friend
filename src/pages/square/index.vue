@@ -24,18 +24,21 @@
         </view>
       </z-paging>
     </view>
+
+    <AppTabbar />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 import { getSquarePostList } from '@/api/post'
 import { setPagePadding } from '@/hooks/useSafeInset'
 
 import PostCard from '@/components/card/post.vue'
+import AppTabbar from '@/components/tabbar/index.vue'
 
-const { pagePadding } = setPagePadding(0, 15, 0, 15)
+const { pagePadding } = setPagePadding(0, 15, 80, 15)
 
 // tab页
 const tab = ref<string>('square')
@@ -55,6 +58,11 @@ const queryPostListData = async () => {
 
 watch(tab, (n) => {
   queryPostListData()
+})
+
+onMounted(() => {
+  // 隐藏默认tabbar
+  uni.hideTabBar({ animation: false })
 })
 </script>
 
@@ -99,7 +107,7 @@ watch(tab, (n) => {
 
   .body {
     flex: 1;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     box-sizing: border-box;
   }
 }

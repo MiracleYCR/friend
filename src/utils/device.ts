@@ -1,4 +1,3 @@
-// 获取设备状态栏高度
 export const getDeviceSafePadding = () => {
   const deviceInfo: any = uni.getSystemInfoSync()
 

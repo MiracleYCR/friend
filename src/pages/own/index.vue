@@ -111,6 +111,8 @@
         </view>
       </view>
     </view>
+
+    <AppTabbar />
   </view>
 </template>
 
@@ -122,7 +124,9 @@ import { useUserStore } from '@/store'
 import { getOwnUserInfo } from '@/api/user'
 import { setPagePadding } from '@/hooks/useSafeInset'
 
-const { pagePadding } = setPagePadding(0, 15, 0, 15)
+import AppTabbar from '@/components/tabbar/index.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 80, 15)
 
 const userStore: any = useUserStore()
 
@@ -174,6 +178,11 @@ const handleGotoSettings = () => {
     url: '/pages/settings/index',
   })
 }
+
+onMounted(() => {
+  // 隐藏默认tabbar
+  uni.hideTabBar({ animation: false })
+})
 
 onShow(async () => {
   // 获取更新app用户信息

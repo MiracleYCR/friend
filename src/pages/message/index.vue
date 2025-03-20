@@ -65,14 +65,18 @@
         </view>
       </view>
     </wd-overlay>
+
+    <AppTabbar />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { setPagePadding } from '@/hooks/useSafeInset'
 
-const { pagePadding } = setPagePadding(0, 15, 0, 15)
+import AppTabbar from '@/components/tabbar/index.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 80, 15)
 
 const handleCheckMessageNotice = () => {
   uni.navigateTo({
@@ -84,6 +88,11 @@ const dialogVisible = ref<boolean>(false)
 const handleCheckMessage = () => {
   dialogVisible.value = true
 }
+
+onMounted(() => {
+  // 隐藏默认tabbar
+  uni.hideTabBar({ animation: false })
+})
 </script>
 
 <style lang="scss" scoped>
@@ -116,7 +125,7 @@ const handleCheckMessage = () => {
 
   .body {
     flex: 1;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     box-sizing: border-box;
 
     .list_scroll {

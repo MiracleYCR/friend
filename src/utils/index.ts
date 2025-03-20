@@ -1,4 +1,4 @@
-import { pages, subPackages, tabBar } from '@/pages.json'
+import { pages, subPackages } from '@/pages.json'
 import { isMpWeixin } from './platform'
 
 const getLastPage = () => {
@@ -10,18 +10,18 @@ const getLastPage = () => {
 }
 
 /** 判断当前页面是否是tabbar页  */
-export const getIsTabbar = () => {
-  if (!tabBar) {
-    return false
-  }
-  if (!tabBar.list.length) {
-    // 通常有tabBar的话，list不能有空，且至少有2个元素，这里其实不用处理
-    return false
-  }
-  const lastPage = getLastPage()
-  const currPath = lastPage.route
-  return !!tabBar.list.find((e) => e.pagePath === currPath)
-}
+// export const getIsTabbar = () => {
+//   if (!tabBar) {
+//     return false
+//   }
+//   if (!tabBar.list.length) {
+//     // 通常有tabBar的话，list不能有空，且至少有2个元素，这里其实不用处理
+//     return false
+//   }
+//   const lastPage = getLastPage()
+//   const currPath = lastPage.route
+//   return !!tabBar.list.find((e) => e.pagePath === currPath)
+// }
 
 /**
  * 获取当前页面路由的 path 路径和 redirectPath 路径
