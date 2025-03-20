@@ -1,5 +1,5 @@
 <template>
-  <view class="black_contianer">
+  <view class="black_contianer" :style="{ padding: pagePadding }">
     <z-paging
       class="list_scroll"
       :fixed="false"
@@ -16,6 +16,9 @@
 
 <script lang="ts" setup>
 import UserCard from '@/components/card/user3.vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 </script>
 
 <style lang="scss" scoped>
@@ -30,7 +33,6 @@ import UserCard from '@/components/card/user3.vue'
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .list_scroll {
     flex: 1;

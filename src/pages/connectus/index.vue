@@ -1,5 +1,5 @@
 <template>
-  <view class="connectus_contianer">
+  <view class="connectus_contianer" :style="{ padding: pagePadding }">
     <view class="link">
       <view class="iconBg">
         <wd-img class="w-30px h-30px" src="/static/images/phone.png"></wd-img>
@@ -15,7 +15,11 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
+</script>
 
 <style lang="scss" scoped>
 .connectus_contianer {
@@ -29,7 +33,6 @@
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .link {
     height: 170px;

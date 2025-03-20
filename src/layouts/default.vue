@@ -15,3 +15,5 @@ const themeVars: ConfigProviderThemeVars = {
   // buttonPrimaryColor: '#07c160',
 }
 </script>
+
+<style lang="scss"></style>

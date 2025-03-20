@@ -1,5 +1,5 @@
 <template>
-  <view class="policy_contianer">
+  <view class="policy_contianer" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">
@@ -23,6 +23,9 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getPolicyDetail } from '@/api/policy'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const policyTitle = ref<string>('')
 const htmlContent = ref<string>('')
@@ -63,7 +66,6 @@ onLoad(async (params) => {
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .header {
     width: 100%;

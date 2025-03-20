@@ -1,5 +1,5 @@
 <template>
-  <view class="inviteList">
+  <view class="inviteList_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-icon class="back" name="arrow-left" size="18px" @click="handleBack"></wd-icon>
       <view class="title">我的邀请</view>
@@ -13,14 +13,18 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <view class="card" v-for="(item, index) in inviteList" :key="index">
-          <UserCard :data="item" />
-        </view>
+        <block v-if="inviteList.length > 0">
+          <view class="card" v-for="(item, index) in inviteList" :key="index">
+            <UserCard :data="item" />
+          </view>
+        </block>
 
-        <!-- <view class="empty">
-          <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
-          暂无数据
-        </view> -->
+        <block v-else>
+          <view class="empty">
+            <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
+            暂无数据
+          </view>
+        </block>
       </z-paging>
     </view>
   </view>
@@ -29,8 +33,11 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { myInviteList } from '@/api/invite'
+import { setPagePadding } from '@/hooks/useSafeInset'
 
 import UserCard from '@/components/card/user4.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const inviteList = ref([])
 
@@ -38,14 +45,18 @@ const handleBack = () => {
   uni.navigateBack()
 }
 
-onMounted(async () => {
-  const { rows } = await myInviteList()
-  inviteList.value = rows
+const queryInviteList = async () => {
+  // const { rows }: any = await myInviteList()
+  // inviteList.value = rows
+}
+
+onMounted(() => {
+  queryInviteList()
 })
 </script>
 
 <style lang="scss" scoped>
-.inviteList {
+.inviteList_container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -55,7 +66,6 @@ onMounted(async () => {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .header {
     width: 100%;

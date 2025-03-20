@@ -1,5 +1,5 @@
 <template>
-  <view class="systemauth_contianer">
+  <view class="systemauth_contianer" :style="{ padding: pagePadding }">
     <view class="link">
       <view class="iconBg">
         <wd-img class="w-24px h-24px" src="/static/images/system1.png"></wd-img>
@@ -34,7 +34,11 @@
   </view>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
+</script>
 
 <style lang="scss" scoped>
 .systemauth_contianer {
@@ -48,7 +52,6 @@
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .link {
     height: 75px;

@@ -1,5 +1,5 @@
 <template>
-  <view class="message_container">
+  <view class="message_container" :style="{ padding: pagePadding }">
     <view class="header">消息</view>
 
     <view class="body">
@@ -70,6 +70,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const handleCheckMessageNotice = () => {
   uni.navigateTo({
@@ -97,7 +100,6 @@ const handleCheckMessage = () => {
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
   .header {

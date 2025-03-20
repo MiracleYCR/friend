@@ -1,5 +1,5 @@
 <template>
-  <view class="own_container">
+  <view class="own_container" :style="{ padding: pagePadding }">
     <view class="setting">
       <wd-img class="icon" src="/static/images/message.png" @click="handleTest"></wd-img>
       <wd-img class="icon" src="/static/images/settings.png" @click="handleGotoSettings"></wd-img>
@@ -120,6 +120,9 @@ import { onShow } from '@dcloudio/uni-app'
 
 import { useUserStore } from '@/store'
 import { getOwnUserInfo } from '@/api/user'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const userStore: any = useUserStore()
 
@@ -166,38 +169,6 @@ const handleGotoPolicy = (code: string) => {
   })
 }
 
-const handleTest = async () => {
-  // TUICore.callService({
-  //   serviceName: TUIConstants.TUIContact.SERVICE.NAME,
-  //   method: TUIConstants.TUIContact.SERVICE.METHOD.SELECT_FRIEND,
-  //   params: {
-  //     title: item.text,
-  //     isRadio: item.data.name !== CONV_CREATE_TYPE.TYPEGROUP,
-  //     isNeedSearch: !TUIStore.getData(StoreName.APP, 'isOfficial'),
-  //   },
-  //   callback: async (memberList: any[]) => {
-  //     if (!memberList || memberList.length === 0) {
-  //       // Return to the previous page
-  //       return this.routerForward(null)
-  //     }
-  //     if (item.data.name === CONV_CREATE_TYPE.TYPEGROUP) {
-  //       // After selecting members, if you want to create a group chat, you need to create a group
-  //       this.createGroup(memberList)
-  //     } else {
-  //       const { userID } = memberList[0]
-  //       // Generate Conversation
-  //       await this.generateConversation(`C2C${userID}`)
-  //       this.routerForward(`C2C${userID}`)
-  //     }
-  //   },
-  // })
-  // loginTUIKit()
-  // uni.navigateTo({
-  //   // url: '/TUIKit/components/TUIChat/index',
-  //   url: '/pages/views/login',
-  // })
-}
-
 const handleGotoSettings = () => {
   uni.navigateTo({
     url: '/pages/settings/index',
@@ -220,7 +191,6 @@ onShow(async () => {
   right: 0;
   overflow: hidden;
   box-sizing: border-box;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;

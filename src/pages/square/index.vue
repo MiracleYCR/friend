@@ -1,5 +1,5 @@
 <template>
-  <view class="square_container">
+  <view class="square_container" :style="{ padding: pagePadding }">
     <view class="tab_wrapper">
       <wd-tabs class="tab" v-model="tab">
         <wd-tab title="关注" name="follow"></wd-tab>
@@ -31,7 +31,11 @@
 import { ref, watch } from 'vue'
 
 import { getSquarePostList } from '@/api/post'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
 import PostCard from '@/components/card/post.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 // tab页
 const tab = ref<string>('square')
@@ -65,7 +69,6 @@ watch(tab, (n) => {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;

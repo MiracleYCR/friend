@@ -1,5 +1,5 @@
 <template>
-  <view class="login">
+  <view class="login_container" :style="{ padding: pagePadding }">
     <block v-if="showWelcome">
       <view :animation="animationData" class="weclome">
         <view class="title">欢迎来到梦缘婚恋</view>
@@ -81,8 +81,10 @@ import { reactive, onMounted, computed, onBeforeUnmount } from 'vue'
 import { getDataMap } from '@/api/common'
 import { getOwnUserInfo } from '@/api/user'
 import { getSmsCode, login } from '@/api/login'
-
 import { useUserStore, useCommonStore } from '@/store'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(20, 15, 20, 15)
 
 // 用户 pinia
 const userStore = useUserStore()
@@ -230,7 +232,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.login {
+.login_container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -242,7 +244,6 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: calc(env(safe-area-inset-top) + 20px) 15px 20px 15px;
   background-image: url('../../static/images/background4.png');
 
   .weclome {

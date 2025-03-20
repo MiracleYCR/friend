@@ -1,5 +1,5 @@
 <template>
-  <view class="vip_container">
+  <view class="vip_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">开通会员</view>
@@ -119,6 +119,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding()
 
 const isCheck = ref(false)
 
@@ -141,7 +144,6 @@ const handleBack = () => {
   background-color: #f3f5f6;
   background-size: 100% 256px;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 0 0 0;
   background-image: url('../../static/images/background3.png');
 
   .header {

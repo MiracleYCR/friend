@@ -1,5 +1,5 @@
 <template>
-  <view class="autoapply_container">
+  <view class="autoapply_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">自动回复</view>
@@ -70,7 +70,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const isManage = ref(false)
 const curDeletIndex = ref(0)
@@ -78,6 +81,7 @@ const autoApplyList = ref([])
 
 const dialogVisible = ref<boolean>(false)
 
+// 返回
 const handleBack = () => {
   uni.navigateBack()
 }
@@ -143,7 +147,6 @@ const handleCancelManage = () => {
   background-color: #f3f5f6;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .header {
     width: 100%;

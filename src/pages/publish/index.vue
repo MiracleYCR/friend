@@ -1,5 +1,5 @@
 <template>
-  <view class="publish">
+  <view class="publish_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-icon class="back" name="close" size="16px" @click="handleBack"></wd-icon>
       <view class="title">发帖</view>
@@ -57,8 +57,11 @@ import { onShow } from '@dcloudio/uni-app'
 
 import { addPost } from '@/api/post/index'
 import { getLocationInfo } from '@/api/common/index'
+import { setPagePadding } from '@/hooks/useSafeInset'
 
 import Upload from '@/components/upload/index.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 // 发帖类型
 const selectType = ref('')
@@ -154,7 +157,7 @@ onShow(() => {
 </script>
 
 <style lang="scss" scoped>
-.publish {
+.publish_container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -166,7 +169,6 @@ onShow(() => {
   box-sizing: border-box;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
   .header {

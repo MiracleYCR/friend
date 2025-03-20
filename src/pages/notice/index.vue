@@ -1,5 +1,5 @@
 <template>
-  <view class="notice_container">
+  <view class="notice_container" :style="{ padding: pagePadding }">
     <z-paging
       class="list_scroll"
       :fixed="false"
@@ -15,7 +15,10 @@
 </template>
 
 <script lang="ts" setup>
+import { setPagePadding } from '@/hooks/useSafeInset'
 import NoticeCard from '@/components/card/notice.vue'
+
+const { pagePadding } = setPagePadding()
 </script>
 
 <style lang="scss" scoped>

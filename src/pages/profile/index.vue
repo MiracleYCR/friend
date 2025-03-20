@@ -1,5 +1,5 @@
 <template>
-  <view class="profile_container">
+  <view class="profile_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">
@@ -139,8 +139,12 @@ import {
 } from '@tencentcloud/chat-uikit-engine'
 
 import { useUserStore, useCommonStore } from '@/store'
+import { setPagePadding } from '@/hooks/useSafeInset'
 import { getOtherUserInfo, confirmFollow, cancelFollow } from '@/api/user'
+
 import PostCard from '@/components/card/post.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const userStore: any = useUserStore()
 const commonStore: any = useCommonStore()
@@ -182,7 +186,7 @@ const fetchOtherUserInfo = async () => {
 }
 
 // 和用户聊天
-const handleChatWithUser = async () => {
+const handleChatWithUser = () => {
   TUIConversationService.switchConversation(`C2C${userData.value.appId}`).then(() => {
     uni.navigateTo({
       url: `/TUIKit/components/TUIChat/index`,
@@ -190,12 +194,7 @@ const handleChatWithUser = async () => {
   })
 }
 
-onLoad((params) => {
-  pageParams.id = params.id
-  pageParams.isOwn = params.type === 'own'
-})
-
-onShow(async () => {
+const queryUserInfoData = async () => {
   try {
     loading.value = true
 
@@ -216,6 +215,15 @@ onShow(async () => {
   } catch (err) {
     loading.value = false
   }
+}
+
+onLoad((params) => {
+  pageParams.id = params.id
+  pageParams.isOwn = params.type === 'own'
+})
+
+onShow(() => {
+  queryUserInfoData()
 })
 </script>
 
@@ -232,7 +240,6 @@ onShow(async () => {
   box-sizing: border-box;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
   .btnColor {

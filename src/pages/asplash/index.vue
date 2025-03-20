@@ -1,5 +1,5 @@
 <template>
-  <view class="asplash">
+  <view class="asplash_container" :style="{ padding: pagePadding }">
     <view class="content">
       <wd-img class="w-48px h-48px mb-10px" src="/static/images/bell.png"></wd-img>
       <view class="title">温馨提示</view>
@@ -68,16 +68,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { useUserStore, useCommonStore } from '@/store'
+
+import { useUserStore } from '@/store'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(20, 15, 20, 15)
 
 const userStore = useUserStore()
-const commonStore = useCommonStore()
 
 const pageType = ref('')
-
-const commonStyle = ref({
-  // paddingTop: commonStore.getDeviceStatusBarheight(),
-})
 
 const onAgree = () => {
   if (pageType.value === 'relogin') {
@@ -120,7 +119,7 @@ onLoad((params) => {
 </script>
 
 <style lang="scss" scoped>
-.asplash {
+.asplash_container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -133,7 +132,6 @@ onLoad((params) => {
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: calc(env(safe-area-inset-top) + 20px) 15px 20px 15px;
   background-image: url('../../static/images/background.png');
 
   .content {

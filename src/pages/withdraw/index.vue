@@ -1,5 +1,5 @@
 <template>
-  <view class="withdraw_container">
+  <view class="withdraw_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">提现</view>
@@ -56,6 +56,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const amt = ref('')
 
@@ -89,7 +92,6 @@ const handleChangePayment = (type: string) => {
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
   .header {

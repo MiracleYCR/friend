@@ -1,5 +1,5 @@
 <template>
-  <view class="validate_container">
+  <view class="validate_container" :style="{ padding: pagePadding }">
     <view class="validate_item">
       <view class="iconBg active">
         <wd-img class="w-30px h-30px" src="/static/images/phone.png"></wd-img>
@@ -39,6 +39,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const handleGotoBindPhone = () => {
   uni.navigateTo({
@@ -63,7 +66,6 @@ const handleGotoRealCheck = () => {
   overflow: hidden;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 15px 0 15px;
 
   .validate_item {
     width: 100%;

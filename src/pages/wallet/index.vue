@@ -1,5 +1,5 @@
 <template>
-  <view class="wallet_container">
+  <view class="wallet_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">我的钱包</view>
@@ -75,6 +75,10 @@
 </template>
 
 <script lang="ts" setup>
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
+
 const handleBack = () => {
   uni.navigateBack()
 }
@@ -94,7 +98,6 @@ const handleBack = () => {
   background-color: #f3f5f6;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: env(safe-area-inset-top) 15px 0 15px;
   background-image: url('../../static/images/background.png');
 
   .header {

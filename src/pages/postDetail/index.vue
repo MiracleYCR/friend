@@ -1,5 +1,5 @@
 <template>
-  <view class="postDetail_container">
+  <view class="postDetail_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">动态详情</view>
@@ -68,9 +68,12 @@
 import { ref, onMounted } from 'vue'
 import { checkPost, commendPost } from '@/api/post'
 import { useUserStore, useCommonStore } from '@/store'
+import { setPagePadding } from '@/hooks/useSafeInset'
 
 import PostCard from '@/components/card/post.vue'
 import CommentComp from '@/components/comment/index.vue'
+
+const { pagePadding } = setPagePadding()
 
 const userStore: any = useUserStore()
 
@@ -173,7 +176,6 @@ onLoad((params) => {
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  padding: env(safe-area-inset-top) 0 0 0;
 
   .header {
     width: 100%;

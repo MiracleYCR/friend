@@ -1,5 +1,5 @@
 <template>
-  <view class="suggestion_container">
+  <view class="suggestion_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">建议反馈</view>
@@ -19,6 +19,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { submitAdvice } from '@/api/common'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const content = ref('')
 
@@ -51,7 +54,6 @@ const handleSumbitSuggesgtion = async () => {
   background-color: #f3f5f6;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .header {
     width: 100%;

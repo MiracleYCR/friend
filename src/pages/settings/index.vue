@@ -1,5 +1,5 @@
 <template>
-  <view class="settings_contianer">
+  <view class="settings_contianer" :style="{ padding: pagePadding }">
     <view class="options">
       <z-paging
         class="list_scroll"
@@ -81,6 +81,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/store'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const userStore: any = useUserStore()
 
@@ -108,7 +111,6 @@ const handleLogout = () => {
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .options {
     flex: 1;

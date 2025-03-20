@@ -1,5 +1,5 @@
 <template>
-  <view class="search">
+  <view class="search_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <wd-search
@@ -48,8 +48,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+
+import { setPagePadding } from '@/hooks/useSafeInset'
 import { getConnectUserList } from '@/api/connect/index'
+
 import UserCard from '@/components/card/user2.vue'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const loading = ref(false)
 
@@ -80,7 +85,7 @@ onShow(() => {
 </script>
 
 <style lang="scss" scoped>
-.search {
+.search_container {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -90,7 +95,6 @@ onShow(() => {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 10px 0 15px;
   box-sizing: border-box;
 
   .header {

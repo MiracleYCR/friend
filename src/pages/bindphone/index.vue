@@ -1,5 +1,5 @@
 <template>
-  <view class="bindphone_container">
+  <view class="bindphone_container" :style="{ padding: pagePadding }">
     <view class="curPhone">现绑定手机号184****6881</view>
 
     <view class="form">
@@ -35,6 +35,10 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
+
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const form = reactive({
   phone: '',

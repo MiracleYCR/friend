@@ -1,5 +1,5 @@
 <template>
-  <view class="baseInfo_container">
+  <view class="baseInfo_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">基本资料</view>
@@ -318,14 +318,17 @@
 import dayjs from 'dayjs'
 import { ref, reactive } from 'vue'
 import { useUserStore } from '@/store'
-import {} from '@/store/common'
 import { onShow } from '@dcloudio/uni-app'
 
 import { getCityTree } from '@/api/common'
 import { setOwnUserInfo } from '@/api/user'
 
 import useConfig from './config'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
 import Upload from '@/components/upload/index.vue'
+
+const { pagePadding } = setPagePadding()
 
 // pinia
 const userStore: any = useUserStore()

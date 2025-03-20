@@ -1,5 +1,5 @@
 <template>
-  <view class="connect_container">
+  <view class="connect_container" :style="{ padding: pagePadding }">
     <view class="search">
       <view class="city" @click="handleOpenLocation">
         {{ currentLocation.name }}
@@ -89,8 +89,12 @@ import { useUserStore } from '@/store'
 import { getBannerList, getConnectUserList } from '@/api/connect'
 
 import { generateAgeRanges } from '@/utils'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
 import UserCard from '@/components/card/user.vue'
 import LocationComp from '@/components/location/index.vue'
+
+const { pagePadding } = setPagePadding()
 
 const userStore: any = useUserStore()
 
@@ -222,7 +226,6 @@ onMounted(() => {
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  padding: env(safe-area-inset-top) 0 0 0;
   background-repeat: no-repeat;
   background-color: #f3f5f6;
   background-image: url('../../static/images/background2.png');

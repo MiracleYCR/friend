@@ -1,5 +1,5 @@
 <template>
-  <view class="person_container">
+  <view class="person_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">{{ title }}</view>
@@ -34,9 +34,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import { setPagePadding } from '@/hooks/useSafeInset'
+import { getMyFollowList, getFollowMeList, getMutualList, getVisiteMeList } from '@/api/user'
+
 import UserCard from '@/components/card/user2.vue'
 
-import { getMyFollowList, getFollowMeList, getMutualList, getVisiteMeList } from '@/api/user'
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const titleList = {
   1: '我的关注',
@@ -80,7 +83,6 @@ onLoad((params) => {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: env(safe-area-inset-top) 10px 0 15px;
 
   .header {
     width: 100%;

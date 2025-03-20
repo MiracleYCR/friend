@@ -1,5 +1,5 @@
 <template>
-  <view class="realcheck_container">
+  <view class="realcheck_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
       <view class="title">实名认证</view>
@@ -85,6 +85,9 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { realCheck } from '@/api/common'
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 15, 0, 15)
 
 const formData = reactive({
   name: '',
@@ -133,7 +136,6 @@ const handleStay = () => {
   display: flex;
   flex-direction: column;
   background-color: #f3f5f6;
-  padding: env(safe-area-inset-top) 15px 0 15px;
 
   .header {
     width: 100%;
@@ -296,7 +298,7 @@ const handleStay = () => {
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-evenly;
         margin-top: 10px;
 
         .cancel {

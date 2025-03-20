@@ -74,6 +74,7 @@
     "readonly": true,
     "ref": true,
     "resolveComponent": true,
+    "setPagePadding": true,
     "shallowReactive": true,
     "shallowReadonly": true,
     "shallowRef": true,
@@ -84,7 +85,6 @@
     "triggerRef": true,
     "unref": true,
     "useAttrs": true,
-    "useColPickerData": true,
     "useCssModule": true,
     "useCssVars": true,
     "useId": true,
@@ -96,8 +96,6 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true,
-    "async": true,
-    "usePickAreaData": true
+    "watchSyncEffect": true
   }
 }
