@@ -30,7 +30,7 @@
       >
         <block v-if="!loading && searchUserList.length > 0">
           <view class="card" v-for="(user, index) in searchUserList" :key="index">
-            <UserCard :userData="user" />
+            <UserCard :userData="user" @click="handleGotoProfile(user)" />
           </view>
         </block>
 
@@ -77,6 +77,12 @@ const handleSearchUserList = async () => {
   userListRef.value.complete(searchUserList.value)
 
   loading.value = false
+}
+
+const handleGotoProfile = (userData: any) => {
+  uni.navigateTo({
+    url: `/pages/profile/index?type=other&id=${userData.userId}`,
+  })
 }
 
 onShow(() => {

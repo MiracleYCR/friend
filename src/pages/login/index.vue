@@ -81,8 +81,11 @@ import { reactive, onMounted, computed, onBeforeUnmount } from 'vue'
 import { getDataMap } from '@/api/common'
 import { getOwnUserInfo } from '@/api/user'
 import { getSmsCode, login } from '@/api/login'
+
 import { useUserStore, useCommonStore } from '@/store'
 import { setPagePadding } from '@/hooks/useSafeInset'
+
+import registerTUIKit from '@/utils/TUIKit'
 
 const { pagePadding } = setPagePadding(20, 15, 20, 15)
 
@@ -181,6 +184,9 @@ const handleLoginApp = async () => {
           // 获取枚举
           const dataMapResp: any = await getDataMap()
           commonStore.setDataMap(dataMapResp.data)
+
+          // 注册TUIKit
+          registerTUIKit(userInfoResp.data.appId)
 
           uni.hideLoading()
 

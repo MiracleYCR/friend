@@ -1,12 +1,13 @@
 <template>
   <view class="own_container" :style="{ padding: pagePadding }">
     <view class="setting">
-      <wd-img class="icon" src="/static/images/message.png" @click="handleTest"></wd-img>
+      <wd-img class="icon" src="/static/images/message.png"></wd-img>
       <wd-img class="icon" src="/static/images/settings.png" @click="handleGotoSettings"></wd-img>
     </view>
 
     <view class="own">
       <wd-img class="avatar" :src="userStore.userInfo.avatar"></wd-img>
+
       <view class="info">
         <view class="left">
           <view class="name">{{ userStore.userInfo.nickName }}</view>
