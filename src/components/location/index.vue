@@ -1,6 +1,6 @@
 <template>
   <wd-popup v-model="visible" :position="position" :custom-style="customStyle">
-    <view class="location_container">
+    <view class="location_container" :style="{ padding: pagePadding }">
       <view class="mb-10px">
         <view class="title">重新定位</view>
 
@@ -72,6 +72,10 @@ import { defineProps, defineExpose, PropType, defineEmits } from 'vue'
 
 import { setOwnUserInfo, getOwnUserInfo } from '@/api/user'
 import { getLocationInfo, getAllCity, getHotCity } from '@/api/common/index'
+
+import { setPagePadding } from '@/hooks/useSafeInset'
+
+const { pagePadding } = setPagePadding(0, 10, 10, 10)
 
 const userStore: any = useUserStore()
 
@@ -178,7 +182,6 @@ defineExpose({
 
 <style lang="scss" scoped>
 .location_container {
-  padding: env(safe-area-inset-top) 10px 10px 10px;
   box-sizing: border-box;
 
   .loadingBody {
