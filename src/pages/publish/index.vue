@@ -89,8 +89,8 @@ const locationLoading = ref(false)
 const handleCheckLocation = () => {
   locationLoading.value = true
   uni.getLocation({
-    // type: 'wgs84',
-    type: 'gcj02',
+    type: 'wgs84',
+    // type: 'gcj02',
     success: async (res) => {
       const { data }: any = await getLocationInfo({
         latitude: res.latitude,

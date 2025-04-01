@@ -178,8 +178,8 @@ const handleLoginApp = async () => {
       })
 
       uni.getLocation({
-        // type: 'gcj02',
         type: 'wgs84',
+        // type: 'gcj02',
         success: async (res) => {
           // 获取权限
           const { token }: any = await login({
