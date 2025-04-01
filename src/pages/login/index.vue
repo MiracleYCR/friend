@@ -146,26 +146,41 @@ const loginBtnEnabled = computed(() => {
   return /^1[3-9]\d{9}$/.test(formData.phone) && formData.code
 })
 
+const requestLocationPermission = () => {
+  return new Promise((resolve, reject) => {
+    if (uni.getSystemInfoSync().platform === 'android') {
+      plus.android.requestPermissions(
+        ['android.permission.ACCESS_FINE_LOCATION'],
+        (e) => {
+          if (e.deniedAlways.length > 0) {
+            reject(Error('用户永久拒绝了定位权限'))
+          } else if (e.deniedPresent.length > 0) {
+            reject(Error('用户本次拒绝了定位权限'))
+          } else {
+            resolve(true)
+          }
+        },
+        (err) => {
+          reject(err)
+        },
+      )
+    } else {
+      resolve(true) // iOS 处理
+    }
+  })
+}
 const handleLoginApp = async () => {
   if (formData.agree) {
-    try {
+    requestLocationPermission().then(() => {
       uni.showLoading({
         title: '用户登录中...',
         mask: true,
       })
 
       uni.getLocation({
-        type: 'gcj02',
-        // type: 'wgs84',
+        // type: 'gcj02',
+        type: 'wgs84',
         success: async (res) => {
-          console.log({
-            uuid: formData.uuid,
-            code: formData.code,
-            phone: formData.phone,
-            latitude: res.latitude,
-            longitude: res.longitude,
-          })
-
           // 获取权限
           const { token }: any = await login({
             uuid: formData.uuid,
@@ -196,7 +211,7 @@ const handleLoginApp = async () => {
           console.error('获取位置信息失败', err)
         },
       })
-    } catch (err) {}
+    })
   } else {
     uni.showToast({
       icon: 'none',

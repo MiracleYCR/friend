@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { TUILogin } from '@tencentcloud/tui-core'
 
 export const useUserStore = defineStore(
   'user',
@@ -20,8 +21,15 @@ export const useUserStore = defineStore(
     }
 
     const logout = () => {
-      token.value = ''
-      userInfo.value = {}
+      TUILogin.logout()
+        .then(() => {
+          token.value = ''
+          userInfo.value = {}
+        })
+        .catch(() => {
+          token.value = ''
+          userInfo.value = {}
+        })
     }
     const isLogined = computed(() => !!token.value)
 
