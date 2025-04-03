@@ -33,10 +33,11 @@
           </view>
           <view class="right">
             <view
-              v-if="userStore.userInfo.userId !== userData.userId && !userData.hasFollow"
-              class="focus"
+              v-if="userStore.userInfo.userId !== userData.userId"
+              :class="[userData.hasFollow ? 'unFocus' : 'focus']"
+              @click="handleChangeFollow"
             >
-              关注
+              {{ userData.hasFollow ? '取消关注' : '关注' }}
             </view>
             <wd-img
               v-if="canShare"
@@ -56,6 +57,7 @@
               :key="index"
               class="w-90px h-90px rounded-5px mr-5px mb-5px overflow-hidden"
               :src="image"
+              @click="handlePreviewImage(postData.postImages, index)"
             ></wd-img>
           </block>
 
@@ -92,11 +94,12 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 import { useUserStore } from '@/store'
+import { defineProps, defineEmits } from 'vue'
 import DomVideoPlayer from 'uniapp-video-player'
 
 import { likePost } from '@/api/post'
+import { confirmFollow, cancelFollow } from '@/api/user'
 
 const userStore: any = useUserStore()
 
@@ -122,7 +125,7 @@ const props = defineProps({
   },
 })
 
-console.log(props.userData)
+const emits = defineEmits(['refreshData'])
 
 const handleLikePost = () => {
   likePost({ postId: props.postData.id })
@@ -139,6 +142,24 @@ const handleGotoProfile = () => {
       url: `/pages/profile/index?type=other&id=${props.userData.userId}`,
     })
   }
+}
+
+// 切换关注状态
+const handleChangeFollow = async () => {
+  if (props.userData.hasFollow) {
+    await cancelFollow(props.userData.userId)
+  } else {
+    await confirmFollow(props.userData.userId)
+  }
+  emits('refreshData')
+}
+
+// 预览图片
+const handlePreviewImage = (imageList: any[], currentIndex: number) => {
+  uni.previewImage({
+    current: currentIndex,
+    urls: imageList,
+  })
 }
 
 const handleGotoPostDetail = () => {
@@ -198,15 +219,32 @@ const handleGotoPostDetail = () => {
           align-items: center;
           justify-content: flex-end;
           .focus {
-            width: 50px;
+            width: 60px;
             height: 22px;
+            padding: 0 5px;
+            box-sizing: border-box;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            color: #ff4d73;
-            border: 1px solid #ff4d73;
+            font-size: 10px;
+            color: #ffffff;
+            background: linear-gradient(90deg, #fe8574 0%, #fd1674 100%) !important;
+          }
+
+          .unFocus {
+            width: 60px;
+            height: 22px;
+            border-radius: 12px;
+            padding: 0 5px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 400;
+            color: #9395a4;
+            background-color: #f2f4f8;
           }
         }
       }

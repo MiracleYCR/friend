@@ -20,7 +20,11 @@
         @query="queryPostListData"
       >
         <view class="card" v-for="(postData, index) in postListData" :key="index">
-          <PostCard :postData="postData" :userData="postData.sysUser" />
+          <PostCard
+            :postData="postData"
+            :userData="postData.sysUser"
+            @refreshData="queryPostListData"
+          />
         </view>
       </z-paging>
     </view>

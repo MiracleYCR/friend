@@ -108,6 +108,7 @@
               :key="index"
               :postData="item"
               :userData="userData"
+              @refreshData="fetchOtherUserInfo"
             />
           </block>
 

@@ -20,6 +20,7 @@
             :canNavigate="false"
             :postData="postData"
             :userData="userData"
+            @refreshData="queryPostDetailData"
           />
         </view>
 
