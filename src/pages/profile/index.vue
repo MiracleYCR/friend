@@ -361,12 +361,12 @@ onShow(() => {
         .icon1 {
           width: 45px;
           height: 15px;
+          margin-right: 5px;
         }
 
         .icon2 {
           width: 45px;
           height: 15px;
-          margin: 0 5px;
         }
 
         .base {

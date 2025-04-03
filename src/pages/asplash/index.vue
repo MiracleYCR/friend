@@ -1,5 +1,5 @@
 <template>
-  <view class="asplash_container" :style="{ padding: pagePadding }">
+  <view v-show="!isLogined" class="asplash_container" :style="{ padding: pagePadding }">
     <view class="content">
       <wd-img class="w-48px h-48px mb-10px" src="/static/images/bell.png"></wd-img>
       <view class="title">温馨提示</view>
@@ -74,7 +74,7 @@ import { setPagePadding } from '@/hooks/useSafeInset'
 
 const { pagePadding } = setPagePadding(20, 15, 20, 15)
 
-const userStore = useUserStore()
+const { isLogined } = useUserStore()
 
 const pageType = ref('')
 
@@ -84,7 +84,7 @@ const onAgree = () => {
       url: '/pages/login/index',
     })
   } else {
-    userStore.token
+    isLogined
       ? uni.switchTab({
           url: '/pages/connect/index',
         })
@@ -115,6 +115,11 @@ const handleGotoPolicy = (code: string) => {
 
 onLoad((params) => {
   pageType.value = params.type
+
+  isLogined &&
+    uni.reLaunch({
+      url: '/pages/connect/index',
+    })
 })
 </script>
 

@@ -58,7 +58,7 @@
   "pages": [
     {
       "path": "pages/asplash/index",
-      "type": "page",
+      "type": "home",
       "style": {
         "navigationStyle": "custom"
       }

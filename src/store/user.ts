@@ -25,10 +25,16 @@ export const useUserStore = defineStore(
         .then(() => {
           token.value = ''
           userInfo.value = {}
+          uni.reLaunch({
+            url: '/pages/asplash/index',
+          })
         })
         .catch(() => {
           token.value = ''
           userInfo.value = {}
+          uni.reLaunch({
+            url: '/pages/asplash/index',
+          })
         })
     }
     const isLogined = computed(() => !!token.value)

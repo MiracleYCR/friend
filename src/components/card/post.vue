@@ -1,11 +1,21 @@
 <template>
   <view class="statuscard">
-    <wd-img class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden" :src="userData.avatar" />
+    <wd-img
+      v-if="userData.avatar"
+      class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden"
+      :src="userData.avatar"
+    />
+    <view
+      v-else
+      class="w-56px h-56px mr-8px rounded-[50%] overflow-hidden bg-gray-200 flex items-center justify-center text-[10px] text-gray-400"
+    >
+      暂无头像
+    </view>
 
     <view class="body">
       <view class="top">
         <view class="info">
-          <view class="left">
+          <view class="left" @click="handleGotoProfile">
             <view class="line">
               <view class="name">{{ userData.nickName }}</view>
               <wd-img
@@ -22,7 +32,12 @@
             <view class="line2">{{ postData.createTime }}</view>
           </view>
           <view class="right">
-            <view class="focus">关注</view>
+            <view
+              v-if="userStore.userInfo.userId !== userData.userId && !userData.hasFollow"
+              class="focus"
+            >
+              关注
+            </view>
             <wd-img
               v-if="canShare"
               class="w-4px h-18px ml-10px"
@@ -78,9 +93,12 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
+import { useUserStore } from '@/store'
 import DomVideoPlayer from 'uniapp-video-player'
 
 import { likePost } from '@/api/post'
+
+const userStore: any = useUserStore()
 
 const props = defineProps({
   canShare: {
@@ -104,8 +122,23 @@ const props = defineProps({
   },
 })
 
+console.log(props.userData)
+
 const handleLikePost = () => {
   likePost({ postId: props.postData.id })
+}
+
+// 用户详情页面
+const handleGotoProfile = () => {
+  if (userStore.userInfo.userId === props.userData.userId) {
+    uni.navigateTo({
+      url: `/pages/profile/index?type=own`,
+    })
+  } else {
+    uni.navigateTo({
+      url: `/pages/profile/index?type=other&id=${props.userData.userId}`,
+    })
+  }
 }
 
 const handleGotoPostDetail = () => {
@@ -172,7 +205,6 @@ const handleGotoPostDetail = () => {
             align-items: center;
             justify-content: center;
             font-size: 13px;
-            font-weight: 500;
             color: #ff4d73;
             border: 1px solid #ff4d73;
           }

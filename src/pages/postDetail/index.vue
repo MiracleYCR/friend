@@ -29,7 +29,7 @@
         </view>
 
         <view v-if="postData.postComments && postData.postComments.length > 0" class="comment">
-          <view class="title">全部评论（10）</view>
+          <view class="title">全部评论（{{ postData.postComments.length }}）</view>
           <view class="list">
             <CommentComp
               v-for="(comment, index) in postData.postComments"

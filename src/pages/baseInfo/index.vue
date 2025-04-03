@@ -604,6 +604,23 @@ const handleGetUserData = async () => {
 const handleSaveBaseInfo = async () => {
   const formatData: any = {}
 
+  if (
+    !baseData.userDesc ||
+    !baseData.nickName ||
+    !baseData.birthday ||
+    baseData.home.length === 0 ||
+    !baseData.occupation ||
+    !baseData.monthlySalary ||
+    !baseData.datingVoices ||
+    baseData.clientUserTags.length === 0
+  ) {
+    return uni.showToast({
+      title: '请填写必填项！',
+      icon: 'none',
+      duration: 2000,
+    })
+  }
+
   Object.entries(baseData).forEach(([k, v]: any) => {
     switch (k) {
       case 'birthday':
