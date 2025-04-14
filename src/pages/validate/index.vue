@@ -14,7 +14,7 @@
             <view class="text">去换绑</view>
             <wd-icon name="arrow-right" size="12px" color="#fd1674"></wd-icon>
           </view>
-          <view class="phone">184****6881</view>
+          <view class="phone">{{ encryptPhoneNumber(userStore.userInfo.phonenumber) }}</view>
         </view>
       </view>
     </view>
@@ -38,8 +38,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { useUserStore } from '@/store'
+import { encryptPhoneNumber } from '@/utils'
 import { setPagePadding } from '@/hooks/useSafeInset'
+
+const userStore: any = useUserStore()
 
 const { pagePadding } = setPagePadding(0, 15, 0, 15)
 

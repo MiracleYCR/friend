@@ -45,7 +45,7 @@
           ></wd-text>
         </view>
 
-        <wd-button class="confirmBtn" block :disabled="nextBtnEnabled" @click="handleNextStep">
+        <wd-button class="confirmBtn" block :disabled="!nextBtnEnabled" @click="handleNextStep">
           下一步
         </wd-button>
 
@@ -112,7 +112,7 @@ const handleGotoPolicy = (code: string) => {
 }
 
 const handleNextStep = async () => {
-  await realCheck({ name: formData.name, idcard: formData.idcard })
+  await realCheck({ name: encodeURIComponent(formData.name), idcard: formData.idcard })
 }
 
 const handleLeave = () => {

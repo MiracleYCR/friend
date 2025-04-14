@@ -16,3 +16,12 @@ interface loginPostData {
 export const login = (postData: loginPostData) => {
   return http.post('/prod-api/app/user/login', postData)
 }
+
+// 换绑手机号码
+interface bindPhoneDatas {
+  uuid: string
+  phone: string
+}
+export const bindPhoneNumber = (postData: bindPhoneDatas) => {
+  return http.post('/prod-api/app/user/login', postData)
+}

@@ -190,3 +190,8 @@ export const generateAgeRanges = (start = 20, end = 50, step = 5) => {
   }
   return ranges
 }
+
+// 手机号码加密
+export const encryptPhoneNumber = (phoneNumber) => {
+  return phoneNumber.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
+}

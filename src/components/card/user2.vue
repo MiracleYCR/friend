@@ -1,6 +1,16 @@
 <template>
   <view class="user2card">
-    <wd-img class="avatar rounded-[50%] overflow-hidden" :src="userData.avatar"></wd-img>
+    <wd-img
+      v-if="userData.avatar"
+      class="w-50px h-50px mr-6px rounded-[50%] overflow-hidden"
+      :src="userData.avatar"
+    />
+    <view
+      v-else
+      class="w-50px h-50px mr-6px rounded-[50%] overflow-hidden bg-gray-200 flex items-center justify-center text-[8px] text-gray-400"
+    >
+      暂无头像
+    </view>
 
     <view class="h-100% flex-1 flex items-center justify-between">
       <view class="left">

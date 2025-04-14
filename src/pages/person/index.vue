@@ -2,28 +2,46 @@
   <view class="person_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img class="back" src="/static/images/back.png" @click="handleBack" />
-      <view class="title">{{ title }}</view>
-      <wd-img class="search" src="/static/images/search.png" />
+      <view class="title">{{ pageTitle }}</view>
+    </view>
+
+    <view class="search_wrapper">
+      <wd-search
+        placeholder-left
+        hide-cancel
+        placeholder="请输入昵称或用户ID"
+        v-model="keyword"
+        @search="handleUserList"
+      />
     </view>
 
     <view class="list">
       <z-paging
         class="list_scroll"
+        ref="userListRef"
         :fixed="false"
         :scroll-y="true"
         :scroll-view="true"
         :show-scrollbar="false"
+        v-model="listData"
+        :show-loading-more-no-more-view="listData.length > 0"
+        refresher-complete-text="刷新完成"
+        refresher-default-text="下拉刷新"
+        refresher-pulling-text="释放刷新"
+        refresher-refreshing-text="加载中..."
+        loading-more-no-more-text="没有更多数据啦~"
+        @query="handleUserList"
       >
-        <block v-if="listData.length > 0">
-          <view class="card" v-for="n in listData" :key="n">
-            <UserCard />
+        <block v-if="!loading && listData.length > 0">
+          <view class="card" v-for="(user, index) in listData" :key="index">
+            <UserCard :userData="user" @click="handleGotoProfile(user)" />
           </view>
         </block>
 
-        <block v-else>
+        <block v-if="!loading && listData.length === 0">
           <view class="empty">
             <wd-img class="w-200px h-200px" src="/static/images/empty.png"></wd-img>
-            暂无数据
+            暂无用户数据
           </view>
         </block>
       </z-paging>
@@ -54,21 +72,42 @@ const fetchApi = {
   4: getVisiteMeList,
 }
 
-const title = ref('')
+const pageType = ref('')
+const pageTitle = ref('')
+
+const keyword = ref('')
 const listData = ref([])
+const loading = ref(false)
+const userListRef = ref(null)
 
 const handleBack = () => {
   uni.navigateBack()
 }
 
-const queryData = async (type) => {
-  const { data } = await fetchApi[type]()
-  listData.value = data.rows
+const handleUserList = async () => {
+  loading.value = true
+
+  const { rows } = await fetchApi[pageType.value]({
+    keyword: keyword.value,
+  })
+
+  listData.value = rows
+  userListRef.value.complete(listData.value)
+
+  loading.value = false
+}
+
+const handleGotoProfile = (userData: any) => {
+  uni.navigateTo({
+    url: `/pages/profile/index?type=other&id=${userData.userId}`,
+  })
 }
 
 onLoad((params) => {
-  title.value = titleList[params.type]
-  queryData(params.type)
+  pageType.value = params.type
+  pageTitle.value = titleList[params.type]
+
+  handleUserList()
 })
 </script>
 
@@ -105,6 +144,18 @@ onLoad((params) => {
       right: 0;
       width: 30px;
       height: 30px;
+    }
+  }
+
+  .search_wrapper {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    .wd-search {
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
