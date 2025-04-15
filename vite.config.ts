@@ -138,6 +138,7 @@ export default ({ command, mode }) => {
         ? {
             [VITE_APP_PROXY_PREFIX]: {
               target: VITE_SERVER_BASEURL,
+              secure: false,
               changeOrigin: true,
               rewrite: (path) => {
                 return path.replace(new RegExp(`^${VITE_APP_PROXY_PREFIX}`), '')

@@ -11,50 +11,50 @@
         <view class="optWrapper top">
           <view class="optItem">
             自动回复设置
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem">
             安全指南
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('USER_CONDUCT')">
             用户行为规范
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem">
             黑名单
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
         </view>
 
         <view class="optWrapper middle">
           <view class="optItem" @click="handleGotoPolicy('INFORMATION_FOR_USERS')">
             用户须知
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('PRIVACY_POLICY')">
             隐私政策
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('PERMISSION_LIST')">
             权限获取清单
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('THIRD_PARTY_SDK_LIST')">
             三方SDK清单
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('INFORMATION_SHARING_LIST')">
             信息共享清单
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem" @click="handleGotoPolicy('REGISTRATION_COMMITMENT')">
             注册承诺函
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
           <view class="optItem">
             系统权限管理
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
         </view>
 
@@ -62,13 +62,13 @@
           <view class="optItem">
             当前版本
             <view class="flex items-center">
-              <wd-text text="版本号1.0.0" color="#FD2B58" size="12px"></wd-text>
-              <wd-img class="w-16px h-16px ml-5px" src="/src/static/images/arrow.png" />
+              <wd-text class="mr-5px" text="版本号1.0.0" color="#FD2B58" size="14px"></wd-text>
+              <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
             </view>
           </view>
           <view class="optItem">
             注销账号
-            <wd-img class="w-16px h-16px" src="/src/static/images/arrow.png" />
+            <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
         </view>
 

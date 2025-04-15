@@ -30,7 +30,7 @@
         </view>
         <view class="right" @click="handleGotoProfile">
           查看
-          <wd-img class="icon" src="/static/images/arrow.png"></wd-img>
+          <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
         </view>
       </view>
     </view>
@@ -286,7 +286,7 @@ onShow(async () => {
       .right {
         display: flex;
         align-items: center;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 400;
         color: #9395a4;
 

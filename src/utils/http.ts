@@ -1,12 +1,14 @@
 import { CustomRequestOptions } from '@/interceptors/request'
 
 import { useUserStore } from '@/store'
+import { isH5 } from '@/utils/platform'
 
 export const http = <T>(options: CustomRequestOptions) => {
   // 1. 返回 Promise 对象
   return new Promise<IResData<T>>((resolve, reject) => {
     uni.request({
       ...options,
+      url: isH5 ? `/api${options.url}` : options.url,
       dataType: 'json',
       // #ifndef MP-WEIXIN
       responseType: 'json',
