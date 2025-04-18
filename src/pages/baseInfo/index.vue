@@ -27,7 +27,7 @@
               暂无头像
             </view>
 
-            <view class="iconBg" @click="handleUploadAvatar">
+            <view v-show="canEdit" class="iconBg" @click="handleUploadAvatar">
               <view class="iconWrapper">
                 <wd-img class="w-14px h-14px" src="/static/images/camera.png"></wd-img>
               </view>
@@ -37,7 +37,7 @@
           <view class="album">
             <view class="title">个人相册</view>
             <view class="pictures_container">
-              <view class="add" @click="handleUploadPicture">
+              <view v-show="canEdit" class="add" @click="handleUploadPicture">
                 <wd-icon name="add" size="20px" color="rgba(147, 149, 164, 0.9)" />
               </view>
 
@@ -68,6 +68,8 @@
                 label="一句话简介"
                 label-width="100px"
                 prop="userDesc"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 v-model="baseData.userDesc"
                 placeholder="请填写一句话简介"
               />
@@ -84,6 +86,8 @@
                 label="昵称"
                 label-width="100px"
                 prop="nickName"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 v-model="baseData.nickName"
                 placeholder="请输入昵称"
               />
@@ -92,6 +96,8 @@
                 label="性别"
                 label-width="100px"
                 placeholder="请选择性别"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 v-model="baseData.sex"
                 :columns="sexOpts"
               />
@@ -102,6 +108,8 @@
                 label="生日"
                 label-width="100px"
                 placeholder="请选择生日"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 :minDate="timePickerStamp[0]"
                 :maxDate="timePickerStamp[1]"
                 v-model="baseData.birthday"
@@ -111,8 +119,10 @@
                 label="身高"
                 label-width="100px"
                 placeholder="请选择身高"
-                v-model="baseData.height"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 :columns="heightOpts"
+                v-model="baseData.height"
               />
               <wd-col-picker
                 align-right
@@ -121,9 +131,11 @@
                 placeholder="请选择所在地"
                 value-key="code"
                 label-key="name"
-                v-model="baseData.orientation"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 :columns="orientationOpts"
                 :column-change="columnChange"
+                v-model="baseData.orientation"
               ></wd-col-picker>
               <wd-col-picker
                 required
@@ -133,25 +145,31 @@
                 placeholder="请选择家乡"
                 value-key="code"
                 label-key="name"
-                v-model="baseData.home"
                 :columns="homeOpts"
                 :column-change="columnChange"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.home"
               ></wd-col-picker>
               <wd-picker
                 align-right
                 label="学历"
                 label-width="100px"
                 placeholder="请选择学历"
-                v-model="baseData.qualifications"
                 :columns="educationOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.qualifications"
               />
               <wd-input
                 align-right
                 label="学校"
                 label-width="100px"
                 prop="graduateSchool"
-                v-model="baseData.graduateSchool"
                 placeholder="您的毕业院校是？"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.graduateSchool"
               />
               <wd-input
                 required
@@ -159,16 +177,20 @@
                 label="职业"
                 label-width="100px"
                 prop="occupation"
-                v-model="baseData.occupation"
                 placeholder="您从事什么工作？"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.occupation"
               />
               <wd-input
                 align-right
                 label="公司"
                 label-width="100px"
                 prop="companyName"
-                v-model="baseData.companyName"
                 placeholder="请填写就职公司"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.companyName"
               />
               <wd-picker
                 required
@@ -176,24 +198,30 @@
                 label="月收入"
                 label-width="100px"
                 placeholder="请选择月收入"
-                v-model="baseData.monthlySalary"
                 :columns="incomeOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.monthlySalary"
               />
               <wd-picker
                 align-right
                 label="婚姻状况"
                 label-width="100px"
                 placeholder="请选择您的婚姻状况"
-                v-model="baseData.maritalStatus"
                 :columns="marriageOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.maritalStatus"
               />
               <wd-picker
                 align-right
                 label="有无房产"
                 label-width="100px"
                 placeholder="是否购房"
-                v-model="baseData.haveHouse"
                 :columns="assetsOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.haveHouse"
               />
             </wd-form>
           </view>
@@ -206,8 +234,10 @@
                 label="交友心声"
                 label-width="100px"
                 prop="datingVoices"
-                v-model="baseData.datingVoices"
                 placeholder="请填写交友心声"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.datingVoices"
               />
             </wd-form>
           </view>
@@ -221,8 +251,10 @@
                 label="个性标签"
                 label-width="100px"
                 placeholder="请选择个性标签"
-                v-model="baseData.clientUserTags"
                 :columns="tagOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.clientUserTags"
                 @change="handleChangePersonalTags"
               ></wd-select-picker>
             </wd-form>
@@ -244,41 +276,51 @@
                 placeholder="不限"
                 value-key="code"
                 label-key="name"
-                v-model="baseData.friendArea"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
                 :columns="friendAreaOpts"
                 :column-change="columnChange"
+                v-model="baseData.friendArea"
               ></wd-col-picker>
               <wd-picker
                 align-right
                 label="年龄"
                 label-width="100px"
                 placeholder="不限"
-                v-model="baseData.friAge"
                 :columns="ageOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.friAge"
               />
               <wd-picker
                 align-right
                 label="身高"
                 label-width="100px"
                 placeholder="不限"
-                v-model="baseData.friHeight"
                 :columns="heightOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.friHeight"
               />
               <wd-picker
                 align-right
                 label="最低学历"
                 label-width="100px"
                 placeholder="不限"
-                v-model="baseData.friQualifications"
                 :columns="educationOpts"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.friQualifications"
               />
               <wd-input
                 type="number"
                 align-right
                 label="最低月收入"
                 label-width="100px"
-                v-model="baseData.friMinSalary"
                 placeholder="不限"
+                :disabled="!canEdit"
+                :class="[!canEdit ? 'formText' : '']"
+                v-model="baseData.friMinSalary"
               />
             </wd-form>
           </view>
@@ -706,6 +748,33 @@ onShow(() => {
   background-color: #f3f5f6;
   padding: env(safe-area-inset-top) 0 0 0;
   background-image: url('../../static/images/background.png');
+
+  .formText {
+    :deep(.wd-input__inner) {
+      color: #222222;
+    }
+    :deep(.wd-picker__value) {
+      margin-right: 0;
+      color: #222222;
+    }
+    :deep(.wd-col-picker__value.false) {
+      margin-right: 0;
+      color: #222222;
+    }
+    :deep(.wd-select-picker__value.is-ellipsis) {
+      margin-right: 0;
+      color: #222222;
+    }
+    :deep(.wd-input__placeholder) {
+      color: #bfbfbf !important;
+    }
+    :deep(.wd-picker__placeholder) {
+      color: #bfbfbf !important;
+    }
+    :deep(.wd-col-picker__value--placeholder) {
+      color: #bfbfbf !important;
+    }
+  }
 
   .header {
     width: 100%;

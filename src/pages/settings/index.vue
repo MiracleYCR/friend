@@ -13,7 +13,7 @@
             自动回复设置
             <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>
-          <view class="optItem">
+          <view class="optItem" @click="handleGotoPolicy('USER_CONDUCT')">
             安全指南
             <wd-icon name="arrow-right" size="14px" color="#9395a4"></wd-icon>
           </view>

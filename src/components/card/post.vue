@@ -49,7 +49,7 @@
       </view>
 
       <view class="middle mt-5px">
-        <view class="title">{{ postData.postText }}</view>
+        <view class="title" @click="handleGotoPostDetail">{{ postData.postText }}</view>
         <view class="content">
           <block v-if="postData.postImages && postData.postImages.length > 0">
             <wd-img
