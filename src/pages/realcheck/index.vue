@@ -73,7 +73,7 @@
             <view class="desc">完成认证可以认识更多实名用户哦~</view>
           </view>
           <view class="btns">
-            <wd-button class="cancel" @click="handleLeave">残冷离开</wd-button>
+            <wd-button class="cancel" @click="handleLeave">残忍离开</wd-button>
             <wd-button class="confirm" @click="handleStay">继续认证</wd-button>
           </view>
         </view>

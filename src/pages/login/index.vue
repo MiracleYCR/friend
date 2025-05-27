@@ -178,8 +178,8 @@ const handleLoginApp = async () => {
       })
 
       uni.getLocation({
-        type: 'wgs84',
-        // type: 'gcj02',
+        type: 'gcj02',
+        // type: 'wgs84',
         success: async (res) => {
           // 获取权限
           const { token }: any = await login({
@@ -207,8 +207,34 @@ const handleLoginApp = async () => {
 
           uni.switchTab({ url: '/pages/connect/index' })
         },
-        fail: (err) => {
+        fail: async (err) => {
           console.error('获取位置信息失败', err)
+
+          // 获取权限
+          const { token }: any = await login({
+            uuid: formData.uuid,
+            code: formData.code,
+            phone: formData.phone,
+            latitude: 22.5445741,
+            longitude: 114.0545429,
+          })
+
+          userStore.setToken(token)
+
+          // 获取用户信息
+          const userInfoResp: any = await getOwnUserInfo()
+          userStore.setUserInfo(userInfoResp.data)
+
+          // 获取枚举
+          const dataMapResp: any = await getDataMap()
+          commonStore.setDataMap(dataMapResp.data)
+
+          // 注册TUIKit
+          registerTUIKit(userInfoResp.data.appId)
+
+          uni.hideLoading()
+
+          uni.switchTab({ url: '/pages/connect/index' })
         },
       })
     })

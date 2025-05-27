@@ -5,7 +5,7 @@
       image-mode="aspectFill"
       :multiple="true"
       :limit="limit"
-      :file-list="fileList"
+      v-model:file-list="curFileList"
       :upload-method="customUpload"
       :before-upload="handleBeforeUpload"
       @change="handleChange"
@@ -15,7 +15,7 @@
       v-if="type === 'video'"
       accept="video"
       :limit="1"
-      :file-list="fileList"
+      v-model:file-list="curFileList"
       :upload-method="customUpload"
       :before-upload="handleBeforeUpload"
       @change="handleChange"
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps({
   type: {
@@ -44,6 +44,7 @@ const props = defineProps({
 
 const emits = defineEmits(['before-upload-file', 'update-file-list'])
 
+const curFileList = ref([])
 const showEvoke = ref(true)
 
 const handleBeforeUpload = ({ files, resolve }) => {
@@ -52,38 +53,46 @@ const handleBeforeUpload = ({ files, resolve }) => {
 }
 
 const customUpload = (file, formData, options) => {
-  try {
-    const uploadTask = uni.uploadFile({
-      url: '/prod-api/common/oss/upload',
-      header: options.header,
-      name: options.name,
-      fileName: options.name,
-      fileType: options.fileType,
-      formData,
-      timeout: 20000,
-      filePath: file.url,
-      success(res) {
-        if (res.statusCode === options.statusCode) {
-          // 设置上传成功
-          options.onSuccess(res, file, formData)
-        } else {
-          // 设置上传失败
-          options.onError({ ...res, errMsg: res.errMsg || '' }, file, formData)
-        }
-      },
-      fail(err) {
+  console.log(file, formData, options)
+
+  const uploadTask = uni.uploadFile({
+    url: '/prod-api/common/oss/upload',
+    header: options.header,
+    name: options.name,
+    fileName: options.name,
+    fileType: options.fileType,
+    formData,
+    timeout: 20000,
+    filePath: file.url,
+    success(res) {
+      if (res.statusCode === options.statusCode) {
+        console.log('成功！！！！！', res, file, formData)
+
+        // 设置上传成功
+        options.onSuccess(res, file, formData)
+      } else {
         // 设置上传失败
-        options.onError(err, file, formData)
-      },
-    })
-    // 设置当前文件加载的百分比
-    uploadTask.onProgressUpdate((res) => {
-      options.onProgress(res, file)
-    })
-  } catch (err) {}
+
+        console.log('失败！！！！！', res, file, formData)
+
+        options.onError({ ...res, errMsg: res.errMsg || '' }, file, formData)
+      }
+    },
+    fail(err) {
+      // 设置上传失败
+      options.onError(err, file, formData)
+    },
+  })
+
+  // 设置当前文件加载的百分比
+  uploadTask.onProgressUpdate((res) => {
+    options.onProgress(res, file)
+  })
 }
 
 const handleChange = ({ fileList }) => {
+  console.log('文件变更！！!', fileList)
+
   const completed = fileList.every((file) => file.status === 'success')
 
   // 显隐上传按钮
@@ -103,6 +112,15 @@ const handleChange = ({ fileList }) => {
     )
   }
 }
+
+watch(
+  props.fileList,
+  (n) => {
+    console.log('哈哈哈哈哈哈哈', n)
+    curFileList.value = n
+  },
+  { immediate: true, deep: true },
+)
 </script>
 
 <style lang="scss" scoped>

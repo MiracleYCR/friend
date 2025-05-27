@@ -333,25 +333,27 @@
     </view>
 
     <wd-overlay :show="dialogVisible">
-      <view class="dialog_wrapper">
-        <view class="block">
-          <view class="title">编辑相册</view>
+      <block v-if="dialogVisible">
+        <view class="dialog_wrapper">
+          <view class="block">
+            <view class="title">编辑相册</view>
 
-          <z-paging
-            class="dialog_pictures_scroll"
-            :fixed="false"
-            :scroll-view="true"
-            :show-scrollbar="false"
-          >
-            <Upload :fileList="originAlbumList" @update-file-list="handleUpdateFileList" />
-          </z-paging>
+            <z-paging
+              class="dialog_pictures_scroll"
+              :fixed="false"
+              :scroll-view="true"
+              :show-scrollbar="false"
+            >
+              <Upload :fileList="originAlbumList" @update-file-list="handleUpdateFileList" />
+            </z-paging>
 
-          <view class="btns">
-            <wd-button class="cancel" @click="handleCancelEditPictures">取消</wd-button>
-            <wd-button class="confirm" @click="handleSaveEditPictures">保存</wd-button>
+            <view class="btns">
+              <wd-button class="cancel" @click="handleCancelEditPictures">取消</wd-button>
+              <wd-button class="confirm" @click="handleSaveEditPictures">保存</wd-button>
+            </view>
           </view>
         </view>
-      </view>
+      </block>
     </wd-overlay>
   </view>
 </template>
@@ -638,6 +640,8 @@ const handleGetUserData = async () => {
   personalTagList.value = userInfoData.clientUserTags.map((item) => tagDataMap[item])
 
   userStore.setUserInfo(userInfoData)
+
+  console.log('嘿嘿嘿嘿嘿', originAlbumList.value)
 
   loading.value = false
 }
