@@ -73,8 +73,11 @@ export default defineManifestConfig({
       },
       /* ios打包配置 */
       ios: {
+        bundleIdentifier: 'cn.shanghaimy.mengyuanuniapp',
+        appleId: '74QA2QHL5B',
         LOCATION_ALWAYS: '获取用户设备定位权限',
         LOCATION_WHEN_IN_USE: '使用时获取用户设备定位权限',
+        capabilities: {},
       },
       /* SDK配置 */
       sdkConfigs: {},
