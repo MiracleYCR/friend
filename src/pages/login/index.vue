@@ -53,14 +53,14 @@
           </wd-button>
         </view>
 
-        <view class="specialLogin">
+        <!-- <view class="specialLogin">
           <view class="text">其他登录方式</view>
           <wd-img
             class="w-40px h-40px"
             src="/static/images/wechat.png"
             @click="handleLoginAppByWechat"
           ></wd-img>
-        </view>
+        </view> -->
 
         <view class="policy">
           <wd-checkbox shape="square" v-model="formData.agree" />
@@ -138,7 +138,7 @@ const handleGetSmsCode = async () => {
   seconds.value = 60
   startCountdown()
   const res: any = await getSmsCode(formData.phone)
-  formData.code = res.code
+  // formData.code = res.code
   formData.uuid = res.uuid
 }
 
