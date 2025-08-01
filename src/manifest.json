@@ -3,7 +3,7 @@
   "appid": "__UNI__BAB5F71",
   "description": "",
   "versionName": "1.0.0",
-  "versionCode": "400",
+  "versionCode": "600",
   "transformPx": false,
   "app-plus": {
     "usingComponents": true,
@@ -15,7 +15,9 @@
       "autoclose": true,
       "delay": 0
     },
-    "modules": {},
+    "modules": {
+      "Geolocation": {}
+    },
     "distribute": {
       "android": {
         "permissions": [
@@ -51,7 +53,12 @@
         "appleId": "74QA2QHL5B",
         "LOCATION_ALWAYS": "获取用户设备定位权限",
         "LOCATION_WHEN_IN_USE": "使用时获取用户设备定位权限",
-        "capabilities": {}
+        "capabilities": {},
+        "privacyDescription": {
+          "NSLocationAlwaysUsageDescription": "App 需要持续访问您的位置信息",
+          "NSLocationWhenInUseUsageDescription": "需要获取您的位置信息，用于附近服务定位",
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "App需要持续和使用时访问您的位置信息"
+        }
       },
       "sdkConfigs": {},
       "icons": {
