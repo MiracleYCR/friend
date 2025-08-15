@@ -13,10 +13,10 @@
 
       <view class="formItem mb-16px">
         <view class="mb-10px font-medium">内容：</view>
-        <wd-textarea v-model="formData.content" placeholder="请输入标题" />
+        <wd-textarea v-model="formData.remark" placeholder="请输入内容" />
       </view>
 
-      <view class="formItem mb-16px">
+      <!-- <view class="formItem mb-16px">
         <view class="mb-10px font-medium">截图：</view>
         <Upload
           class="techImages"
@@ -25,10 +25,16 @@
           :fileList="formData.images"
           @update-file-list="handleUpdatePostImages"
         />
-      </view>
+      </view> -->
 
       <view class="w-100% mt-30px">
-        <wd-button class="login_btn w-100%" type="error" size="large" @click="handleSubmit">
+        <wd-button
+          class="login_btn w-100%"
+          type="error"
+          size="large"
+          :disabled="!submitBtnEnabled"
+          @click="handleSubmit"
+        >
           提交
         </wd-button>
       </view>
@@ -43,22 +49,45 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
-import Upload from '@/components/upload/index.vue'
+import { addSupport } from '@/api/tech'
+// import Upload from '@/components/upload/index.vue'
 
 const { pagePadding } = setPagePadding(20, 20, 20, 20)
 
 const formData = reactive({
   title: '',
-  images: [],
-  content: '',
+  remark: '',
+  // images: [],
 })
 
-const handleUpdatePostImages = (fileList) => {
-  formData.images = fileList
+const submitBtnEnabled = computed(() => {
+  return formData.title && formData.remark
+})
+
+// const handleUpdatePostImages = (fileList) => {
+//   console.log(fileList)
+//   formData.images = fileList
+// }
+
+const resetFormData = () => {
+  formData.title = ''
+  formData.remark = ''
 }
 
-const handleSubmit = () => {
-  console.log('handleSubmit')
+const handleSubmit = async () => {
+  try {
+    await addSupport({ ...formData })
+
+    uni.showToast({
+      title: '提交成功',
+      icon: 'success',
+      duration: 2000,
+    })
+
+    resetFormData()
+  } catch (err) {
+    resetFormData()
+  }
 }
 </script>
 
@@ -70,6 +99,7 @@ const handleSubmit = () => {
   left: 0;
   right: 0;
   display: flex;
+  align-items: center;
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
@@ -90,6 +120,7 @@ const handleSubmit = () => {
   .techFrom {
     z-index: 10;
     width: 100%;
+    max-width: 500px;
     height: 100%;
     color: #000000;
     display: flex;
