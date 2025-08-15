@@ -262,6 +262,13 @@ export default defineUniPages({
         navigationStyle: 'custom',
       },
     },
+    {
+      path: 'pages/tech/index',
+      type: 'page',
+      style: {
+        navigationStyle: 'custom',
+      },
+    },
 
     {
       path: 'pages/views/login',

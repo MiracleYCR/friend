@@ -231,6 +231,13 @@
       }
     },
     {
+      "path": "pages/tech/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/validate/index",
       "type": "page",
       "style": {

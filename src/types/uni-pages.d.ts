@@ -28,6 +28,7 @@ interface NavigateToOptions {
        "/pages/square/index" |
        "/pages/suggestion/index" |
        "/pages/systemauth/index" |
+       "/pages/tech/index" |
        "/pages/validate/index" |
        "/pages/views/login" |
        "/pages/views/profile" |

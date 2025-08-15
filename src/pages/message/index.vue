@@ -10,7 +10,9 @@
         :scroll-view="true"
         :show-scrollbar="false"
       >
-        <view class="tip">
+        <view class="disabled">该功能暂未开放，敬请期待！！！</view>
+
+        <!-- <view class="tip">
           <view class="message_icon">
             <wd-img class="w-21px h-16px" src="/static/images/message3.png" />
           </view>
@@ -21,17 +23,17 @@
             </view>
             <wd-icon name="close" size="12px" color="#9395A4"></wd-icon>
           </view>
-        </view>
+        </view> -->
 
-        <view class="tip">
+        <!-- <view class="tip">
           <wd-img class="w-40px h-40px mr-10px" src="/static/images/bell.png" />
           <view class="content" @click="handleCheckMessageNotice">
             <view class="text">消息通知</view>
             <wd-badge custom-class="badge" modelValue="12" bg-color="#fd5b59" />
           </view>
-        </view>
+        </view> -->
 
-        <block v-for="n in 20" :key="n">
+        <!-- <block v-for="n in 20" :key="n">
           <view class="messageItem" @click="handleCheckMessage">
             <view class="left">
               <wd-img class="avatar" src="/static/images/image.png" />
@@ -49,7 +51,7 @@
               <wd-badge custom-class="badge" modelValue="123" bg-color="#fd5b59" />
             </view>
           </view>
-        </block>
+        </block> -->
       </z-paging>
     </view>
 
@@ -130,9 +132,18 @@ onMounted(() => {
 
     .list_scroll {
       :deep(.zp-paging-container-content) {
+        flex: 1;
         display: flex;
         align-items: center;
         flex-direction: column;
+      }
+
+      .disabled {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .tip {
