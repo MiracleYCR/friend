@@ -8,7 +8,7 @@ export const http = <T>(options: CustomRequestOptions) => {
   return new Promise<IResData<T>>((resolve, reject) => {
     uni.request({
       ...options,
-      url: isH5 ? `/api${options.url}` : options.url,
+      url: options.url,
       dataType: 'json',
       // #ifndef MP-WEIXIN
       responseType: 'json',

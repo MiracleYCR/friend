@@ -2,8 +2,8 @@
   <view class="tech_container" :style="{ padding: pagePadding }">
     <view class="header">
       <wd-img
-        class="w-60px h-60px rounded-xl overflow-hidden"
-        src="/static/app/icons/1024x1024.png"
+        class="w-[60px] h-[60px] rounded-xl overflow-hidden"
+        src="/static/images/1024x1024.png"
       />
       <view class="title">梦缘婚恋</view>
     </view>
