@@ -20,6 +20,7 @@ interface NavigateToOptions {
        "/pages/person/index" |
        "/pages/policy/index" |
        "/pages/postDetail/index" |
+       "/pages/privacy/index" |
        "/pages/profile/index" |
        "/pages/publish/index" |
        "/pages/realcheck/index" |

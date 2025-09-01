@@ -173,6 +173,13 @@
       }
     },
     {
+      "path": "pages/privacy/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/profile/index",
       "type": "page",
       "style": {
