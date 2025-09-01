@@ -18,7 +18,7 @@ export default defineManifestConfig({
   appid: VITE_UNI_APPID,
   description: '',
   versionName: '1.0.0',
-  versionCode: '600',
+  versionCode: '1100',
   transformPx: false,
   locale: VITE_FALLBACK_LOCALE, // 'zh-Hans'
   h5: {
@@ -71,6 +71,8 @@ export default defineManifestConfig({
           '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>',
           '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>',
           '<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>',
+          '<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>',
+          '<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>',
         ],
       },
       /* ios打包配置 */
@@ -87,7 +89,16 @@ export default defineManifestConfig({
         },
       },
       /* SDK配置 */
-      sdkConfigs: {},
+      sdkConfigs: {
+        geolocation: {
+          amap: {
+            name: 'amapMohH2v7d',
+            __platform__: ['ios', 'android'],
+            appkey_ios: '9eb8135cf529c0df519c65c2987f7aa6',
+            appkey_android: '9eb8135cf529c0df519c65c2987f7aa6',
+          },
+        },
+      },
       /* 图标配置 */
       icons: {
         android: {

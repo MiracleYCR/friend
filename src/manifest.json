@@ -3,7 +3,7 @@
   "appid": "__UNI__BAB5F71",
   "description": "",
   "versionName": "1.0.0",
-  "versionCode": "600",
+  "versionCode": "1100",
   "transformPx": false,
   "app-plus": {
     "usingComponents": true,
@@ -39,7 +39,9 @@
           "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
           "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
           "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-          "<uses-permission android:name=\"android.permission.ACCESS_BACKGROUND_LOCATION\"/>"
+          "<uses-permission android:name=\"android.permission.ACCESS_BACKGROUND_LOCATION\"/>",
+          "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_LOCATION_EXTRA_COMMANDS\"/>"
         ],
         "minSdkVersion": 30,
         "targetSdkVersion": 30,
@@ -60,7 +62,19 @@
           "NSLocationAlwaysAndWhenInUseUsageDescription": "App需要持续和使用时访问您的位置信息"
         }
       },
-      "sdkConfigs": {},
+      "sdkConfigs": {
+        "geolocation": {
+          "amap": {
+            "name": "amapMohH2v7d",
+            "__platform__": [
+              "ios",
+              "android"
+            ],
+            "appkey_ios": "9eb8135cf529c0df519c65c2987f7aa6",
+            "appkey_android": "9eb8135cf529c0df519c65c2987f7aa6"
+          }
+        }
+      },
       "icons": {
         "android": {
           "hdpi": "/src/static/app/icons/72x72.png",
