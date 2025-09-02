@@ -85,7 +85,7 @@
 
         <view class="show">
           <view class="tags">
-            <block v-if="userData.clientUserTags.length > 0">
+            <block v-if="userData.clientUserTags && userData.clientUserTags.length > 0">
               <view class="tag" v-for="(tag, index) in userData.clientUserTags" :key="index">
                 {{ tagDataMap[tag] }}
               </view>
@@ -93,16 +93,18 @@
             <view v-else class="noTags">暂无标签...</view>
           </view>
           <view class="pictures">
-            <wd-img
-              v-for="(pic, index) in userData.clientUserImages.slice(0, 5)"
-              class="w-64px h-64px rounded-[5px] overflow-hidden"
-              :class="[index === 4 ? '' : 'mr-10px']"
-              :key="index"
-              :src="pic"
-            ></wd-img>
-            <view class="mask">
-              <view class="num">+{{ userData.clientUserImages.length }}</view>
-            </view>
+            <block v-if="userData.clientUserImages && userData.clientUserImages.length > 0">
+              <wd-img
+                v-for="(pic, index) in userData.clientUserImages.slice(0, 5)"
+                class="w-64px h-64px rounded-[5px] overflow-hidden"
+                :class="[index === 4 ? '' : 'mr-10px']"
+                :key="index"
+                :src="pic"
+              ></wd-img>
+              <view class="mask">
+                <view class="num">+{{ userData.clientUserImages.length }}</view>
+              </view>
+            </block>
           </view>
         </view>
 
@@ -416,7 +418,7 @@ onShow(() => {
       width: 100%;
 
       .tags {
-        // gap: 10px;
+        gap: 10px;
         margin-right: 10px;
         margin-bottom: 10px;
         display: flex;
