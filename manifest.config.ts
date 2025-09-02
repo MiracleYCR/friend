@@ -18,7 +18,7 @@ export default defineManifestConfig({
   appid: VITE_UNI_APPID,
   description: '',
   versionName: '1.0.0',
-  versionCode: '1100',
+  versionCode: '1200',
   transformPx: false,
   locale: VITE_FALLBACK_LOCALE, // 'zh-Hans'
   h5: {
@@ -43,6 +43,7 @@ export default defineManifestConfig({
     /* 模块配置 */
     modules: {
       Geolocation: {},
+      Camera: {},
     },
     /* 应用发布信息 */
     distribute: {

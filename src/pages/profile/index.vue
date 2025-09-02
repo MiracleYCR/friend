@@ -17,17 +17,23 @@
     </view>
 
     <view class="body">
-      <wd-loading v-if="loading" color="#fd2b58" />
-
       <z-paging
-        v-else
         class="list_scroll"
+        ref="profileRef"
         :fixed="false"
         :scroll-y="true"
         :scroll-view="true"
         :show-scrollbar="false"
+        :refresher-only="true"
+        @onRefresh="queryUserInfoData"
       >
-        <wd-img class="avatar" :src="userData.avatar"></wd-img>
+        <wd-img v-if="userData.avatar" class="avatar" :src="userData.avatar" />
+        <view
+          v-else
+          class="avatar bg-gray-200 flex items-center justify-center text-[10px] text-gray-400"
+        >
+          暂无头像
+        </view>
 
         <view class="name">{{ userData.nickName }}</view>
 
@@ -120,7 +126,7 @@
       </z-paging>
     </view>
 
-    <view v-if="!loading && !pageParams.isOwn" class="btn">
+    <view v-if="!pageParams.isOwn" class="btn">
       <wd-button class="btnColor w-80%" size="large" @click="handleChatWithUser">
         Hi~ 打招呼
       </wd-button>
@@ -156,11 +162,9 @@ const pageParams = reactive({
   isOwn: true,
 })
 
-const loading = ref<boolean>(false)
-
 const userData = ref<any>({})
-
 const tagDataMap = ref<any>({})
+const profileRef = ref<any>(null)
 
 const handleBack = () => {
   uni.navigateBack()
@@ -197,8 +201,6 @@ const handleChatWithUser = () => {
 
 const queryUserInfoData = async () => {
   try {
-    loading.value = true
-
     if (pageParams.isOwn) {
       userData.value = userStore.userInfo
     } else {
@@ -212,10 +214,8 @@ const queryUserInfoData = async () => {
     })
     tagDataMap.value = tags
 
-    loading.value = false
-  } catch (err) {
-    loading.value = false
-  }
+    profileRef.value.complete()
+  } catch (err) {}
 }
 
 onLoad((params) => {
@@ -336,8 +336,8 @@ onShow(() => {
     }
 
     .avatar {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       overflow: hidden;
     }

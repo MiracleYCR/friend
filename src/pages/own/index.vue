@@ -6,7 +6,17 @@
     </view>
 
     <view class="own">
-      <wd-img class="avatar" :src="userStore.userInfo.avatar"></wd-img>
+      <wd-img
+        v-if="userStore.userInfo.avatar"
+        class="avatar"
+        :src="userStore.userInfo.avatar"
+      ></wd-img>
+      <view
+        v-else
+        class="avatar bg-gray-200 flex items-center justify-center text-[10px] text-gray-400"
+      >
+        暂无头像
+      </view>
 
       <view class="info">
         <view class="left">
